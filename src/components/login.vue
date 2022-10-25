@@ -7,22 +7,12 @@
       <el-card class="box-card login-box" :body-style="cardStyle">
         <div class="login-box-content flex-column">
           <h3 class="login-box-content-title">欢迎使用我的博客</h3>
-          <el-form
-            ref="form"
-            :model="formInline"
-            class="login-box-content-form"
-            label-position="top"
-            :rules="rules"
-          >
+          <el-form ref="form" :model="formInline" class="login-box-content-form" label-position="top" :rules="rules">
             <el-form-item label="账号：" prop="user">
               <el-input v-model="formInline.user" placeholder="请输入账号" />
             </el-form-item>
             <el-form-item label="密码：" prop="pwd">
-              <el-input
-                v-model="formInline.pwd"
-                type="password"
-                placeholder="请输入密码"
-              />
+              <el-input v-model="formInline.pwd" type="password" placeholder="请输入密码" />
             </el-form-item>
             <el-form-item class="submit" size="large">
               <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
@@ -61,12 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-// import HelloWorld from "./components/HelloWorld.vue";
 import { reactive, ref, onMounted } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
-import { getPoem } from "@/api/getPoem";
+import { getPoem } from "@/api";
+
 type Form = {
   user: string;
   pwd: string;
@@ -92,7 +82,7 @@ const formInline = reactive<Form>({
   pwd: "",
   check: false,
 });
-const Logo = localStorage.getItem("Logo");
+const Logo = localStorage.getItem("Logo") || '';
 const poem = ref<PoemData>({
   from: "TOLIE",
   hitokoto: "慢一些，稳一些",
@@ -125,17 +115,14 @@ const rules = reactive<Rules>({
     },
   ],
 });
-// const getPoem = function (params: poemReq) {
-//   console.log(params,11)
-//   return axios.get("https://v1.hitokoto.cn", {params});
-// }
+
 onMounted(() => {
-  // console.log(getPoem);
+  // console.log(111);
   getPoem({
     max_length: 10,
     c: "d",
     encode: "json",
-  }).then(({ data }) => {
+  }).then((data) => {
     let { from, hitokoto, id, length, type } = data;
     [
       poem.value.from,
@@ -201,6 +188,7 @@ if (!localStorage.getItem("Logo")) {
       width: 130px;
       margin-left: 20px;
       margin-top: 20px;
+
       img {
         width: inherit;
       }
@@ -250,12 +238,15 @@ if (!localStorage.getItem("Logo")) {
     align-items: center;
     padding: 0 20px;
     background-color: #409eff;
+
     &-title {
       width: 350px;
       color: #fff;
+
       .poem {
         font-size: 24px;
       }
+
       .writer {
         margin-top: 16px;
         text-align: right;
@@ -263,6 +254,7 @@ if (!localStorage.getItem("Logo")) {
         font-size: 16px;
       }
     }
+
     &-img {
       width: 350px;
       height: 350px;
