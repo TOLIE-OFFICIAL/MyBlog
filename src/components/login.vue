@@ -51,11 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, onBeforeMount } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { getPoem } from "@/api";
+import _ from "lodash";
 
 type Form = {
   user: string;
@@ -116,22 +117,29 @@ const rules = reactive<Rules>({
   ],
 });
 
-onMounted(() => {
-  // console.log(111);
+// const getOncePoem = _.once()
+
+onBeforeMount(() => {
+  if (!localStorage.getItem("Logo")) {
+    saveImg("Logo");
+  }
   getPoem({
     max_length: 10,
     c: "d",
     encode: "json",
   }).then((data) => {
-    let { from, hitokoto, id, length, type } = data;
-    [
-      poem.value.from,
-      poem.value.hitokoto,
-      poem.value.id,
-      poem.value.length,
-      poem.value.type,
-    ] = [from, hitokoto, id, length, type];
-  });
+    localStorage.setItem('slogan', JSON.stringify(data))
+  })
+})
+onMounted(() => {
+  let { from, hitokoto, id, length, type } = JSON.parse(localStorage.getItem('slogan') || '');
+  [
+    poem.value.from,
+    poem.value.hitokoto,
+    poem.value.id,
+    poem.value.length,
+    poem.value.type,
+  ] = [from, hitokoto, id, length, type];
 });
 const onSubmit = () => {
   // console.log('submit!',form.value)
@@ -167,9 +175,6 @@ const saveImg = function (key: string) {
     img.src = src;
   }
 };
-if (!localStorage.getItem("Logo")) {
-  saveImg("Logo");
-}
 </script>
 
 <style scoped lang="less">
