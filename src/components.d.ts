@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArticleItem: typeof import('./components/ArticleItem.vue')['default']
+    ArticleList: typeof import('./components/ArticleList.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -48,10 +50,14 @@ declare module '@vue/runtime-core' {
     IEpOrange: typeof import('~icons/ep/orange')['default']
     IEpSearch: typeof import('~icons/ep/search')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
-    Login: typeof import('./components/login.vue')['default']
+    List: typeof import('./components/ArticleList.vue')['default']
+    Login: typeof import('./views/login.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./components/TheWelcome.vue')['default']
     WelcomeItem: typeof import('./components/WelcomeItem.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }
