@@ -8,6 +8,14 @@ export const getPoem = (data: PoemReq) => {
     data,
   })
 }
+// export const getLogo = () => {
+//   console.log(111);
+  
+//   return request({
+//     url: 'https://smms.app/image/f5vjiHKwVDTpX7U',
+//     method: 'GET',
+//   })
+// }
 // export const useGetAddr = (data: IGetParams) => {
 //   return useRequest<IGetParams>(getAddrs, data)
 // }

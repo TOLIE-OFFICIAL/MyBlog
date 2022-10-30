@@ -2,7 +2,7 @@
   <div class="layout-box">
     <div class="web-login-left">
       <div class="logo">
-        <img v-once class="logo-image" :src="Logo" alt="Logo" />
+        <img v-once class="logo-image" :src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo" />
       </div>
       <el-card class="box-card login-box" :body-style="cardStyle">
         <div class="login-box-content flex-column">
@@ -53,10 +53,10 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, onBeforeMount } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
+// import { useMainStore } from "@/store";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { getPoem } from "@/api";
-import _ from "lodash";
 
 type Form = {
   user: string;
@@ -73,6 +73,8 @@ type PoemData = {
 type Rules = {
   [K in keyof Form]: Array<FormItemRule>;
 };
+// const mainStore = useMainStore();
+
 const cardStyle = {
   padding: "40px 40px 0 40px",
   width: "100%",
@@ -83,7 +85,7 @@ const formInline = reactive<Form>({
   pwd: "",
   check: false,
 });
-const Logo = localStorage.getItem("Logo") || '';
+// const Logo = localStorage.getItem("Logo") || '';
 const poem = ref<PoemData>({
   from: "TOLIE",
   hitokoto: "慢一些，稳一些",
@@ -117,12 +119,11 @@ const rules = reactive<Rules>({
   ],
 });
 
-// const getOncePoem = _.once()
-
 onBeforeMount(() => {
-  if (!localStorage.getItem("Logo")) {
-    saveImg("Logo");
-  }
+  // if (!localStorage.getItem("Logo")) {
+  //   saveImg("Logo");
+  // }
+  // mainStore.saveImg();
   getPoem({
     max_length: 10,
     c: "d",
@@ -150,30 +151,8 @@ const onSubmit = () => {
       localStorage.setItem("token", "1");
     } else {
       ElMessage.error("请输入正确的密码");
-      // console.log(111)
     }
   });
-};
-const saveImg = function (key: string) {
-  let img = new Image(),
-    canvas = document.createElement("canvas"),
-    ctx = canvas.getContext("2d"),
-    src = "https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"; // insert image url here
-
-  img.crossOrigin = "Anonymous";
-
-  img.onload = function () {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx?.drawImage(img, 0, 0);
-    localStorage.setItem(key, canvas.toDataURL("image/png"));
-  };
-  img.src = src;
-  // make sure the load event fires for cached images too
-  if (img.complete || img.complete === undefined) {
-    img.src = "";
-    img.src = src;
-  }
 };
 </script>
 

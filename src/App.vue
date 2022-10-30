@@ -22,7 +22,7 @@ import Footer from "@/components/Footer.vue";
 
 <style scoped>
 .main{
-  width: 940px;
+  width: 1040px;
   margin: 0 auto;
 }
 </style>
