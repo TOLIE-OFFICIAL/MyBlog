@@ -7,8 +7,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ArticleCard: typeof import('./components/ArticleList/ArticleCard/index.vue')['default']
-    ArticleItem: typeof import('./components/ArticleList/ArticleItem.vue')['default']
+    Archives: typeof import('./components/Archives/index.vue')['default']
+    ArticleCard: typeof import('./components/Slots/ArticleCard/index.vue')['default']
+    ArticleItem: typeof import('./components/Home/ArticleItem.vue')['default']
     ArticleList: typeof import('./components/ArticleList/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -23,8 +24,11 @@ declare module '@vue/runtime-core' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTimeline: typeof import('element-plus/es')['ElTimeline']
+    ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    Home: typeof import('./components/Home/index.vue')['default']
     IconCommunity: typeof import('./components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./components/icons/IconEcosystem.vue')['default']
@@ -43,11 +47,16 @@ declare module '@vue/runtime-core' {
     IEpTimer: typeof import('~icons/ep/timer')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
     IEpView: typeof import('~icons/ep/view')['default']
-    MainFeature: typeof import('./components/ArticleList/MainFeature.vue')['default']
+    MainFeature: typeof import('./components/Home/MainFeature.vue')['default']
+    OtherPages: typeof import('./components/Slots/otherPages/index.vue')['default']
+    PageSlot: typeof import('./components/archives/index.vue')['default']
+    PagesModule: typeof import('./components/Slots/PagesModule/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SubTitle: typeof import('./components/ArticleList/SubTitle.vue')['default']
-    TopFeature: typeof import('./components/ArticleList/TopFeature.vue')['default']
+    Tags: typeof import('./components/Tags/index.vue')['default']
+    Test: typeof import('./components/otherPages/test.vue')['default']
+    TopFeature: typeof import('./components/Home/TopFeature.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

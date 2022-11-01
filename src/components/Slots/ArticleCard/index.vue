@@ -2,7 +2,7 @@
 <!-- date:  -->
 <!-- description:  -->
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" shadow="never">
     <template #header>
       <div class="card-header">
         <el-icon :size="20" style="margin-right: 8px; vertical-align: bottom;">
@@ -22,7 +22,6 @@ defineProps<{ title: string }>()
 <style scoped lang='less'>
 .box-card {
   border: none;
-  margin-bottom: 10px;
 
   .card-header {
     color: #666;

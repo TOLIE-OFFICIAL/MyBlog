@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ArticleItem from './ArticleItem.vue'
-import ArticleCard from './ArticleCard/index.vue'
+import ArticleCard from '../Slots/ArticleCard/index.vue'
 import { ref } from 'vue'
 const count = ref(0)
 const load = () => { count.value += 2 }

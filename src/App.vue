@@ -1,28 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <Header />
-      </el-header>
-      <el-main class="main">
-        <RouterView />
-      </el-main>
-      <el-footer>
-        <Footer />
-      </el-footer>
-    </el-container>
-  </div>
+  <RouterView />
 </template>
-
-<style scoped>
-.main{
-  width: 1040px;
-  margin: 0 auto;
-}
-</style>

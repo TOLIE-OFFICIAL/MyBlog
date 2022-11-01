@@ -66,9 +66,7 @@ type Form = {
 type PoemData = {
   from: string;
   hitokoto: string;
-  id: number;
-  length: number;
-  type: string;
+  [propName:string]:any
 };
 type Rules = {
   [K in keyof Form]: Array<FormItemRule>;

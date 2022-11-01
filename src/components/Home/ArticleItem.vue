@@ -39,9 +39,7 @@
         </el-icon>
       </div>
     </div>
-    <router-link class="box-card-right" to="/login">
-
-    </router-link>
+    <router-link class="box-card-right" to="/login"></router-link>
   </el-card>
 </template>
 

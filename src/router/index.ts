@@ -5,22 +5,25 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: () => import("@/components/ArticleList/index.vue"),
+      component: () => import("@/views/Pages.vue"),
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: () => import("@/components/Home/index.vue"),
+        },
+        {
+          path: "/archives",
+          name: "archives",
+          component: () => import("@/components/Archives/index.vue"),
+        },
+        {
+          path: "/tags",
+          name: "tags",
+          component: () => import("@/components/Tags/index.vue"),
+        },
+      ],
     },
-    // {
-    //   path: "/login",
-    //   name: "login",
-    //   component: () => import("../views/Login.vue"),
-    // },
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../components/HelloWorld.vue"),
-    // },
   ],
 });
 
