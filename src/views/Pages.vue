@@ -22,8 +22,9 @@ import Footer from "@/components/Footer.vue";
 
 <style scoped>
 .main{
-  width: 1000px;
-  margin: 0 auto;
+  /* width: 1000px; */
+  /* margin: 0 auto;  */
   padding: 0;
+  /* background: #1c0522; */
 }
 </style>
