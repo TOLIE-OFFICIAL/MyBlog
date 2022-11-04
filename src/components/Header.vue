@@ -1,5 +1,8 @@
 <template>
-  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false"
+  <el-menu :default-active="activeIndex" 
+  class="el-menu-demo" mode="horizontal" 
+  background-color="rgba(255, 255, 255, 0.95);"
+  :ellipsis="false"
     @select="handleSelect" :router="true">
     <el-menu-item index="">
       <img v-once class="logo-image" src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo"

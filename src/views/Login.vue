@@ -1,56 +1,4 @@
-<template>
-  <div class="layout-box">
-    <div class="web-login-left">
-      <div class="logo">
-        <img v-once class="logo-image" :src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo" />
-      </div>
-      <el-card class="box-card login-box" :body-style="cardStyle">
-        <div class="login-box-content flex-column">
-          <h3 class="login-box-content-title">欢迎使用我的博客</h3>
-          <el-form ref="form" :model="formInline" class="login-box-content-form" label-position="top" :rules="rules">
-            <el-form-item label="账号：" prop="user">
-              <el-input v-model="formInline.user" placeholder="请输入账号" />
-            </el-form-item>
-            <el-form-item label="密码：" prop="pwd">
-              <el-input v-model="formInline.pwd" type="password" placeholder="请输入密码" />
-            </el-form-item>
-            <el-form-item class="submit" size="large">
-              <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
-            </el-form-item>
-          </el-form>
-          <div class="empty"></div>
-          <el-checkbox v-model="formInline.check">
-            <div class="passport-policy-content">
-              <span>我已阅读并同意 </span>
-              <el-link type="primary">服务协议</el-link>
-              <span> 和 </span>
-              <el-link type="primary">隐私政策</el-link>
-            </div>
-          </el-checkbox>
-          <el-divider>其他方式</el-divider>
-          <el-button round>
-            <el-icon class="el-icon--left" color="#2EA121">
-              <!-- 自动导入必须遵循名称格式
-                 {prefix：默认为i}-{collection：图标集合的名称}-{icon：图标名称} 
-              -->
-              <i-ep-Cloudy />
-            </el-icon>
-            OSS登陆
-          </el-button>
-        </div>
-      </el-card>
-    </div>
-    <div class="web-login-right flex-column">
-      <div class="web-login-right-title" :poem="poem">
-        <div class="poem">{{ poem.hitokoto }}</div>
-        <div class="writer">——{{ poem.from }}</div>
-      </div>
-      <div class="web-login-right-img"></div>
-    </div>
-  </div>
-</template>
-
-<script lang="ts" setup>
+<script setup lang="ts" >
 import { reactive, ref, onMounted, onBeforeMount } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
 // import { useMainStore } from "@/store";
@@ -66,12 +14,11 @@ type Form = {
 type PoemData = {
   from: string;
   hitokoto: string;
-  [propName:string]:any
+  [propName: string]: any
 };
 type Rules = {
   [K in keyof Form]: Array<FormItemRule>;
 };
-// const mainStore = useMainStore();
 
 const cardStyle = {
   padding: "40px 40px 0 40px",
@@ -153,6 +100,58 @@ const onSubmit = () => {
   });
 };
 </script>
+
+<template>
+  <div class="layout-box">
+    <div class="web-login-left">
+      <div class="logo">
+        <img v-once class="logo-image" :src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo" />
+      </div>
+      <el-card class="box-card login-box" :body-style="cardStyle">
+        <div class="login-box-content flex-column">
+          <h3 class="login-box-content-title">欢迎使用我的博客</h3>
+          <el-form ref="form" :model="formInline" class="login-box-content-form" label-position="top" :rules="rules">
+            <el-form-item label="账号：" prop="user">
+              <el-input v-model="formInline.user" placeholder="请输入账号" />
+            </el-form-item>
+            <el-form-item label="密码：" prop="pwd">
+              <el-input v-model="formInline.pwd" type="password" placeholder="请输入密码" />
+            </el-form-item>
+            <el-form-item class="submit" size="large">
+              <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
+            </el-form-item>
+          </el-form>
+          <div class="empty"></div>
+          <el-checkbox v-model="formInline.check">
+            <div class="passport-policy-content">
+              <span>我已阅读并同意 </span>
+              <el-link type="primary">服务协议</el-link>
+              <span> 和 </span>
+              <el-link type="primary">隐私政策</el-link>
+            </div>
+          </el-checkbox>
+          <el-divider>其他方式</el-divider>
+          <el-button round>
+            <el-icon class="el-icon--left" color="#2EA121">
+              <!-- 自动导入必须遵循名称格式
+                 {prefix：默认为i}-{collection：图标集合的名称}-{icon：图标名称} 
+              -->
+              <i-ep-Cloudy />
+            </el-icon>
+            OSS登陆
+          </el-button>
+        </div>
+      </el-card>
+    </div>
+    <div class="web-login-right flex-column">
+      <div class="web-login-right-title" :poem="poem">
+        <div class="poem">{{ poem.hitokoto }}</div>
+        <div class="writer">——{{ poem.from }}</div>
+      </div>
+      <div class="web-login-right-img"></div>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="less">
 .layout-box {

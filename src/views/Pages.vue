@@ -2,12 +2,14 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+const flag = ref(true);
 </script>
 
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
+      <el-header height="60px">
         <Header />
       </el-header>
       <el-main class="main">
@@ -20,8 +22,18 @@ import Footer from "@/components/Footer.vue";
   </div>
 </template>
 
-<style scoped>
-.main{
+<style scoped lang="less">
+header {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  padding: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.95);
+  // box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 40px -8px;
+}
+
+.main {
   /* width: 1000px; */
   /* margin: 0 auto;  */
   padding: 0;

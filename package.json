@@ -2,7 +2,7 @@
   "name": "blog-frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview --port 4173",
     "build-only": "vite build",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/qs": "^6.9.7",
+    "animejs": "^3.2.1",
     "axios": "^1.1.3",
     "element-plus": "^2.2.18",
     "less": "^4.1.3",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.8",
+    "@types/animejs": "^3.1.6",
     "@types/node": "^16.11.56",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
