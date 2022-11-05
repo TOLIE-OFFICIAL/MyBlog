@@ -9,6 +9,7 @@ export const useMainStore = defineStore(Names.Main, {
   state: () => {
     return {
       logo: 1,
+      menuBgFlag: 1,
     };
   },
   // 类似于computed 可以帮我们修饰我们的值
@@ -36,7 +37,7 @@ export const useMainStore = defineStore(Names.Main, {
       //   img.src = "";
       //   img.src = src;
       // }
-      console.log(111);
+      // console.log(111);
 
       // await getLogo().then((data) => {
       //   console.log(data);

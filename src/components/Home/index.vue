@@ -11,16 +11,12 @@
         <div class="wave waveBottom" />
       </div>
     </div>
-    <h2
-      id="text"
-      ref="text"
-      :style="{ transform: `translateY(${scrollY * 0.55}px)` }"
-    >
+    <h2 id="text" ref="text" :style="{ transform: `translateY(${scrollY * 0.55}px)` }">
       TOLIE's BLOG
     </h2>
   </div>
   <div class="sec" id="sec">
-    <TopFeature class="TopFeature" title="START:DASH!!"></TopFeature>
+    <TopFeature class="TopFeature" title="START:DASH!!" style="marginBottom:3px"></TopFeature>
     <MainFeature class="MainFeature" title="Discovery"></MainFeature>
   </div>
 </template>
@@ -30,14 +26,18 @@
 import { onMounted, onBeforeUnmount } from "vue";
 import MainFeature from "./MainFeature/index.vue";
 import TopFeature from "./TopFeature/index.vue";
+
+import { useMainStore } from "@/store";
+const mainStore = useMainStore();
+
 const text = ref();
 const scrollY = ref<number>(0);
-const titlePosition = ref<number>(0);
-const navHeight = ref<number>(0);
 const getScrollY = () => {
   scrollY.value = window.scrollY;
-  titlePosition.value = text.value?.offsetTop as number;
+  // mainStore.menuBgFlag = 0;
+  console.log(111);
 };
+
 // const translate = function (element: HTMLElement) {
 //   anime({
 //     targets: element,
@@ -47,14 +47,7 @@ const getScrollY = () => {
 //     easing: "ease",
 //   });
 // }
-onBeforeMount(() => {
-  navHeight.value = window.outerHeight;
-});
 onMounted(() => {
-  // console.log(text.value?.offsetHeight);
-  // translate(waveTop.value)
-  // console.log(waveTop.value);
-
   window.addEventListener("scroll", getScrollY);
 });
 onBeforeUnmount(() => {
@@ -75,6 +68,7 @@ onBeforeUnmount(() => {
     transform: translateX(-50%) translateZ(0) scaleY(1);
   }
 }
+
 @-webkit-keyframes glitch-loop-1 {
   0% {
     clip: rect(36px, 9999px, 9px, 0);
@@ -182,11 +176,12 @@ onBeforeUnmount(() => {
     clip: rect(31px, 9999px, 149px, 0);
   }
 }
+
 .home_nav {
   position: relative;
   display: flex;
   background-image: url(@/assets/bg.jpg);
-  //background-color: #666;
+  // background-color: #999;
   // border-bottom: 1px solid #666;
   background-size: cover;
   background-repeat: no-repeat;
@@ -196,6 +191,18 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background-attachment: fixed;
+    background-image: url(@/assets/images/grid.png);
+  }
 
   & .waveWrapper {
     overflow: hidden;
@@ -265,23 +272,26 @@ onBeforeUnmount(() => {
     position: relative;
     justify-content: center;
     margin: auto;
-    font-size: 3.5vw;
+    // font-size: 3.5vw;
+    font-size: 80px;
     font-weight: bold;
-    z-index: 99;
     font-family: "Ubuntu", sans-serif;
     color: #fff;
-    width:520px;
     mix-blend-mode: lighten;
     text-transform: uppercase;
+    z-index: 99;
 
     &:before,
     &:after {
-      content: attr(data-text);
+      content: "TOLIE's BLOG";
       position: absolute;
       top: 0;
       width: 100%;
+      // height: 100%;
       background: rgba(0, 0, 0, 0);
       clip: rect(0, 0, 0, 0);
+      // z-index: 100;
+      text-transform: uppercase;
     }
 
     &:before {
@@ -323,6 +333,6 @@ onBeforeUnmount(() => {
   position: relative;
   width: 1000px;
   margin: 0 auto;
-  background: #1c0522;
+  // background: #1c0522;
 }
 </style>

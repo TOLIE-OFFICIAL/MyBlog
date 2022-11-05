@@ -11,8 +11,6 @@ declare module '@vue/runtime-core' {
     ArticleCard: typeof import('./components/Slots/ArticleCard/index.vue')['default']
     ArticleItem: typeof import('./components/Home/MainFeature/ArticleItem.vue')['default']
     ElCard: typeof import('element-plus/es')['ElCard']
-    ElCarousel: typeof import('element-plus/es')['ElCarousel']
-    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElFooter: typeof import('element-plus/es')['ElFooter']

@@ -1,10 +1,7 @@
 <template>
-  <el-menu :default-active="activeIndex" 
-  class="el-menu-demo" mode="horizontal" 
-  background-color="rgba(255, 255, 255, 0.95);"
-  :ellipsis="false"
-    @select="handleSelect" :router="true">
-    <el-menu-item index="">
+  <el-menu :background-color="menuColor" :default-active="activePage" class="el-menu-demo" mode="horizontal"
+    :ellipsis="false" @select="handleSelect" :router="true">
+    <el-menu-item>
       <img v-once class="logo-image" src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo"
         style="height: 46px; margin-top: 6px" />
     </el-menu-item>
@@ -69,16 +66,20 @@
 import { ref } from "vue";
 import { useMainStore } from "@/store";
 const mainStore = useMainStore();
+const menuColor = ref('#fff');
+const activePage = ref('/');
 
 onBeforeMount(() => {
-  // if (!localStorage.getItem("Logo")) {
-  //   saveImg("Logo");
-  // }
-  // mainStore.saveImg();
+  // 新页面载入调用onBeforeMount，从localtion获取default-active
+  const hrefArr = location.href.split('/')
+  activePage.value = sessionStorage.getItem('activePage') || hrefArr[hrefArr.length - 1] || '/';
 });
-const activeIndex = ref("/");
+
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+   // 点击菜单tab 获取default-active
+  sessionStorage.setItem('activePage', key);
+  activePage.value = key;
+  // console.log(activePage);
 };
 </script>
 

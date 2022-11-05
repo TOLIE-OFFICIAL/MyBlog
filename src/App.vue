@@ -3,5 +3,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <RouterView />
+  <el-scrollbar max-height="100vh">
+    <RouterView />
+  </el-scrollbar>
 </template>
