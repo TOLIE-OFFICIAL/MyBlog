@@ -9,6 +9,7 @@ export const useMainStore = defineStore(Names.Main, {
   state: () => {
     return {
       logo: 1,
+      scrollY: 0,
       menuBgFlag: 1,
     };
   },
@@ -22,9 +23,7 @@ export const useMainStore = defineStore(Names.Main, {
       //   canvas = document.createElement("canvas"),
       //   ctx = canvas.getContext("2d"),
       //   src = "https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"; // insert image url here
-
       // img.crossOrigin = "Anonymous";
-
       // img.onload = function () {
       //   canvas.width = img.width;
       //   canvas.height = img.height;
@@ -38,7 +37,6 @@ export const useMainStore = defineStore(Names.Main, {
       //   img.src = src;
       // }
       // console.log(111);
-
       // await getLogo().then((data) => {
       //   console.log(data);
       // });

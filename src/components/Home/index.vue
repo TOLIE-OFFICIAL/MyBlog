@@ -11,48 +11,34 @@
         <div class="wave waveBottom" />
       </div>
     </div>
-    <h2 id="text" ref="text" :style="{ transform: `translateY(${scrollY * 0.55}px)` }">
+    <h2
+      id="text"
+      ref="text"
+      :style="{ transform: `translateY(${mainStore.scrollY * 0.55}px)` }"
+    >
       TOLIE's BLOG
     </h2>
   </div>
   <div class="sec" id="sec">
-    <TopFeature class="TopFeature" title="START:DASH!!" style="marginBottom:3px"></TopFeature>
+    <TopFeature
+      class="TopFeature"
+      title="START:DASH!!"
+      style="marginbottom: 3px"
+    ></TopFeature>
     <MainFeature class="MainFeature" title="Discovery"></MainFeature>
   </div>
 </template>
 
 <script setup lang="ts">
-// import anime from "animejs";
 import { onMounted, onBeforeUnmount } from "vue";
+import Nav from "@/components/Nav.vue";
 import MainFeature from "./MainFeature/index.vue";
 import TopFeature from "./TopFeature/index.vue";
 
 import { useMainStore } from "@/store";
 const mainStore = useMainStore();
 
-const text = ref();
-const scrollY = ref<number>(0);
-const getScrollY = () => {
-  scrollY.value = window.scrollY;
-  // mainStore.menuBgFlag = 0;
-  console.log(111);
-};
-
-// const translate = function (element: HTMLElement) {
-//   anime({
-//     targets: element,
-//     translateX: 500,
-//     direction: "alternate",
-//     loop: true,
-//     easing: "ease",
-//   });
-// }
-onMounted(() => {
-  window.addEventListener("scroll", getScrollY);
-});
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", getScrollY);
-});
+// const text = ref();
 </script>
 <style scoped lang="less">
 @keyframes move_wave {
@@ -193,7 +179,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;

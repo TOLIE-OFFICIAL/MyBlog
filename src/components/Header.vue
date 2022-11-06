@@ -1,9 +1,23 @@
 <template>
-  <el-menu :background-color="menuColor" :default-active="activePage" class="el-menu-demo" mode="horizontal"
-    :ellipsis="false" @select="handleSelect" :router="true">
+  <el-menu
+    class="el-menu-demo"
+    :background-color="menuColor"
+    :text-color="textColor"
+    :default-active="activePage"
+    mode="horizontal"
+    :ellipsis="false"
+    @select="handleSelect"
+    :router="true"
+    :style="menuBorderColor"
+  >
     <el-menu-item>
-      <img v-once class="logo-image" src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo"
-        style="height: 46px; margin-top: 6px" />
+      <img
+        v-once
+        class="logo-image"
+        src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"
+        alt="Logo"
+        style="height: 46px; margin-top: 6px"
+      />
     </el-menu-item>
     <div class="flex-grow" />
     <el-menu-item index="/">
@@ -66,18 +80,24 @@
 import { ref } from "vue";
 import { useMainStore } from "@/store";
 const mainStore = useMainStore();
-const menuColor = ref('#fff');
-const activePage = ref('/');
+const textColor = ref('#fff')
+const menuColor = ref("transprent");
+const menuBorderColor = reactive({
+  borderBottomColor: "transparent",
+});
+const activePage = ref("/");
+
 
 onBeforeMount(() => {
   // 新页面载入调用onBeforeMount，从localtion获取default-active
-  const hrefArr = location.href.split('/')
-  activePage.value = sessionStorage.getItem('activePage') || hrefArr[hrefArr.length - 1] || '/';
+  // const hrefArr = location.href.split("/");
+  // activePage.value =
+  //   sessionStorage.getItem("activePage") || hrefArr[hrefArr.length - 1] || "/";
 });
 
 const handleSelect = (key: string, keyPath: string[]) => {
-   // 点击菜单tab 获取default-active
-  sessionStorage.setItem('activePage', key);
+  // 点击菜单tab 获取default-active
+  // sessionStorage.setItem("activePage", key);
   activePage.value = key;
   // console.log(activePage);
 };

@@ -2,10 +2,21 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import { useMainStore } from "@/store";
+const mainStore = useMainStore();
 const flag = ref(true);
+type scrollPosition = {
+  scrollTop:number
+  scrollLeft:number
+}
+const scroll = (scroll:scrollPosition )=>{
+  // console.log(scroll);
+  mainStore.scrollY =scroll.scrollTop
+}
 </script>
 
 <template>
+  <el-scrollbar max-height="100vh" @scroll="scroll">
   <div class="common-layout">
     <el-container>
       <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
@@ -20,6 +31,7 @@ const flag = ref(true);
       </el-footer>
     </el-container>
   </div>
+  </el-scrollbar>
 </template>
 
 <style scoped lang="less">
@@ -29,7 +41,7 @@ header {
   width: 100%;
   padding: 0;
   z-index: 999;
-  background: rgba(255, 255, 255, 0.95);
+  // background: rgba(255, 255, 255, 0.95);
   // box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 40px -8px;
 }
 
