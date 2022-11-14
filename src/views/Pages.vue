@@ -4,33 +4,37 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useMainStore } from "@/store";
 const mainStore = useMainStore();
-const flag = ref(true);
+// const flag = ref(true);
 type scrollPosition = {
-  scrollTop:number
-  scrollLeft:number
+  scrollTop: number
+  scrollLeft: number
 }
-const scroll = (scroll:scrollPosition )=>{
+const scroll = (scroll: scrollPosition) => {
   // console.log(scroll);
-  mainStore.scrollY =scroll.scrollTop
+  mainStore.scrollY = scroll.scrollTop
 }
 </script>
 
 <template>
   <el-scrollbar max-height="100vh" @scroll="scroll">
-  <div class="common-layout">
-    <el-container>
-      <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
-      <el-header height="60px">
-        <Header />
-      </el-header>
-      <el-main class="main">
-        <RouterView />
-      </el-main>
-      <el-footer>
-        <Footer />
-      </el-footer>
-    </el-container>
-  </div>
+    <div class="common-layout">
+      <el-container>
+        <transition enter-active-class="animate__animated animate__fadeInDown"
+          :style="`display:${mainStore.scrollY > 200 ? 'block' : 'none'}`">
+          <img id="backTop" alt="back to Top" src="@/assets/images/scroll.png" />
+        </transition>
+        <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
+        <el-header height="60px">
+          <Header />
+        </el-header>
+        <el-main class="main">
+          <RouterView />
+        </el-main>
+        <el-footer>
+          <Footer />
+        </el-footer>
+      </el-container>
+    </div>
   </el-scrollbar>
 </template>
 
@@ -43,6 +47,14 @@ header {
   z-index: 999;
   // background: rgba(255, 255, 255, 0.95);
   // box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 40px -8px;
+}
+
+#backTop {
+  height: 80vh;
+  position: fixed;
+  top: 0;
+  right: 100px;
+  z-index: 1000;
 }
 
 .main {

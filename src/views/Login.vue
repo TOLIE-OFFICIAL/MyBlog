@@ -1,4 +1,4 @@
-<script setup lang="ts" >
+<script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeMount } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
 // import { useMainStore } from "@/store";
