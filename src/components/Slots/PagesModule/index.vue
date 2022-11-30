@@ -1,6 +1,6 @@
 <!-- author: TOLIE -->
 <!-- date: 2022-10-31 10:12:15 -->
-<!-- description: 归档页面 -->
+<!-- description:  -->
 <template>
   <Nav>
     <el-carousel-item v-for="item in 4" :key="item">

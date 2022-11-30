@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import 'animate.css';
 import { RouterLink, RouterView } from 'vue-router'
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useMainStore } from "@/store";
+
 const mainStore = useMainStore();
 // const flag = ref(true);
 type scrollPosition = {
@@ -10,7 +12,6 @@ type scrollPosition = {
   scrollLeft: number
 }
 const scroll = (scroll: scrollPosition) => {
-  // console.log(scroll);
   mainStore.scrollY = scroll.scrollTop
 }
 </script>
@@ -19,9 +20,9 @@ const scroll = (scroll: scrollPosition) => {
   <el-scrollbar max-height="100vh" @scroll="scroll">
     <div class="common-layout">
       <el-container>
-        <transition enter-active-class="animate__animated animate__fadeInDown"
-          :style="`display:${mainStore.scrollY > 200 ? 'block' : 'none'}`">
-          <img id="backTop" alt="back to Top" src="@/assets/images/scroll.png" />
+        <transition leave-active-class=" animate__animated animate__fadeOutUp"
+          enter-active-class="animate__animated animate__fadeInDown">
+          <img id="backTop" v-if="(mainStore.scrollY > 400)" alt="backTop" src="@/assets/images/scroll.png" />
         </transition>
         <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
         <el-header height="60px">

@@ -30,7 +30,6 @@ defineProps<{ title: string }>()
   }
 }
 
-
 .top-feature-list {
   width: 100%;
   height: 160px;

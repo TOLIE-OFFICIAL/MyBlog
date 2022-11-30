@@ -1,25 +1,45 @@
 <script lang="ts" setup>
 import ArticleItem from './ArticleItem.vue'
-import ArticleCard from '../../Slots/ArticleCard/index.vue'
+// import ArticleCard from '../../Slots/ArticleCard/index.vue'
 import { ref } from 'vue'
+// import 
+const ArticleCard = defineAsyncComponent(() => import('@/components/Slots/ArticleCard/index.vue'));
 const count = ref(0)
 const load = () => { count.value += 2 }
 defineProps<{ title: string }>()
 </script>
 
 <template>
-  <ArticleCard :title="title">
+  <Suspense>
+    <template #default>
+      <ArticleCard :title="title">
+        <div style="height: 1290px;">
+          <el-scrollbar>
+            <ul v-infinite-scroll="load" infinite-scroll-immediate="true" class="infinite-list">
+              <!-- <ul class="infinite-list" style="overflow: auto"> -->
+              <li v-for="i in count" :key="i" class="infinite-list-item">
+                <ArticleItem />
+              </li>
+            </ul>
+          </el-scrollbar>
+        </div>
+      </ArticleCard>
+    </template>
+    <template #fallback>
+
+    </template>
+  </Suspense>
+  <!-- <ArticleCard :title="title">
     <div style="height: 1290px;">
       <el-scrollbar>
         <ul v-infinite-scroll="load" infinite-scroll-immediate="true" class="infinite-list">
-          <!-- <ul class="infinite-list" style="overflow: auto"> -->
           <li v-for="i in count" :key="i" class="infinite-list-item">
             <ArticleItem />
           </li>
         </ul>
       </el-scrollbar>
     </div>
-  </ArticleCard>
+  </ArticleCard> -->
 </template>
 
 
