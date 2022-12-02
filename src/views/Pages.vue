@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import 'animate.css';
-import { RouterLink, RouterView } from 'vue-router'
+import "animate.css";
+import { RouterLink, RouterView } from "vue-router";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useMainStore } from "@/store";
@@ -8,23 +8,31 @@ import { useMainStore } from "@/store";
 const mainStore = useMainStore();
 // const flag = ref(true);
 type scrollPosition = {
-  scrollTop: number
-  scrollLeft: number
-}
+  scrollTop: number;
+  scrollLeft: number;
+};
 const scroll = (scroll: scrollPosition) => {
-  mainStore.scrollY = scroll.scrollTop
-}
+  mainStore.scrollY = scroll.scrollTop;
+};
+const backTop = () => {
+  console.log(window);
+
+  // window.scrollTo({
+  //   top: 0,
+  //   behavior: "smooth",
+  // });
+};
 </script>
 
 <template>
-  <el-scrollbar max-height="100vh" @scroll="scroll">
+  <el-scrollbar
+    max-height="100vh"
+    @scroll="scroll"
+    class="scrollBar"
+    :noresize="true"
+  >
     <div class="common-layout">
       <el-container>
-        <transition leave-active-class=" animate__animated animate__fadeOutUp"
-          enter-active-class="animate__animated animate__fadeInDown">
-          <img id="backTop" v-if="(mainStore.scrollY > 400)" alt="backTop" src="@/assets/images/scroll.png" />
-        </transition>
-        <!-- <el-header height="60px" :style="{background:flag?'linear-gradient(#2b1055,#7597de)':'rgba(255, 255, 255, 0.95)'}"> -->
         <el-header height="60px">
           <Header />
         </el-header>
@@ -34,6 +42,9 @@ const scroll = (scroll: scrollPosition) => {
         <el-footer>
           <Footer />
         </el-footer>
+        <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
+          <el-icon><i-ep-ArrowUpBold /></el-icon>
+        </el-backtop>
       </el-container>
     </div>
   </el-scrollbar>
@@ -50,17 +61,9 @@ header {
   // box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 40px -8px;
 }
 
-#backTop {
-  height: 80vh;
-  position: fixed;
-  top: 0;
-  right: 100px;
-  z-index: 1000;
-}
-
 .main {
   /* width: 1000px; */
-  /* margin: 0 auto;  */
+  margin-top: 60px;
   padding: 0;
   /* background: #1c0522; */
 }

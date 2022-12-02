@@ -222,7 +222,7 @@ const onSubmit = () => {
 
     &-title {
       width: 350px;
-      color: #fff;
+      color:var(--el-color-white);
 
       .poem {
         font-size: 24px;

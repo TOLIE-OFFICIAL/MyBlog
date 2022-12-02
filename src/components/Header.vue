@@ -1,14 +1,14 @@
 <template>
+  <!--     :background-color="mainStore.scrollY > 0 ? '#fff' : 'transparent'"
+    :text-color="mainStore.scrollY > 0 ? '#000' : '#fff'" -->
   <el-menu
     class="el-menu-demo"
-    :background-color="menuColor"
-    :text-color="textColor"
     :default-active="activePage"
     mode="horizontal"
     :ellipsis="false"
     @select="handleSelect"
     :router="true"
-    :style="menuBorderColor"
+    :unique-opened="true"
   >
     <el-menu-item>
       <img
@@ -77,16 +77,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useMainStore } from "@/store";
 const mainStore = useMainStore();
-const textColor = ref('#fff')
-const menuColor = ref("transprent");
-const menuBorderColor = reactive({
-  borderBottomColor: "transparent",
-});
+// const offsetTop = mainStore.scrollY;
+// const textColor = ref("#fff");
+// const menuColor = ref("");
+// const menuBorderColor = reactive({
+//   borderBottomColor: "transparent",
+// });
 const activePage = ref("/");
 
+// computed(()=>{
+
+// })
 
 onBeforeMount(() => {
   // 新页面载入调用onBeforeMount，从localtion获取default-active
@@ -107,4 +111,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 .flex-grow {
   flex-grow: 1;
 }
+// :deep(.is-opened .el-sub-menu__title) {
+//     background-color: red !important;
+// }
 </style>

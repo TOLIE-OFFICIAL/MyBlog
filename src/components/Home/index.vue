@@ -14,29 +14,60 @@
     <h2
       id="text"
       ref="text"
-      :style="{ transform: `translateY(${mainStore.scrollY * 0.55}px)` }"
+      v-if="mainStore.scrollY <= mainStore.windowHeight"
+      :style="{ transform: `translateY(${mainStore.scrollY * 0.5}px)` }"
     >
       TOLIE's BLOG
     </h2>
   </div>
+
   <div class="sec" id="sec">
-    <TopFeature
-      class="TopFeature"
-      title="START:DASH!!"
-      style="marginbottom: 3px"
-    ></TopFeature>
-    <MainFeature class="MainFeature" title="Discovery"></MainFeature>
+    <!-- 异步组件 -->
+    <Suspense>
+      <template #default>
+        <TopFeature
+          class="TopFeature"
+          title="START:DASH!!"
+          style="marginbottom: 3px"
+        ></TopFeature>
+      </template>
+      <template #fallback>111</template>
+    </Suspense>
+    <Suspense>
+      <template #default>
+        <MainFeature class="MainFeature" title="Discovery"></MainFeature>
+      </template>
+      <template #fallback>2222</template>
+    </Suspense>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from "vue";
-import Nav from "@/components/Nav.vue";
-import MainFeature from "./MainFeature/index.vue";
+// import {setup} from 'vue'
 import TopFeature from "./TopFeature/index.vue";
+import MainFeature from "./MainFeature/index.vue";
+import { debounce } from "lodash";
 
 import { useMainStore } from "@/store";
+
 const mainStore = useMainStore();
+
+const debounced_update = debounce(
+  () => {
+    mainStore.windowHeight = document.body.clientHeight;
+    mainStore.windowWidth = document.body.clientWidth;
+  },
+  250,
+  { maxWait: 1000 }
+);
+onMounted(() => {
+  mainStore.windowHeight = document.body.clientHeight;
+  mainStore.windowWidth = document.body.clientWidth;
+  window.addEventListener("resize", debounced_update);
+});
+onUnmounted(() => window.removeEventListener("resize", debounced_update));
+
+// console.log(document.body.clientHeight);
 
 // const text = ref();
 </script>
@@ -164,19 +195,19 @@ const mainStore = useMainStore();
 }
 
 .home_nav {
-  position: relative;
   display: flex;
-  background-image: url(@/assets/bg.jpg);
-  // background-color: #999;
-  // border-bottom: 1px solid #666;
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100vh;
-  padding: 100px;
+  position: relative;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding: 100px;
+  background-image: url(@/assets/bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  // overflow: hidden;
 
   &:before {
     content: "";
@@ -262,7 +293,7 @@ const mainStore = useMainStore();
     font-size: 80px;
     font-weight: bold;
     font-family: "Ubuntu", sans-serif;
-    color: #fff;
+    color:var(--el-color-white);
     mix-blend-mode: lighten;
     text-transform: uppercase;
     z-index: 99;
@@ -318,7 +349,28 @@ const mainStore = useMainStore();
 .sec {
   position: relative;
   width: 1000px;
+  // height: 1000px;
   margin: 0 auto;
+
   // background: #1c0522;
+  .infinite-list {
+    // height: 1290px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      margin: 30px 0 0 0;
+      box-sizing: border-box;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
 }
 </style>

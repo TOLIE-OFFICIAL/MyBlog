@@ -11,6 +11,8 @@ export const useMainStore = defineStore(Names.Main, {
       logo: 1,
       scrollY: 0,
       menuBgFlag: 1,
+      windowHeight: 0,
+      windowWidth: 0,
     };
   },
   // 类似于computed 可以帮我们修饰我们的值

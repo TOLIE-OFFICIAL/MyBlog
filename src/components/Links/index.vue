@@ -8,7 +8,7 @@ const cb = () => {
 
 </script>
 <template>
-	<div></div>
+	<div>友情墙</div>
 	<slot></slot>
 </template>
 <style scoped lang="less"></style>

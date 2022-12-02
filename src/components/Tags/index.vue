@@ -2,12 +2,13 @@
 <!-- date: 2022-10-31 11:20:39 -->
 <!-- description:  -->
 <template>
-  <PagesModule title="标签墙"></PagesModule>
+  <!-- <PagesModule title="标签墙"></PagesModule> -->
+  <div>标签墙</div>
 </template>
 
 <script lang='ts' setup>
 // import { onMounted } from "vue";
-import PagesModule from '../Slots/PagesModule/index.vue'
+// import PagesModule from '../Slots/PagesModule/index.vue'
 
 </script>
 

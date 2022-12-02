@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { delay, debounce, throttle } from 'lodash'
 import type { IUseRequestOption, IUseRequestRequest } from './../type'
 // 引入返回值类型
-import type { YWZResponse } from '/@/service/index'
+import type { MyResponse } from '@/service/index'
 const defaultOption: IUseRequestOption = {
   // 是否开启防抖 时长
   debounce: false,
@@ -21,7 +21,7 @@ const defaultOption: IUseRequestOption = {
 const useRequest = <
   ParamType = any,
   PromiseRequestType = any,
-  DataType = YWZResponse<PromiseRequestType>,
+  DataType = MyResponse<PromiseRequestType>,
 >(
   PromiseRequest: (p: ParamType) => Promise<DataType>,
   params: ParamType,
