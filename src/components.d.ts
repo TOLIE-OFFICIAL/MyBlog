@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     ArticleItem: typeof import('./components/Home/MainFeature/ArticleItem.vue')['default']
     BackTop: typeof import('./components/BackTop.vue')['default']
     CardSkelenton: typeof import('./components/Slots/Skeleton/cardSkelenton.vue')['default']
+    Details: typeof import('./components/Details/index.vue')['default']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
