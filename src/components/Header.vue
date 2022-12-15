@@ -1,24 +1,14 @@
 <template>
   <!--     :background-color="mainStore.scrollY > 0 ? '#fff' : 'transparent'"
     :text-color="mainStore.scrollY > 0 ? '#000' : '#fff'" -->
-  <el-menu
-    class="el-menu-demo"
-    :default-active="activePage"
-    mode="horizontal"
-    :ellipsis="false"
-    @select="handleSelect"
-    :router="true"
-    :unique-opened="true"
-  >
-    <el-menu-item>
-      <img
-        v-once
-        class="logo-image"
-        src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"
-        alt="Logo"
-        style="height: 46px; margin-top: 6px"
-      />
-    </el-menu-item>
+  <el-menu class="el-menu-demo" :default-active="activePage" mode="horizontal" :ellipsis="false" @select="handleSelect"
+    :router="true" :unique-opened="true">
+    <li class="logo" style="padding:0 20px">
+      <RouterLink to="/" style="height:46px">
+        <img v-once class="logo-image" src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo"
+        style="height: 46px" />
+      </RouterLink>
+    </li>
     <div class="flex-grow" />
     <el-menu-item index="/">
       <el-icon>
@@ -79,6 +69,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useMainStore } from "@/store";
+import { RouterLink, RouterView } from "vue-router";
 const mainStore = useMainStore();
 // const offsetTop = mainStore.scrollY;
 // const textColor = ref("#fff");
@@ -108,9 +99,22 @@ const handleSelect = (key: string, keyPath: string[]) => {
 </script>
 
 <style scoped lang="less">
+.logo {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin: 0;
+  color: var(--el-menu-text-color);
+  &:hover{
+    cursor: pointer;
+  }
+}
+
 .flex-grow {
   flex-grow: 1;
 }
+
 // :deep(.is-opened .el-sub-menu__title) {
 //     background-color: red !important;
 // }

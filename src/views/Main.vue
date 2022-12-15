@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import "animate.css";
 import { RouterLink, RouterView } from "vue-router";
 import Header from "@/components/Header.vue";
@@ -67,4 +67,4 @@ header {
   padding: 0;
   /* background: #1c0522; */
 }
-</style>
+</style> -->

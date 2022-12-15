@@ -28,11 +28,10 @@
 //     margin: 2px 0;
 //   }
 .el-divider--horizontal {
-  margin: 2px 0;
+  margin: 6px 0;
 }
 .footer {
   display: flex;
-  height: 100%;
   justify-content: center;
   align-items: center;
   // margin-bottom: .533333rem /* 20/37.5 */;

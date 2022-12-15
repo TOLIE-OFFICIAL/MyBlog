@@ -5,16 +5,18 @@ import router from "./router";
 import "./assets/main.css";
 
 const app = createApp(App);
-const whiteList = ["/login"];
+// const whiteList = ["/login"];
+// const blackList = ["/"];
+
 app.use(createPinia());
 app.use(router);
+
 // router.beforeEach((to, from, next) => {
-//   if (whiteList.includes(to.path) || localStorage.getItem('token')) {
+//   if (!blackList.includes(to.path) || localStorage.getItem('token')) {
 //     next()
 //   } else {
 //     next('/login')
 //   }
-//   // next()
 // })
 
 app.mount("#app");
