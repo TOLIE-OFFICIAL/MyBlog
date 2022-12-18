@@ -296,6 +296,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     color:var(--el-color-white);
     mix-blend-mode: lighten;
     text-transform: uppercase;
+    user-select: none;
     z-index: 99;
 
     &:before,
