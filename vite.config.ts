@@ -18,11 +18,26 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://www.fastmock.site/mock/a6b857873f4bfc85e89a177bccc4b87f/api",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
   plugins: [
     Vue(),
     AutoImport({
+      // targets to transform
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/, /\.vue\?vue/, // .vue
+      ],
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-      imports: ['vue'],
+      // 自动导入 Vue-router 相关函数
+      imports: ['vue', 'vue-router',],
 
       // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
       resolvers: [
@@ -36,6 +51,10 @@ export default defineConfig({
 
       dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
     }),
+    // // 按需引入element-plus样式
+    // ElementPlus({
+    //   // options
+    // }),
 
     Components({
       resolvers: [
@@ -45,7 +64,9 @@ export default defineConfig({
         }),
 
         // 自动导入 Element Plus 组件
-        ElementPlusResolver(),
+        ElementPlusResolver({
+          importStyle: 'sass',
+        }),
       ],
 
       dts: path.resolve(pathSrc, 'components.d.ts'),

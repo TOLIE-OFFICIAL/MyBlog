@@ -43,13 +43,6 @@
   </el-card>
 </template>
 
-<script lang="ts" setup>
-// import { ref } from 'vue'
-// import SubTitle from './SubTitle.vue';
-import router from '@/router';
-// import router-link from 'router'
-</script>
-
 <style  scoped lang="less">
 .box-card {
   width: 100%;

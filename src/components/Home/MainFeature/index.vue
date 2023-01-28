@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-import ArticleItem from "./ArticleItem.vue";
-// import ArticleCard from '../../Slots/ArticleCard/index.vue'
-import { ref } from "vue";
-// import
 const ArticleCard = defineAsyncComponent(
   () => import("@/components/Slots/ArticleCard/index.vue")
 );

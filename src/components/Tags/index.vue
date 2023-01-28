@@ -7,8 +7,6 @@
 </template>
 
 <script lang='ts' setup>
-// import { onMounted } from "vue";
-// import PagesModule from '../Slots/PagesModule/index.vue'
 
 </script>
 

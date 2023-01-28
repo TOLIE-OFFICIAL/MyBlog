@@ -1,12 +1,21 @@
 <template>
-  <!--     :background-color="mainStore.scrollY > 0 ? '#fff' : 'transparent'"
-    :text-color="mainStore.scrollY > 0 ? '#000' : '#fff'" -->
-  <el-menu class="el-menu-demo" :default-active="activePage" mode="horizontal" :ellipsis="false" @select="handleSelect"
-    :router="true" :unique-opened="true">
-    <li class="logo" style="padding:0 20px">
-      <RouterLink to="/" style="height:46px">
-        <img v-once class="logo-image" src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo"
-        style="height: 46px" />
+  <el-menu
+    class="el-menu-demo"
+    :default-active="activePage"
+    mode="horizontal"
+    :ellipsis="false"
+    :router="true"
+    :unique-opened="true"
+  >
+    <li class="logo" style="padding: 0 20px">
+      <RouterLink to="/" style="height: 46px">
+        <img
+          v-once
+          class="logo-image"
+          src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"
+          alt="Logo"
+          style="height: 46px"
+        />
       </RouterLink>
     </li>
     <div class="flex-grow" />
@@ -14,7 +23,7 @@
       <el-icon>
         <i-ep-Menu />
       </el-icon>
-      首页
+      <template #title>首页</template>
     </el-menu-item>
     <el-sub-menu index="2">
       <template #title>
@@ -57,7 +66,9 @@
       </el-icon>
       search
     </el-menu-item>
-    <el-menu-item index="7">
+
+    <el-menu-item class="user_info">
+      <a href="https://www.github.com" class="github" />
       <el-icon>
         <i-ep-User />
       </el-icon>
@@ -69,7 +80,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useMainStore } from "@/store";
-import { RouterLink, RouterView } from "vue-router";
 const mainStore = useMainStore();
 // const offsetTop = mainStore.scrollY;
 // const textColor = ref("#fff");
@@ -77,25 +87,16 @@ const mainStore = useMainStore();
 // const menuBorderColor = reactive({
 //   borderBottomColor: "transparent",
 // });
-const activePage = ref("/");
+// const activePage = ref("/");
 
 // computed(()=>{
 
 // })
-
-onBeforeMount(() => {
-  // 新页面载入调用onBeforeMount，从localtion获取default-active
-  // const hrefArr = location.href.split("/");
-  // activePage.value =
-  //   sessionStorage.getItem("activePage") || hrefArr[hrefArr.length - 1] || "/";
+const route = useRoute();
+const activePage = computed(() => {
+  // console.log(typeof route.name,typeof route.path);
+  return route.path;
 });
-
-const handleSelect = (key: string, keyPath: string[]) => {
-  // 点击菜单tab 获取default-active
-  // sessionStorage.setItem("activePage", key);
-  activePage.value = key;
-  // console.log(activePage);
-};
 </script>
 
 <style scoped lang="less">
@@ -106,8 +107,22 @@ const handleSelect = (key: string, keyPath: string[]) => {
   height: 60px;
   margin: 0;
   color: var(--el-menu-text-color);
-  &:hover{
+
+  &:hover {
     cursor: pointer;
+  }
+}
+
+.user_info {
+  position: relative;
+
+  .github {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
   }
 }
 

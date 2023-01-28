@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue'
 import { delay, debounce, throttle } from 'lodash'
 import type { IUseRequestOption, IUseRequestRequest } from './../type'
 // 引入返回值类型

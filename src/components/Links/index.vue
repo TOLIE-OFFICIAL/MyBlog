@@ -1,14 +1,22 @@
 <script lang="ts" setup>
-// import {Router} from "vue-router"
+// import { ElMessage } from "element-plus";
+
 const test = ref(1);
-console.log()
-const cb = () => {
-
-}
-
+const cb = () => {};
+const open2 = () => {
+  ElMessage({
+    message: "Congrats, this is a success message.",
+    type: "success",
+		showClose: true,
+    appendTo: ".scrollBar",
+    duration: 0,
+  });
+};
 </script>
+
 <template>
-	<div>友情墙</div>
-	<slot></slot>
+  <div @click="open2">友情墙</div>
+  <slot></slot>
 </template>
+
 <style scoped lang="less"></style>

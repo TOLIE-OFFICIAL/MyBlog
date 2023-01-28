@@ -43,11 +43,8 @@
 </template>
 
 <script setup lang="ts">
-// import {setup} from 'vue'
-import TopFeature from "./TopFeature/index.vue";
-import MainFeature from "./MainFeature/index.vue";
 import { debounce } from "lodash";
-
+import { fetchArticles } from "@/service";
 import { useMainStore } from "@/store";
 
 const mainStore = useMainStore();
@@ -60,6 +57,19 @@ const debounced_update = debounce(
   250,
   { maxWait: 1000 }
 );
+
+const requestLogin = async () => {
+  console.log(111);
+  
+  const { data } = await fetchArticles();
+  if (data) {
+    console.log("data", data); // { token: "这是token" }
+  }
+}
+
+onBeforeMount(()=>{
+  requestLogin()
+})
 onMounted(() => {
   mainStore.windowHeight = document.body.clientHeight;
   mainStore.windowWidth = document.body.clientWidth;
