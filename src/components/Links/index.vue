@@ -9,7 +9,7 @@ const open2 = () => {
     type: "success",
 		showClose: true,
     appendTo: ".scrollBar",
-    duration: 0,
+    duration: 2000,
   });
 };
 </script>
