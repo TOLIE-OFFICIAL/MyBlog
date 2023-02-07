@@ -13,6 +13,9 @@ export const useMainStore = defineStore(Names.Main, {
       menuBgFlag: 1,
       windowHeight: 0,
       windowWidth: 0,
+      blogFormShow: false,
+      blogContent_md: '# Hello Editor',
+      blogContent_html: '<h1><a href="#Hello Editor">Hello Editor</a></h1>',
     };
   },
   // 类似于computed 可以帮我们修饰我们的值

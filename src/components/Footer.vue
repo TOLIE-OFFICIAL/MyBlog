@@ -31,6 +31,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
   // margin-bottom: .533333rem /* 20/37.5 */;
   .siteInfo {
     text-align: center;
