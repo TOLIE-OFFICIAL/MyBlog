@@ -2,20 +2,69 @@
 <!-- date: 2022-12-14 16:45:06 -->
 <!-- description: blog详细内容页面 -->
 <template>
-  <md-editor v-model="text" theme="light" preview-only />
+  <div class="content">
+    <md-editor
+      v-model="state.text"
+      :editor-id="state.id"
+      ref="editorRef"
+      :theme="(state.theme as Themes)"
+      preview-theme="cyanosis"
+      preview-only
+    />
+    <md-catalog
+      :editor-id="state.id"
+      :scroll-element="'#blog-content-preview-wrapper'"
+      :theme="state.theme as Themes"
+    />
+  </div>
 </template>
-<script lang='ts' setup>
-import MdEditor from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
 
-const text = ref('<h1><a href="#Web网络安全">Web网络安全</a></h1><h2><a href="#Xss攻击">Xss攻击</a></h2><p>实施XSS攻击需要具备两个条件：</p> <p>一、需要向web页面注入恶意代码；</p> <p>二、这些恶意代码能够被浏览器成功的执行。</p> <h3><a href="#反射型">反射型</a></h3><p><strong>url参数直接注入</strong></p> <p>场景说明：在网站的搜索框内直接输入攻击脚本</p> <pre><code><span>// 搜索框搜索 http://localhost/?keyWord=<span>&lt;<span>script</span>&gt;</span>alert(111)<span>&lt;/<span>script</span>&gt;</span></span> </code></pre> <h3><a href="#存储型">存储型</a></h3><p><strong>存储到DB后读取时注入</strong></p> <p>场景说明：攻击脚本作为留言内容，提交给后台保存，刷新页面后端返回攻击脚本给前端</p> <pre><code><span><span>// 留言板插入数据库</span> 留言测试&lt;script&gt;<span>alert</span>(<span>222</span>)&lt;<span>/script&gt;/</span><span>/留言内容</span></span> </code></pre> <h3><a href="#Dom型">Dom型</a></h3><h4><a href="#HTML节点内容">HTML节点内容</a></h4><p>攻击脚本通过接口存入数据库中，当页面刷新时，插入的脚本替换页面HTML节点内容，脚本随即执行，引发漏洞攻击</p> <pre><code><span><span>&lt;!-- content变量被攻击脚本替换 --&gt;</span> <span>&lt;<span>div</span>&gt;</span> {{content}} <span>&lt;/<span>div</span>&gt;</span> <span>&lt;<span>div</span>&gt;</span> <span>&lt;<span>script</span>&gt;</span> <span>&lt;/<span>script</span>&gt;</span> &lt;/div</span> </code></pre> <h4><a href="#HTML属性">HTML属性</a></h4><p><strong>还可以利用img标签的onerror事件执行JS脚本</strong></p> <h3><a href="#解决思路">解决思路</a></h3><p>整体思路：<strong>转义</strong></p> <ul> <li>HTML-&gt;<a href="https://link.juejin.cn?target=https%3A%2F%2Fwww.w3school.com.cn%2Fhtml%2Fhtml_entities.asp">HTML实体</a></li><li>js-&gt;JSON_encode</li></ul> <h4><a href="#html实体">html实体</a></h4><table> <thead> <tr> <th>显示结果</th> <th>描述</th> <th>实体名称</th> <th>实体编号</th> </tr> </thead> <tbody><tr> <td>&lt;</td> <td>小于号</td> <td>&lt;</td> <td>&lt;</td> </tr> <tr> <td>&gt;</td> <td>大于号</td> <td>&gt;</td> <td>&gt;</td> </tr> <tr> <td>&amp;</td> <td>和号</td> <td>&amp;</td> <td>&amp;</td> </tr> <tr> <td>"</td> <td>引号</td> <td>"</td> <td>"</td> </tr> </tbody></table> <p>转义时机：</p> <ol> <li>存入数据库时转义</li><li>返回给前端时转义</li></ol>');
+<script lang="ts" setup>
+import MdEditor, { type Themes } from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+// import type { ExposeParam } from 'md-editor-v3';
+
+// const editorRef = ref<ExposeParam>();
+
+const MdCatalog = MdEditor.MdCatalog;
+
+const state = reactive({
+  id: "blog-content",
+  theme: "light",
+  text: decodeURI("###%20%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%0A%0A%E4%B8%8D%E6%98%AF%E6%89%80%E6%9C%89%E7%9A%84%E6%93%8D%E4%BD%9C%E9%83%BD%E8%A6%81%E7%94%A8%E8%99%9A%E6%8B%9FDOM%E6%9D%A5%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C%EF%BC%8C%E8%A6%81%E8%AE%A4%E8%AF%86%E5%88%B0%E8%99%9A%E6%8B%9FDOM%E7%9A%84%E7%9C%9F%E5%AE%9E%E7%9B%AE%E7%9A%84%E4%B8%8D%E6%98%AF%E8%A6%81%E7%BB%91%E5%AE%9A%E6%89%80%E6%9C%89%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%8E%BB%E6%9B%BF%E4%BB%A3DOM%E6%93%8D%E4%BD%9C%E3%80%82%E7%AE%80%E5%8D%95%E7%9A%84DOM%E6%93%8D%E4%BD%9C%EF%BC%8C%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8JS/TS%E6%93%8D%E4%BD%9C%E4%BC%9A%E6%AF%94%E7%BB%8F%E8%BF%87Vue%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%95%88%E7%8E%87%E6%9B%B4%E9%AB%98%EF%BC%9B%0A%0A%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%B8%A6%E6%9C%89%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E7%9A%84DOM%E5%85%83%E7%B4%A0%EF%BC%8C%E4%BB%8E%E8%80%8C%E5%AE%9E%E7%8E%B0DOM%E6%93%8D%E4%BD%9C%0A%0A%60%60%60html%0A%3Cdiv%3E%0A%20%20%20%20%3Cp%3E%0A%20%20%20%20%20%20%20%20123%0A%20%20%20%20%3C/p%3E%0A%3C/div%3E%0A%0A%3Cscript%3E%0A%20%20%20%20div.innerHTML%20=%20'%3Cp%20class=title%22%22%3E11231441%3C/p%3E'//%20%E8%BF%99%E7%A7%8D%E6%83%85%E5%86%B5%E5%B0%B1%E6%9B%B4%E9%80%82%E5%90%88%E4%BD%BF%E7%94%A8vue%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C%0A%20%20%20%20p.innerText%20=%20'111111'%20//%E8%BF%99%E7%A7%8D%E6%88%96%E8%AE%B8%E5%B0%B1%E6%9B%B4%E9%80%82%E5%90%88%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9CDOM%0A%3C/script%3E%0A%60%60%60"),
+});
+
+// const scrollElement = document.documentElement;
+
+// onMounted(() => {
+//   editorRef.value?.toggleCatalog(true);
+//   editorRef.value?.on('preview', (status) => console.log(status));
+//   // editorRef.value?.on('catalog', console.log)
+//   // console.log(editorRef.value);
+
+//   // editorRef.value?.on('catalog', console.log)
+// });
+
 </script>
 
-<style scoped lang='less'>
+<style scoped lang="less">
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+}
 .md-editor {
+  position: relative;
   padding: 0 8px;
   border-left: 1px solid var(--el-menu-border-color);
   border-right: 1px solid var(--el-menu-border-color);
   border-radius: 6px;
 }
+#blog-content-preview-wrapper{
+  position: absolute;
+}
+/* .md-editor-catalog {
+  width: 400px;
+} */
 </style>

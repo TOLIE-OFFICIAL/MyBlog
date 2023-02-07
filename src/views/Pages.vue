@@ -41,7 +41,9 @@ const mainStore = useMainStore();
 }
 .main {
   width: 1000px;
+  height: calc(100% - 400px);
   margin: 18px auto;
+  margin-bottom: 0;
   // padding: 18px 0;
 }
 .el-carousel__item:nth-child(2n) {

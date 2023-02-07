@@ -25,6 +25,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/poem": {
+        target: "https://api.xygeng.cn/one",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/poem/, ""),
+      },
     },
   },
   plugins: [

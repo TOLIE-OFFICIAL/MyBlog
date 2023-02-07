@@ -5,3 +5,5 @@ export const mockRequest = createRequest({ baseURL: "/mock" });
 
 export const blogRequest = createRequest({ baseURL: "/api" });
 
+export const poemRequest = createRequest({ baseURL: "/poem" });
+

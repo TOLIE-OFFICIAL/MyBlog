@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-// import { ElMessage } from "element-plus";
+import { ElMessage } from "element-plus";
 
 const test = ref(1);
 const cb = () => {};
