@@ -3,23 +3,31 @@
     class="el-menu-demo"
     :default-active="activePage"
     mode="horizontal"
-    :ellipsis="false"
     :router="true"
+    :ellipsis="false"
     :unique-opened="true"
   >
-    <li class="logo" style="padding: 0 20px">
-      <RouterLink to="/" style="height: 46px">
-        <img
-          v-once
-          class="logo-image"
-          src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png"
-          alt="Logo"
-          style="height: 46px"
-        />
-      </RouterLink>
-    </li>
+    <el-menu-item
+      index=""
+      :route="{
+        name: 'home',
+        query: {
+          activePage: 'home',
+        },
+      }"
+      class="logo"
+    >
+    </el-menu-item>
     <div class="flex-grow" />
-    <el-menu-item index="/">
+    <el-menu-item
+      index="home"
+      :route="{
+        name: 'home',
+        query: {
+          activePage: 'home',
+        },
+      }"
+    >
       <el-icon>
         <i-ep-Menu />
       </el-icon>
@@ -42,60 +50,87 @@
         <el-menu-item index="2-4-3">item three</el-menu-item>
       </el-sub-menu>
     </el-sub-menu>
-    <el-menu-item index="archives">
+    <el-menu-item
+      index="achieves"
+      :route="{
+        name: 'achieves',
+        query: {
+          activePage: 'achieves',
+        },
+      }"
+    >
       <el-icon>
         <i-ep-Finished />
       </el-icon>
       归档
     </el-menu-item>
-    <el-menu-item index="links">
+    <el-menu-item
+      index="links"
+      :route="{
+        name: 'links',
+        query: {
+          activePage: 'links',
+        },
+      }"
+    >
       <el-icon>
         <i-ep-Link />
       </el-icon>
       友人帐
     </el-menu-item>
-    <el-menu-item index="tags">
+    <el-menu-item
+      index="tags"
+      :route="{
+        name: 'tags',
+        query: {
+          activePage: 'tags',
+        },
+      }"
+    >
       <el-icon>
         <i-ep-CollectionTag />
       </el-icon>
       标签墙
     </el-menu-item>
-    <el-menu-item index="6" style="">
+    <el-menu-item
+      index="edit"
+      :route="{
+        name: 'edit',
+        query: {
+          activePage: 'edit',
+        },
+      }"
+    >
+      <el-icon>
+        <i-ep-Edit />
+      </el-icon>
+      写博客
+    </el-menu-item>
+    <el-menu-item index="search" style="">
       <el-icon>
         <i-ep-Search />
       </el-icon>
       search
     </el-menu-item>
 
-    <el-menu-item class="user_info">
-      <a href="https://www.github.com" class="github" />
+    <el-menu-item class="user_info" index="">
+      <a href="https://github.com/TOLIE-OFFICIAL" class="github" target='_blank'>
       <el-icon>
-        <i-ep-User />
+        <i-mdi-github />
       </el-icon>
+      </a>
       github
     </el-menu-item>
   </el-menu>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
 import { useMainStore } from "@/store";
-const mainStore = useMainStore();
-// const offsetTop = mainStore.scrollY;
-// const textColor = ref("#fff");
-// const menuColor = ref("");
-// const menuBorderColor = reactive({
-//   borderBottomColor: "transparent",
-// });
-// const activePage = ref("/");
 
-// computed(()=>{
-
-// })
 const route = useRoute();
-const activePage = computed(() => {
-  // console.log(typeof route.name,typeof route.path);
-  return route.path;
+let activePage = computed(() => {
+  // console.log(route.name,typeof route.path);
+  return route.query.activePage as string;
 });
 </script>
 
@@ -105,24 +140,28 @@ const activePage = computed(() => {
   justify-content: center;
   align-items: center;
   height: 60px;
-  margin: 0;
+  width:100px;
+  margin-left: 10px;
   color: var(--el-menu-text-color);
-
+  background: url("https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png")
+    no-repeat center;
+  background-size: contain;
   &:hover {
     cursor: pointer;
   }
 }
 
 .user_info {
-  position: relative;
-
+  // position: relative;
+  // align-items: center;
   .github {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
+    // display: block;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // width: 100%;
+    // height: 100%;
+    // z-index: 999;
   }
 }
 

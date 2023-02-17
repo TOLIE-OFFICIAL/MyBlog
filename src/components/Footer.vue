@@ -1,11 +1,13 @@
 <template>
-  <el-divider border-style="dashed" />
   <div class="footer">
+    <el-divider border-style="dashed" v-show="$route.name !== 'edit'" />
     <div class="siteInfo">
       <div class="siteInfo-text">
         <p class="siteInfo-text-Copyright">
           <span>
-            <a target="_blank" href="https://github.com/TOLIE-OFFICIAL"> Copyright @ TOLIE-OFFICIAL </a>
+            <a target="_blank" href="https://github.com/TOLIE-OFFICIAL">
+              Copyright @ TOLIE-OFFICIAL
+            </a>
           </span>
         </p>
         <p class="siteInfo-text-govern" style="color: #898989">
@@ -17,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="empty"></div>
+  <!-- <div class="empty"></div> -->
 </template>
 
 <style scoped lang="less">
@@ -25,14 +27,14 @@
 //     margin: 2px 0;
 //   }
 .el-divider--horizontal {
-  margin: 6px 0;
+  margin: 2px 0;
 }
 .footer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  // margin-bottom: .533333rem /* 20/37.5 */;
+  flex-direction: column;
   .siteInfo {
     text-align: center;
 

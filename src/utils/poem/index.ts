@@ -4,12 +4,12 @@ function getIndex(str: string) {
     str.indexOf('?'),
     str.indexOf('!')
   )
-
 }
 
 export function poemSlice(content: string) {
   // content.indexOf(' ')
-  const index = getIndex(content);
+  let index = getIndex(content);
+  index = index > 16 ? 16 : index;
   return content.slice(0, index)
 }
 

@@ -59,7 +59,7 @@ const debounced_update = debounce(
 );
 
 const requestLogin = async () => {
-  console.log(111);
+  // console.log(111);
   
   const { data } = await fetchArticles();
   if (data) {
@@ -75,6 +75,7 @@ onMounted(() => {
   mainStore.windowWidth = document.body.clientWidth;
   window.addEventListener("resize", debounced_update);
 });
+
 onUnmounted(() => window.removeEventListener("resize", debounced_update));
 
 // console.log(document.body.clientHeight);
@@ -211,7 +212,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
   align-items: center;
 
   width: 100%;
-  height: calc(100vh - 60px);
+  height: 100vh;
   padding: 100px;
   background-image: url(@/assets/bg.jpg);
   background-size: cover;
