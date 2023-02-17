@@ -18,16 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import sanitizeHtml from 'sanitize-html';
 import 'md-editor-v3/lib/style.css';
-import BlogInfo from '@/components/Edit/BlogInfo/index.vue'
 import { useMainStore } from "@/store";
 // import {RouterLink, RouterView} from "vue-router";
 
 const mainStore = useMainStore();
-// const text = ref('# Hello Editor');
+
 let show = ref(true);
 
 const onSave = (v: string, h: Promise<string>) => {
@@ -51,7 +49,8 @@ const sanitize = (html: string) => {
 <style lang="less" scoped>
 .cover {
   position: relative;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 120px);
+  margin-top:60px;
 
   .md-editor {
     height: 100%;

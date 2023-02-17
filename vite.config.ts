@@ -41,9 +41,9 @@ export default defineConfig({
         /\.vue$/, /\.vue\?vue/, // .vue
       ],
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-      // 自动导入 Vue-router 相关函数
-      imports: ['vue', 'vue-router',],
-
+      // 自动导入 Vue-router,pinia 相关函数
+      imports: ['vue', 'vue-router', "pinia"],
+      dts: "src/typings/auto-import.d.ts", // 生成 `auto-import.d.ts` 全局声明
       // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
       resolvers: [
         ElementPlusResolver(),
@@ -53,8 +53,6 @@ export default defineConfig({
           prefix: 'Icon',
         }),
       ],
-
-      dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
     }),
     // // 按需引入element-plus样式
     // ElementPlus({
@@ -62,10 +60,12 @@ export default defineConfig({
     // }),
 
     Components({
+      dts: "src/typings/components.d.ts",
       resolvers: [
         // 自动注册图标组件
         IconsResolver({
-          enabledCollections: ['ep'],
+          // 自动注册图标组件 how to use: <i-ep-location />
+          enabledCollections: ["ep", "mdi"], // 'ep'是element图标集在https://iconify.design/ 里的集合名, 如果你引入或`使用了其他图标集, 需要在此把其集合名写上
         }),
 
         // 自动导入 Element Plus 组件
@@ -74,7 +74,6 @@ export default defineConfig({
         }),
       ],
 
-      dts: path.resolve(pathSrc, 'components.d.ts'),
     }),
 
     Icons({

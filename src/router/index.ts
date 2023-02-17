@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "main",
+      name: "index",
       component: main,
       children: [
         {
@@ -16,6 +16,14 @@ const router = createRouter({
             title: "主页",
           },
           component: () => import("@/components/Home/index.vue"),
+        },
+        {
+          path: "/edit",
+          name: "edit",
+          meta: {
+            title: "编辑",
+          },
+          component: () => import("@/components/Edit/index.vue")
         },
         {
           path: "/pages",
@@ -28,12 +36,12 @@ const router = createRouter({
               component: () => import("@/components/Details/index.vue"),
             },
             {
-              path: "/archives",
-              name: "archives",
+              path: "/achieves",
+              name: "achieves",
               meta: {
                 title: "归档",
               },
-              component: () => import("@/components/Archives/index.vue"),
+              component: () => import("@/components/Achieves/index.vue"),
             },
             {
               path: "/links",
@@ -62,11 +70,7 @@ const router = createRouter({
       name: "login",
       component: () => import("@/views/Login.vue")
     },
-    {
-      path: "/edit",
-      name: "edit",
-      component: () => import("@/components/Edit/index.vue")
-    },
+
   ]
 },
   // {

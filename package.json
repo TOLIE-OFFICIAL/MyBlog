@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.8",
+    "@iconify-json/mdi": "^1.1.46",
     "@types/animejs": "^3.1.6",
     "@types/marked": "^4.0.8",
     "@types/node": "^16.11.56",

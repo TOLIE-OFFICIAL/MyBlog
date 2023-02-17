@@ -17,25 +17,6 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <!-- <Suspense>
-    <template #default>
-      <ArticleCard :title="title">
-        <div style="height: 1290px;">
-          <el-scrollbar>
-            <ul v-infinite-scroll="load" infinite-scroll-immediate="true" class="infinite-list">
-              
-              <li v-for="i in count" :key="i" class="infinite-list-item">
-                <ArticleItem />
-              </li>
-            </ul>
-          </el-scrollbar>
-        </div>
-      </ArticleCard>
-    </template>
-    <template #fallback>
-
-    </template>
-  </Suspense> -->
   <ArticleCard :title="title">
     <!-- <div style="height: 1290px;overflow-y: auto;" > -->
       <el-scrollbar>

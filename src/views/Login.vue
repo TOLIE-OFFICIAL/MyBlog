@@ -61,15 +61,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, onBeforeMount } from "vue";
 import type { FormItemRule, FormInstance } from "element-plus";
 // import { useMainStore } from "@/store";
-import { ElMessage } from "element-plus";
-import { useRouter } from "vue-router";
+// import { ElMessage } from "element-plus";
 import { fetchPoem } from "@/service";
-import { poemSlice } from "@/utils";
+import { poemSlice,setLocal, getLocal } from "@/utils";
 
-import { setLocal, getLocal } from "@/utils";
 const router = useRouter();
 
 type Form = {

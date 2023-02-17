@@ -2,7 +2,6 @@
 import { useMainStore } from "@/store";
 
 const mainStore = useMainStore();
-// const flag = ref(true);
 type scrollPosition = {
   scrollTop: number;
   scrollLeft: number;
@@ -10,28 +9,23 @@ type scrollPosition = {
 const scroll = (scroll: scrollPosition) => {
   mainStore.scrollY = scroll.scrollTop;
 };
-const backTop = () => {
-  console.log(window);
-
-  // window.scrollTo({
-  //   top: 0,
-  //   behavior: "smooth",
-  // });
-};
 </script>
 
 <template>
-  <el-scrollbar
-    max-height="100vh"
-    @scroll="scroll"
-    class="scrollBar"
-    :noresize="true"
-  >
-    <div class="common-layout">
-      <el-container>
-        <el-header height="60px">
-          <Header />
-        </el-header>
+  <div class="common-layout">
+    <el-container>
+      <el-header
+        height="60px"
+        class="headerMenu"
+      >
+        <Header />
+      </el-header>
+      <el-scrollbar
+        height="cale(100vh -60px)"
+        @scroll="scroll"
+        class="scrollBar"
+        :noresize="true"
+      >
         <el-main class="main">
           <RouterView />
         </el-main>
@@ -41,9 +35,9 @@ const backTop = () => {
         <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
           <el-icon><i-ep-ArrowUpBold /></el-icon>
         </el-backtop>
-      </el-container>
-    </div>
-  </el-scrollbar>
+      </el-scrollbar>
+    </el-container>
+  </div>
 </template>
 
 <style scoped lang="less">
@@ -59,7 +53,7 @@ header {
 
 .main {
   /* width: 1000px; */
-  margin-top: 60px;
+  // margin-top: 60px;
   padding: 0;
   /* background: #1c0522; */
 }
