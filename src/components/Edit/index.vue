@@ -22,11 +22,8 @@ import MdEditor from 'md-editor-v3';
 import sanitizeHtml from 'sanitize-html';
 import 'md-editor-v3/lib/style.css';
 import { useMainStore } from "@/store";
-// import {RouterLink, RouterView} from "vue-router";
 
 const mainStore = useMainStore();
-
-let show = ref(true);
 
 const onSave = (v: string, h: Promise<string>) => {
   // console.log(v, h);
@@ -38,9 +35,6 @@ const onSave = (v: string, h: Promise<string>) => {
   });
 };
 
-// const print = ()=>{
-//   console.log(text.value)
-// }
 const sanitize = (html: string) => {
   return sanitizeHtml(html);
 };
@@ -64,8 +58,8 @@ const sanitize = (html: string) => {
     justify-content: center;
     align-items: flex-start;
     padding: 24px 24px 0 24px;
-    height: 280px;
-    margin-top: -140px;
+    height: 360px;
+    margin-top: -180px;
     border: 1px solid var(--el-border-color);
     border-radius: 6px;
     right: 0;

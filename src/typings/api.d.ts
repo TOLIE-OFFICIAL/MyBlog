@@ -51,7 +51,7 @@ declare namespace BlogArticles {
     // 文章id
     id: string,
     // 作者名称
-    username: string,
+    author: string,
     // blog标题
     title: string,
     summary: string,
@@ -65,5 +65,8 @@ declare namespace BlogArticles {
     like_count: number,
     comment_count: number,
     read_count: number,
+  }
+  interface Query {
+    pageSize: number
   }
 }

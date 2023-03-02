@@ -8,7 +8,9 @@ import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-// import Inspect from 'vite-plugin-inspect'
+
+// import autoprefixer from 'autoprefixer';
+// import postCssPxToRem from 'postcss-pxtorem';
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -21,7 +23,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.fastmock.site/mock/a6b857873f4bfc85e89a177bccc4b87f/api",
+        target: "http://127.0.0.1:3000",
+        // target: "https://www.fastmock.site/mock/a6b857873f4bfc85e89a177bccc4b87f/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

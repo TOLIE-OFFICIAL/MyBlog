@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { debounce } from "lodash";
-import { fetchArticles } from "@/service";
+// import { fetchArticles } from "@/service";
 import { useMainStore } from "@/store";
 
 const mainStore = useMainStore();
@@ -58,29 +58,25 @@ const debounced_update = debounce(
   { maxWait: 1000 }
 );
 
-const requestLogin = async () => {
-  // console.log(111);
-  
-  const { data } = await fetchArticles();
-  if (data) {
-    console.log("data", data); // { token: "这是token" }
-  }
-}
+// const init = async () => {
+//   const { data } = await fetchArticles();
+//   if (data) {
+//     console.log("data", data); // 获取首页展示的文章信息
+//   }
+// }
 
-onBeforeMount(()=>{
-  requestLogin()
-})
+// onBeforeMount(()=>{
+//   init()
+// })
+
 onMounted(() => {
   mainStore.windowHeight = document.body.clientHeight;
   mainStore.windowWidth = document.body.clientWidth;
   window.addEventListener("resize", debounced_update);
 });
 
+// 取消监听
 onUnmounted(() => window.removeEventListener("resize", debounced_update));
-
-// console.log(document.body.clientHeight);
-
-// const text = ref();
 </script>
 <style scoped lang="less">
 @keyframes move_wave {

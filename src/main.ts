@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import { setupAssets } from "./plugins";
 import App from "./App.vue";
 import router from "./router";
+import 'amfe-flexible'
 
 const blackList = ["/edit"];
 

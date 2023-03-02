@@ -135,11 +135,11 @@ let activePage = computed(() => {
 </script>
 
 <style scoped lang="less">
-.logo {
-  display: inline-flex;
-  justify-content: center;
+.el-menu--horizontal{
   align-items: center;
-  height: 60px;
+}
+.logo {
+  height: 58px;
   width:100px;
   margin-left: 10px;
   color: var(--el-menu-text-color);

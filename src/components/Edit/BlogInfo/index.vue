@@ -25,25 +25,11 @@
         :reserve-keyword="false"
       />
     </el-form-item>
-
-    <el-form-item label="博客分类" prop="type">
-      <el-select-v2
-        v-model="formData.type"
-        :options="type_options"
-        placeholder="请选择博客分类"
-        style="width: 240px; margin-right: 16px; vertical-align: middle"
-        allow-create
-        filterable
-        multiple
-        clearable
-        :reserve-keyword="false"
-      />
+    <el-form-item label="文章概要">
+      <el-input v-model="formData.summary" type="textarea" />
     </el-form-item>
-    <!--            <el-form-item prop="desc">-->
-    <!--        <el-input v-model="mainStore.blogContent" type="hidden" @change="change"/>-->
-    <!--            </el-form-item>-->
     <el-form-item label="是否置顶" prop="setTop">
-      <el-switch v-model="formData.setTop" />
+      <el-switch v-model="formData.priority" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">
@@ -57,28 +43,22 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { useMainStore } from "@/store";
-// import { RouterLink, RouterView } from "vue-router";
-
+import { createArticle } from "@/service";
 import type { FormInstance, FormRules } from "element-plus";
 import moment from "moment";
 
 const mainStore = useMainStore();
 
-// const change = () => {
-//   ruleForm.detail = mainStore.blogContent;
-//   console.log(111)
-// }
-
 const ruleFormRef = ref<FormInstance>();
 const formData = reactive({
   title: "Hello",
+  author: "tolie-official", // 作者
   tags: [],
-  setTop: false,
-  type: [],
-  detailMd: "",
-  detailHtml: "",
-  pushData: "",
-  firstPushData: "",
+  priority: false,
+  content: "", // markdown 格式
+  summary: "",
+  updateTime: "",
+  createTime: "",
 });
 //
 // formData.detail = computed(() => {
@@ -86,12 +66,11 @@ const formData = reactive({
 // }).value;
 
 const tag_options: any[] = reactive([]);
-const type_options: any[] = reactive([]);
 
 const rules = reactive<FormRules>({
   title: [
-    { required: true, message: "Please input Activity name", trigger: "blur" },
-    { min: 3, max: 5, message: "Length should be 3 to 5", trigger: "blur" },
+    { required: true, message: "请输入标题", trigger: "blur" },
+    { min: 3, max: 30, message: "标题长度必须大于3,小于30", trigger: "blur" },
   ],
   tags: [
     {
@@ -101,28 +80,19 @@ const rules = reactive<FormRules>({
       trigger: "change",
     },
   ],
-  type: [
-    {
-      type: "array",
-      required: true,
-      message: "请选择至少一个博客分类",
-      trigger: "change",
-    },
-  ],
-  detail: [
-    { required: true, message: "Please input activity form", trigger: "blur" },
-  ],
+  summary: [{ required: true, message: "请输入文章摘要", trigger: "blur" }],
 });
 
 const submitForm = async (formEl: FormInstance | undefined) => {
-  formData.detailMd = encodeURI(mainStore.blogContent_md);
-  formData.detailHtml = mainStore.blogContent_html;
-  formData.pushData = moment().format("YYYY-MM-DD HH:mm:ss");
+  formData.content = encodeURI(mainStore.blogContent_md);
+  formData.updateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  formData.createTime = moment().format("YYYY-MM-DD HH:mm:ss");
   // console.log(formData)
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log(formData);
+      // console.log(formData);
+      createArticle(formData);
       console.log("submit!");
       // 执行提交
     } else {
