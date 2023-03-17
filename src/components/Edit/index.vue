@@ -1,29 +1,38 @@
 <template>
   <div class="cover" theme="light">
-    <md-editor v-model="mainStore.blogContent_md" :sanitize="sanitize" @onSave="onSave" />
-    <transition v-show="mainStore.blogFormShow" enter-active-class="animate__animated animate__slideInRight"
-      leave-active-class="animate__animated animate__slideOutRight">
+    <md-editor
+      v-model="mainStore.blogContent_md"
+      :sanitize="sanitize"
+      @onSave="onSave"
+    />
+    <transition
+      v-show="blogFormShow"
+      @after-enter="handleIconChange"
+      @after-leave="handleIconChange"
+      enter-active-class="animate__animated animate__slideInRight"
+      leave-active-class="animate__animated animate__slideOutRight"
+    >
       <BlogInfo class="info" />
     </transition>
-    <div class="collapse">
-      <el-icon v-show="mainStore.blogFormShow" @click="mainStore.blogFormShow = !mainStore.blogFormShow">
-        <i-ep-ArrowRightBold />
-      </el-icon>
-      <el-icon v-show="!mainStore.blogFormShow" @click="mainStore.blogFormShow = !mainStore.blogFormShow">
-        <i-ep-ArrowLeftBold />
+
+    <div class="collapse" @click="handleCollapse">
+      <el-icon>
+        <i-ep-ArrowRightBold v-show="iconChange" />
+        <i-ep-ArrowLeftBold v-show="!iconChange" />
       </el-icon>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-import MdEditor from 'md-editor-v3';
-import sanitizeHtml from 'sanitize-html';
-import 'md-editor-v3/lib/style.css';
+import MdEditor from "md-editor-v3";
+import sanitizeHtml from "sanitize-html";
+import "md-editor-v3/lib/style.css";
 import { useMainStore } from "@/store";
 
 const mainStore = useMainStore();
+let blogFormShow = ref(false);
+let iconChange = ref(false);
 
 const onSave = (v: string, h: Promise<string>) => {
   // console.log(v, h);
@@ -35,6 +44,21 @@ const onSave = (v: string, h: Promise<string>) => {
   });
 };
 
+const handleCollapse = () => {
+  // return sanitizeHtml(html);
+  // console.log(blogFormShow.value);
+
+  blogFormShow.value = !blogFormShow.value;
+  // blogFormShow = !blogFormShow
+  // handleIconChange.value = true;
+};
+
+const handleIconChange = () => {
+  // console.log(111, "finish");
+  iconChange.value = !iconChange.value;
+  // handleIconChange.value = false;
+};
+
 const sanitize = (html: string) => {
   return sanitizeHtml(html);
 };
@@ -44,7 +68,7 @@ const sanitize = (html: string) => {
 .cover {
   position: relative;
   height: calc(100vh - 120px);
-  margin-top:60px;
+  margin-top: 60px;
 
   .md-editor {
     height: 100%;
@@ -58,7 +82,7 @@ const sanitize = (html: string) => {
     justify-content: center;
     align-items: flex-start;
     padding: 24px 24px 0 24px;
-    height: 360px;
+    height: 470px;
     margin-top: -180px;
     border: 1px solid var(--el-border-color);
     border-radius: 6px;

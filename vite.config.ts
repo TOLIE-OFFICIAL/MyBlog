@@ -8,9 +8,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
-// import autoprefixer from 'autoprefixer';
-// import postCssPxToRem from 'postcss-pxtorem';
+import ElementPlus from 'unplugin-element-plus/vite'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -32,6 +30,11 @@ export default defineConfig({
         target: "https://api.xygeng.cn/one",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/poem/, ""),
+      },
+      "/img": {
+        target: "https://sm.ms/api/v2",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/img/, ""),
       },
     },
   },
@@ -58,9 +61,9 @@ export default defineConfig({
       ],
     }),
     // // 按需引入element-plus样式
-    // ElementPlus({
-    //   // options
-    // }),
+    ElementPlus({
+      // options
+    }),
 
     Components({
       dts: "src/typings/components.d.ts",

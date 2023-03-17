@@ -8,7 +8,7 @@
     :unique-opened="true"
   >
     <el-menu-item
-      index=""
+      index="0"
       :route="{
         name: 'home',
         query: {
@@ -114,10 +114,14 @@
     </el-menu-item>
 
     <el-menu-item class="user_info" index="">
-      <a href="https://github.com/TOLIE-OFFICIAL" class="github" target='_blank'>
-      <el-icon>
-        <i-mdi-github />
-      </el-icon>
+      <a
+        href="https://github.com/TOLIE-OFFICIAL"
+        class="github"
+        target="_blank"
+      >
+        <el-icon>
+          <i-mdi-github />
+        </el-icon>
       </a>
       github
     </el-menu-item>
@@ -125,44 +129,51 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from "@/store";
-
 const route = useRoute();
 let activePage = computed(() => {
-  // console.log(route.name,typeof route.path);
-  return route.query.activePage as string;
+  // console.log(route.query.activePage as string);
+  let page = route.query.activePage;
+  page = page ? page + "" : "home";
+  // return route.query.activePage as string;
+  // console.log(page);
+  return page;
 });
 </script>
 
 <style scoped lang="less">
-.el-menu--horizontal{
+.el-menu--horizontal {
   align-items: center;
 }
 .logo {
   height: 58px;
-  width:100px;
+  width: 100px;
   margin-left: 10px;
   color: var(--el-menu-text-color);
+  border-bottom: none !important;
   background: url("https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png")
     no-repeat center;
   background-size: contain;
+  background-color: var(--el-menu-bg-color) !important;
   &:hover {
     cursor: pointer;
   }
 }
 
 .user_info {
+  background-color: var(--el-menu-bg-color) !important;
+  border-bottom: none !important;
+
   // position: relative;
   // align-items: center;
-  .github {
-    // display: block;
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // width: 100%;
-    // height: 100%;
-    // z-index: 999;
-  }
+  // .github {
+  // display: block;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // height: 100%;
+  // z-index: 999;
+  // }
 }
 
 .flex-grow {

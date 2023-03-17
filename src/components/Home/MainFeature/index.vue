@@ -3,9 +3,9 @@ import { fetchArticles } from "@/service";
 
 defineProps<{ title: string }>();
 
-const ArticleCard = defineAsyncComponent(
-  () => import("@/components/Slots/ArticleCard/index.vue")
-);
+// const ArticleCard = defineAsyncComponent(
+//   () => import("@/components/Slots/ArticleCard/index.vue")
+// );
 
 type ArticleInfo = {
   articleInfoList: Array<any>;

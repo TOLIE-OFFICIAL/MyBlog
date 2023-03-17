@@ -70,3 +70,8 @@ declare namespace BlogArticles {
     pageSize: number
   }
 }
+declare namespace BlogImgs {
+  interface token {
+    token: string
+  }
+}

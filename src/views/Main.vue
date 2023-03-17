@@ -20,12 +20,12 @@ const scroll = (scroll: scrollPosition) => {
       >
         <Header />
       </el-header>
-      <el-scrollbar
-        height="cale(100vh -60px)"
+      <!-- <el-scrollbar
+        height="cale(100vh -120px)"
         @scroll="scroll"
         class="scrollBar"
         :noresize="true"
-      >
+      > -->
         <el-main class="main">
           <RouterView />
         </el-main>
@@ -35,7 +35,7 @@ const scroll = (scroll: scrollPosition) => {
         <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
           <el-icon><i-ep-ArrowUpBold /></el-icon>
         </el-backtop>
-      </el-scrollbar>
+      <!-- </el-scrollbar> -->
     </el-container>
   </div>
 </template>

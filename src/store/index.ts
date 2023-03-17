@@ -13,7 +13,7 @@ export const useMainStore = defineStore(Names.Main, {
       menuBgFlag: 1,
       windowHeight: 0,
       windowWidth: 0,
-      blogFormShow: false,
+      // blogFormShow: false,
       blogContent_html: '',
       blogContent_md: '# Hello Editor',
     };
