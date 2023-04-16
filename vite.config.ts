@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 
-import path from 'path'
+import path from 'path' //// 模块 ""path"" 只能在使用 "esModuleInterop" 标志时进行默认导入
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
@@ -9,6 +9,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
+
+import autoprefixer from 'autoprefixer'
+import postCssPxToRem from 'postcss-pxtorem';
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -26,11 +29,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/poem": {
-        target: "https://api.xygeng.cn/one",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/poem/, ""),
-      },
+      // "/poem": {
+      //   target: "https://api.xygeng.cn/one",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/poem/, ""),
+      // },
       "/img": {
         target: "https://sm.ms/api/v2",
         changeOrigin: true,
@@ -61,9 +64,7 @@ export default defineConfig({
       ],
     }),
     // // 按需引入element-plus样式
-    ElementPlus({
-      // options
-    }),
+    ElementPlus({}),
 
     Components({
       dts: "src/typings/components.d.ts",
