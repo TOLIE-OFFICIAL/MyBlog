@@ -1,48 +1,3 @@
-<script lang="ts" setup>
-import { fetchArticles } from "@/service";
-
-defineProps<{ title: string }>();
-
-// const ArticleCard = defineAsyncComponent(
-//   () => import("@/components/Slots/ArticleCard/index.vue")
-// );
-
-type ArticleInfo = {
-  articleInfoList: Array<any>;
-  total: number;
-};
-
-const pageSize = ref(4);
-const total = ref(0);
-const loading = ref(false);
-const articleInfo = reactive<ArticleInfo>({
-  articleInfoList: [],
-  total: 0,
-});
-
-const noMore = computed(() => pageSize.value >= articleInfo.total);
-const disabled = computed(() => loading.value || noMore.value);
-const load = () => {
-  loading.value = true;
-  init();
-};
-const init = async () => {
-  // if(pageSize.value ==2){}
-  const { data } = await fetchArticles({ pageSize: pageSize.value });
-  pageSize.value += 2;
-  loading.value = false;
-  if (data) {
-    // console.log("data", data); // 获取首页展示的文章信息
-    articleInfo.total = data?.total ?? 0;
-    articleInfo.articleInfoList = data?.list ?? [];
-  }
-};
-
-onBeforeMount(() => {
-  init();
-});
-</script>
-
 <template>
   <ArticleCard :title="title">
     <!-- <div style="height: 1290px;overflow-y: auto;" > -->
@@ -71,30 +26,30 @@ onBeforeMount(() => {
           <el-card class="infinite-list-item-content" shadow="hover">
             <div class="infinite-list-item-content-left postInfo">
               <div class="postInfo-date">
-                <el-icon style="vertical-align: bottom; font-size: 14px">
+                <el-icon class="postInfo-date-icon">
                   <i-ep-Timer />
                 </el-icon>
-                发布于 2022-08-13
+                发布于 {{ formatDate(updateTime) }}
               </div>
               <div class="postInfo-title">{{ title }}</div>
               <div class="postInfo-meta">
                 <span class="postInfo-metahot">
-                  <el-icon>
+                  <el-icon class="postInfo-meta-icon">
                     <i-ep-View />
                   </el-icon>
                   20 热度
                 </span>
                 <span class="postInfo-meta-commentsNum">
-                  <el-icon>
+                  <el-icon class="postInfo-meta-icon">
                     <i-ep-ChatDotSquare />
                   </el-icon>
                   0 评论
                 </span>
                 <span class="postInfo-meta-tags">
-                  <el-icon>
+                  <el-icon class="postInfo-meta-icon">
                     <i-ep-PriceTag />
                   </el-icon>
-                  tools
+                  {{ tags.join(",") }}
                 </span>
               </div>
               <p class="postInfo-summary">{{ decodeURI(summary) }}</p>
@@ -120,23 +75,85 @@ onBeforeMount(() => {
   </ArticleCard>
 </template>
 
+<script lang="ts" setup>
+import moment from "moment";
+import { fetchArticles } from "@/service";
+
+defineProps<{ title: string }>();
+
+// const ArticleCard = defineAsyncComponent(
+//   () => import("@/components/Slots/ArticleCard/index.vue")
+// );
+
+type ArticleInfo = {
+  articleInfoList: Array<any>;
+  total: number;
+};
+
+const pageSize = ref(4);
+const currentPage = ref(1);
+
+const loading = ref(false);
+const articleInfo = reactive<ArticleInfo>({
+  articleInfoList: [],
+  total: 0,
+});
+
+const load = () => {
+  loading.value = true;
+  init();
+};
+
+const formatDate = (time: string) => {
+  return moment(time).format("YYYY-MM-DD HH:mm:ss");
+};
+
+const init = async () => {
+  // if(pageSize.value ==2){}
+  const { data } = await fetchArticles({
+    pageSize: pageSize.value,
+    currentPage: currentPage.value,
+  });
+  currentPage.value += 1;
+  loading.value = false;
+  if (data) {
+    // console.log("data", data); // 获取首页展示的文章信息
+    articleInfo.total = data?.total ?? 0;
+    articleInfo.articleInfoList = articleInfo.articleInfoList.concat(
+      data?.list ?? []
+    );
+  }
+};
+
+const noMore = computed(
+  () => currentPage.value * pageSize.value > articleInfo.total
+);
+const disabled = computed(() => loading.value || noMore.value);
+
+init();
+
+// onBeforeMount(() => {
+//   init();
+// });
+</script>
 <style scoped lang="less">
 .infinite-list {
-  height: 1290px;
+  height: 600px;
   padding: 0;
   margin: 0;
   list-style: none;
 
   &-otherItem {
     margin: 8px 0;
+    font-size: 8px;
     text-align: center;
   }
   &-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 300px;
-    margin: 30px 0 0 0;
+    height: 120px;
+    margin: 10px 0 0 0;
     box-sizing: border-box;
 
     &:first-child {
@@ -147,30 +164,32 @@ onBeforeMount(() => {
     }
   }
 }
-.infinite-list-item-content {
-  width: 100%;
-  height: 100%;
-  // background-color: aquamarine;
-
-  & :deep(.el-card__body) {
-    display: flex;
-    padding: 0 !important;
-    justify-content: space-around;
+.infinite-list-item {
+  &-content {
     width: 100%;
     height: 100%;
-  }
+    // background-color: aquamarine;
 
-  &-left {
-    flex: 1;
-  }
+    & :deep(.el-card__body) {
+      display: flex;
+      padding: 0 !important;
+      justify-content: space-around;
+      width: 100%;
+      height: 100%;
+    }
 
-  &-right {
-    display: block;
-    width: 530px;
-    height: inherit;
-    background-image: url(@/assets/itemPic.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
+    &-left {
+      flex: 1;
+    }
+
+    &-right {
+      display: block;
+      width: 210px;
+      height: inherit;
+      background-image: url(@/assets/itemPic.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
   }
 }
 
@@ -180,34 +199,43 @@ onBeforeMount(() => {
   // justify-content: space-between;
   // margin-top: 30px;
   // margin-left: 30px;
-  margin: 30px 10px 0 30px;
+  margin: 10px 3px 0 10px;
   padding-right: 10px;
   text-align: left;
 
   &-date {
-    font-size: 14px;
+    font-size: 8px;
     color: #888;
+    &-icon {
+      vertical-align: middle;
+      font-size: 8px;
+    }
   }
 
   &-title {
-    margin: 18px 0;
+    margin: 10px 0;
+    font-size: 8px;
     font-weight: bold;
     color: #504e4e;
   }
 
   &-summary {
-    height: 69px;
+    height: 36px;
     overflow: hidden;
-    margin-bottom: 22px;
-    font-size: 15px;
+    margin-bottom: 18px;
+    font-size: 8px;
     color: #000000a8;
   }
 
   &-meta {
-    margin-bottom: 18px;
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 8px;
     color: #888;
 
+    &-icon {
+      vertical-align: middle;
+      font-size: 8px;
+    }
     &-commentsNum {
       margin: 10px;
     }

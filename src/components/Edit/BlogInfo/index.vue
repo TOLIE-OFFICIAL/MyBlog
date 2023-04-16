@@ -5,19 +5,19 @@
     :rules="rules"
     label-width="auto"
     label-position="left"
-    class="Article_Form"
+    class="blog"
     size="default"
     status-icon
   >
     <el-form-item label="博客标题" prop="title">
-      <el-input v-model="formData.title" style="width: 240px" />
+      <el-input class="blog-title" v-model="formData.title" />
     </el-form-item>
     <el-form-item label="博客标签" prop="tags">
       <el-select-v2
+        class="blog-tags"
         v-model="formData.tags"
         :options="tag_options"
         placeholder="请选择博客标签"
-        style="width: 240px; margin-right: 16px; vertical-align: middle"
         allow-create
         filterable
         multiple
@@ -25,16 +25,23 @@
         :reserve-keyword="false"
       />
     </el-form-item>
-    <el-form-item label="文章概要">
-      <el-input v-model="formData.summary" type="textarea" />
+    <el-form-item label="文章概要" prop="summary">
+      <el-input
+        class="blog-summary"
+        v-model="formData.summary"
+        type="textarea"
+      />
     </el-form-item>
     <el-form-item label="文章封面">
       <el-upload
+        accept="image/jpeg,image/jpg,image/gif,image/png,image/bmp"
+        action="#"
         :limit="1"
         :on-exceed="handleExceed"
-        action="#"
+        :on-success="handleSuccess"
         list-type="picture-card"
-        :auto-upload="false"
+        :auto-upload="true"
+        :http-request="handleUpload"
       >
         <el-icon><i-ep-Plus /></el-icon>
 
@@ -64,7 +71,7 @@
                 class="el-upload-list__item-delete"
                 @click="handleRemove(file)"
               >
-                <el-icon><i-ep-Delete /></el-icon>
+                <el-icon><i-ep-delete /></el-icon>
               </span>
             </span>
           </div>
@@ -79,7 +86,7 @@
       <el-switch v-model="formData.priority" />
     </el-form-item>
 
-    <el-form-item>
+    <el-form-item class="blog-btns">
       <el-button type="primary" @click="submitForm(ruleFormRef)">
         Create
       </el-button>
@@ -90,8 +97,11 @@
 
 <script lang="ts" setup>
 import { useMainStore } from "@/store";
-import { createArticle } from "@/service";
-import { genFileId } from "element-plus";
+import { createArticle, qnUpload, compressImage } from "@/service";
+// import { createArticle, getOssToken, resumeUploader } from "@/service";
+import { genFileId, type UploadRequestOptions } from "element-plus";
+import moment from "moment";
+
 // import { Delete, Download, Plus, ZoomIn } from "@element-plus/icons-vue";
 import type {
   UploadFile,
@@ -101,9 +111,9 @@ import type {
   UploadProps,
   UploadRawFile,
 } from "element-plus";
-import moment from "moment";
 
 const mainStore = useMainStore();
+
 // 图片上传
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
@@ -121,6 +131,7 @@ const formData = reactive({
   summary: "",
   updateTime: "",
   createTime: "",
+  coverUrl: "",
 });
 
 const tag_options: any[] = reactive([]);
@@ -161,12 +172,53 @@ const handleExceed: UploadProps["onExceed"] = (files) => {
   file.uid = genFileId();
   upload.value!.handleStart(file);
 };
+const handleSuccess = () => {};
+const handleUpload = async (options: UploadRequestOptions) => {
+  // 压缩图片选项
+  const compressOptions = {
+    quality: 0.92,
+    noCompressIfLarger: true,
+    // maxWidth: 1000,
+    // maxHeight: 618
+  };
+
+  const data = await compressImage(options.file, compressOptions);
+  const res = await qnUpload(data.dist, options.onProgress, options.file.name);
+  console.log(res,1111);
+  
+};
+
+// 图片上传 (分片上传)
+// const uploadPic = async () => {
+//   const { uploadToken } = await getOssToken();
+//   console.log(uploadToken);
+
+//   // 文件分片上传
+//   // resumeUploader.putFile(
+//   //   uploadToken,
+//   //   key,
+//   //   localFile,
+//   //   putExtra,
+//   //   function (respErr, respBody, respInfo) {
+//   //     if (respErr) {
+//   //       throw respErr;
+//   //     }
+//   //     if (respInfo.statusCode == 200) {
+//   //       console.log(respBody);
+//   //     } else {
+//   //       console.log(respInfo.statusCode);
+//   //       console.log(respBody);
+//   //     }
+//   //   }
+//   // );
+// };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   formData.content = encodeURI(mainStore.blogContent_md);
   formData.updateTime = moment().format("YYYY-MM-DD HH:mm:ss");
   formData.createTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  // console.log(formData)
+  formData.coverUrl = "https://baidu.com";
+  // console.log(formData);
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -187,9 +239,26 @@ const resetForm = (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="less" scoped>
-.Article_Form {
+.blog {
   position: relative;
   align-items: flex-start;
   background-color: #fff;
+
+  &-title,
+  &-tags,
+  &-summary {
+    width: 100px;
+  }
+  &-tags {
+    margin-right: 16px;
+    vertical-align: middle;
+  }
+  // :deep(.blog-btns) {
+  //   justify-content: center !important;
+  //   width: 100%;
+  // }
+}
+:deep(.el-upload-list--picture-card .el-upload-list__item-actions span + span) {
+  margin-left: 0.1rem;
 }
 </style>
