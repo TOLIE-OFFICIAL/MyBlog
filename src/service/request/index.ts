@@ -5,7 +5,8 @@ export const mockRequest = createRequest({ baseURL: "/mock" });
 
 export const blogRequest = createRequest({ baseURL: "/api" });
 
-export const poemRequest = createRequest({ baseURL: "/poem" });
+// 登陆页面的每日一言
+export const poemRequest = createRequest({ baseURL: "/api" });
 
 // 有关smms图床
 export const imgRequest = createRequest({

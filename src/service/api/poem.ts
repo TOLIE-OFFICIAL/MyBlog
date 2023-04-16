@@ -1,3 +1,4 @@
+import { obj2query } from "@/enum/obj2query";
 import { poemRequest } from "../request";
 
 /**
@@ -5,6 +6,8 @@ import { poemRequest } from "../request";
  * @param ？？
  * @returns ？？？
  */
-export function fetchPoem() {
-  return poemRequest.post<ApiPeom.Poem>("")
+export function fetchPoem(data: ApiPeom.PoemRestriction) {
+  // console.log(data);
+
+  return poemRequest.post<ApiPeom.Poem>("/poem-every-day", data)
 }
