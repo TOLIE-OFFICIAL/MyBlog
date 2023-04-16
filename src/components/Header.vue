@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    class="el-menu-demo"
+    class="el-menu"
     :default-active="activePage"
     mode="horizontal"
     :router="true"
@@ -143,10 +143,12 @@ let activePage = computed(() => {
 <style scoped lang="less">
 .el-menu--horizontal {
   align-items: center;
+  height: 26px;
 }
 .logo {
-  height: 58px;
-  width: 100px;
+  display: block;
+  height: 18px;
+  width: 36px;
   margin-left: 10px;
   color: var(--el-menu-text-color);
   border-bottom: none !important;
@@ -154,6 +156,7 @@ let activePage = computed(() => {
     no-repeat center;
   background-size: contain;
   background-color: var(--el-menu-bg-color) !important;
+  
   &:hover {
     cursor: pointer;
   }

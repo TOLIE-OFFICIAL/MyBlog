@@ -3,7 +3,7 @@
 <!-- description: 归档页面 -->
 <script lang="ts" setup>
 import { getHistory } from "@/service";
-import { MoreFilled } from "@element-plus/icons-vue";
+// import { MoreFilled } from "@element-plus/icons-vue";
 // import PagesModule from "../Slots/PagesModule/index.vue";
 
 const activities = [
@@ -21,7 +21,7 @@ const activities = [
     content: "Success",
     timestamp: "2018-04-12",
     type: "primary",
-    icon: MoreFilled,
+    icon: 'MoreFilled',
   },
   {
     content: "Success",

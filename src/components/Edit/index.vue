@@ -67,8 +67,8 @@ const sanitize = (html: string) => {
 <style lang="less" scoped>
 .cover {
   position: relative;
-  height: calc(100vh - 120px);
-  margin-top: 60px;
+  height: calc(100vh - 52px);
+  margin-top: 26px;
 
   .md-editor {
     height: 100%;
@@ -81,9 +81,9 @@ const sanitize = (html: string) => {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 24px 24px 0 24px;
-    height: 470px;
-    margin-top: -180px;
+    padding: 14px 24px 0 24px;
+    height: 200px;
+    margin-top: -100px;
     border: 1px solid var(--el-border-color);
     border-radius: 6px;
     right: 0;
@@ -94,14 +94,14 @@ const sanitize = (html: string) => {
 
   .collapse {
     position: fixed;
-    height: 40px;
-    width: 16px;
+    height: 20px;
+    width: 10px;
     top: 50%;
     right: 0;
     border: 1px solid transparent;
     //transform: translate(0, -50%);
     margin-top: -20px;
-    line-height: 40px;
+    line-height: 20px;
     border-radius: 4px;
     z-index: 99;
     cursor: pointer;
@@ -113,6 +113,9 @@ const sanitize = (html: string) => {
       background-color: var(--el-backtop-hover-bg-color);
       color: var(--el-menu-active-color);
     }
+  }
+  :deep(.default-theme p) {
+    padding: 0.01rem 0;
   }
 }
 </style>

@@ -1,41 +1,35 @@
 <script setup lang="ts">
-import { useMainStore } from "@/store";
+// import { ElScrollbar } from "element-plus";
+// import 'element-plus/es/components/scrollbar/style/css'
+// import { useMainStore } from "@/store";
 
-const mainStore = useMainStore();
-type scrollPosition = {
-  scrollTop: number;
-  scrollLeft: number;
-};
-const scroll = (scroll: scrollPosition) => {
-  mainStore.scrollY = scroll.scrollTop;
-};
+// const mainStore = useMainStore();
+// type scrollPosition = {
+//   scrollTop: number;
+//   scrollLeft: number;
+// };
+// const scroll = (scroll: scrollPosition) => {
+//   mainStore.scrollY = scroll.scrollTop;
+// };
 </script>
 
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header
-        height="60px"
-        class="headerMenu"
-      >
+      <el-header class="headerMenu">
         <Header />
       </el-header>
-      <!-- <el-scrollbar
-        height="cale(100vh -120px)"
-        @scroll="scroll"
-        class="scrollBar"
-        :noresize="true"
-      > -->
-        <el-main class="main">
-          <RouterView />
-        </el-main>
-        <el-footer>
-          <Footer />
-        </el-footer>
-        <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
-          <el-icon><i-ep-ArrowUpBold /></el-icon>
-        </el-backtop>
+      <!-- <el-scrollbar height="100vh" @scroll="scroll" class="scrollBar" :noresize="true" :always="true"> -->
+      <el-main class="main">
+        <RouterView />
+      </el-main>
       <!-- </el-scrollbar> -->
+      <el-footer>
+        <Footer />
+      </el-footer>
+      <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
+        <el-icon><i-ep-ArrowUpBold /></el-icon>
+      </el-backtop>
     </el-container>
   </div>
 </template>
@@ -43,6 +37,7 @@ const scroll = (scroll: scrollPosition) => {
 <style scoped lang="less">
 header {
   position: fixed;
+  height: 26px;
   top: 0px;
   width: 100%;
   padding: 0;
@@ -54,7 +49,11 @@ header {
 .main {
   /* width: 1000px; */
   // margin-top: 60px;
+  overflow: hidden;
   padding: 0;
   /* background: #1c0522; */
+}
+footer{
+  height: 26px;
 }
 </style>

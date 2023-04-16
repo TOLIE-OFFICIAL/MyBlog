@@ -25,7 +25,7 @@ defineProps<{ title: string }>()
 
   .card-header {
     color: #666;
-    font-size: 16px;
+    font-size: 6px;
     font-weight: bold;
   }
 }

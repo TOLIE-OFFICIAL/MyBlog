@@ -16,13 +16,14 @@ const mainStore = useMainStore();
   >
     <el-carousel-item v-for="item in 4" :key="item"> </el-carousel-item>
   </el-carousel>
-  <div class="main">
+  <div class="content">
     <RouterView />
   </div>
 </template>
 
 <style scoped lang="less">
 .banner {
+  margin-top: 26px;
   :deep(&-text) {
     height: 340px;
     user-select: none;
@@ -34,10 +35,10 @@ const mainStore = useMainStore();
     // color: var(--el-color-white);
   }
 }
-.main {
-  width: 1000px;
+.content {
+  width: 520px;
   height: calc(100% - 400px);
-  margin: 18px auto;
+  margin: 5px auto;
   margin-bottom: 0;
   // padding: 18px 0;
 }
