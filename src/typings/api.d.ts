@@ -15,8 +15,15 @@ declare namespace ApiAuth {
 declare namespace ApiPeom {
   /** token */
   interface Poem {
-    code: number,
-    updateTime: number
+    id: number;
+    hitokoto: string;
+    from_who: string;
+  }
+  interface PoemRestriction {
+    max_length: number,
+    min_length: number,
+    c: string,
+    encode: string
   }
 }
 
@@ -67,11 +74,17 @@ declare namespace BlogArticles {
     read_count: number,
   }
   interface Query {
-    pageSize: number
+    pageSize: number,
+    currentPage: number
   }
 }
 declare namespace BlogImgs {
   interface token {
     token: string
   }
+  interface uploadRes {
+    hash: string
+    key: string
+  }
+
 }

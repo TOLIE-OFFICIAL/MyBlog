@@ -19,22 +19,22 @@ export function getHistory() {
   return imgRequest.get("/history")
 }
 
-/**
- *  上传图片
- * @param ？？
- * @returns ？？？
- */
-export async function uploadImgs() {
-  return imgRequest.post(
-    "/upload",
-    { username: '', password: '' },
-    // 请求头
-    {
-      axios: {
-        headers: {
-          'Authorization':"FoTIuenHLlewNyoymaNGg0I9rnGYVEN1"
-        }
-      }
-    }
-  )
-}
+// /**
+//  *  上传图片
+//  * @param ？？
+//  * @returns ？？？
+//  */
+// export async function uploadImgs() {
+//   return imgRequest.post(
+//     "/upload",
+//     { username: '', password: '' },
+//     // 请求头
+//     {
+//       axios: {
+//         headers: {
+//           'Authorization':"FoTIuenHLlewNyoymaNGg0I9rnGYVEN1"
+//         }
+//       }
+//     }
+//   )
+// }
