@@ -2,8 +2,8 @@
 <!-- date: 2022-10-31 11:12:34 -->
 <!-- description: 归档页面 -->
 <script lang="ts" setup>
-// import { onMounted } from "vue";
-import { MoreFilled } from "@element-plus/icons-vue";
+import { getHistory } from "@/service";
+// import { MoreFilled } from "@element-plus/icons-vue";
 // import PagesModule from "../Slots/PagesModule/index.vue";
 
 const activities = [
@@ -21,7 +21,7 @@ const activities = [
     content: "Success",
     timestamp: "2018-04-12",
     type: "primary",
-    icon: MoreFilled,
+    icon: 'MoreFilled',
   },
   {
     content: "Success",
@@ -49,6 +49,12 @@ const activities = [
     hollow: true,
   },
 ];
+
+const handleClick = async () => {
+  // const token = await getToken("TOLIE", "NJA!v6KBV7ck3w@");
+  const token = await getHistory();
+  console.log(token);
+};
 </script>
 
 <template>
@@ -71,7 +77,7 @@ const activities = [
         <p>Tom committed 2018/4/12 20:46</p>
       </el-card>
     </el-timeline-item>
-    <el-timeline-item
+    <!-- <el-timeline-item
       v-for="(activity, index) in activities"
       :key="index"
       :icon="activity.icon"
@@ -82,8 +88,9 @@ const activities = [
       :timestamp="activity.timestamp"
     >
       {{ activity.content }}
-    </el-timeline-item>
+    </el-timeline-item> -->
   </el-timeline>
+  <button @click="handleClick">getToken</button>
 </template>
 
 <style scoped lang="less">

@@ -44,6 +44,10 @@ declare namespace Service {
     msgField: string;
     /** 后端业务上定义的成功请求的状态 */
     successCode: number | string;
+    /** 后端业务上返回的错误请求路径 */
+    path?: string
+    /** 后端业务上返回的错误发生时间 */
+    time?: number
   }
 
   /** 自定义的请求成功结果 */

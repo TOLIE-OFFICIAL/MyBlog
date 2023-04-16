@@ -39,10 +39,10 @@
     text-align: center;
 
     &-text {
-      font-size: 13px;
+      font-size: 6px;
 
       &-Copyright {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
 
         a {
           color: black;

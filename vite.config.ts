@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 
-import path from 'path'
+import path from 'path' //// 模块 ""path"" 只能在使用 "esModuleInterop" 标志时进行默认导入
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
@@ -8,7 +8,10 @@ import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-// import Inspect from 'vite-plugin-inspect'
+import ElementPlus from 'unplugin-element-plus/vite'
+
+import autoprefixer from 'autoprefixer'
+import postCssPxToRem from 'postcss-pxtorem';
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -21,14 +24,20 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.fastmock.site/mock/a6b857873f4bfc85e89a177bccc4b87f/api",
+        target: "http://127.0.0.1:3000",
+        // target: "https://www.fastmock.site/mock/a6b857873f4bfc85e89a177bccc4b87f/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/poem": {
-        target: "https://api.xygeng.cn/one",
+      // "/poem": {
+      //   target: "https://api.xygeng.cn/one",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/poem/, ""),
+      // },
+      "/img": {
+        target: "https://sm.ms/api/v2",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/poem/, ""),
+        rewrite: (path) => path.replace(/^\/img/, ""),
       },
     },
   },
@@ -55,9 +64,7 @@ export default defineConfig({
       ],
     }),
     // // 按需引入element-plus样式
-    // ElementPlus({
-    //   // options
-    // }),
+    ElementPlus({}),
 
     Components({
       dts: "src/typings/components.d.ts",

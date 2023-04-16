@@ -15,8 +15,15 @@ declare namespace ApiAuth {
 declare namespace ApiPeom {
   /** token */
   interface Poem {
-    code: number,
-    updateTime: number
+    id: number;
+    hitokoto: string;
+    from_who: string;
+  }
+  interface PoemRestriction {
+    max_length: number,
+    min_length: number,
+    c: string,
+    encode: string
   }
 }
 
@@ -51,7 +58,7 @@ declare namespace BlogArticles {
     // 文章id
     id: string,
     // 作者名称
-    username: string,
+    author: string,
     // blog标题
     title: string,
     summary: string,
@@ -66,4 +73,18 @@ declare namespace BlogArticles {
     comment_count: number,
     read_count: number,
   }
+  interface Query {
+    pageSize: number,
+    currentPage: number
+  }
+}
+declare namespace BlogImgs {
+  interface token {
+    token: string
+  }
+  interface uploadRes {
+    hash: string
+    key: string
+  }
+
 }

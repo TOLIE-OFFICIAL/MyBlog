@@ -28,7 +28,6 @@
               <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
             </el-form-item>
           </el-form>
-          <div class="empty"></div>
           <el-checkbox v-model="formInline.check">
             <div class="passport-policy-content">
               <span>我已阅读并同意 </span>
@@ -65,7 +64,7 @@ import type { FormItemRule, FormInstance } from "element-plus";
 // import { useMainStore } from "@/store";
 // import { ElMessage } from "element-plus";
 import { fetchPoem } from "@/service";
-import { poemSlice,setLocal, getLocal } from "@/utils";
+import { poemSlice, setLocal, getLocal } from "@/utils";
 
 const router = useRouter();
 
@@ -88,17 +87,6 @@ const cardStyle = {
   width: "100%",
 };
 
-const requestPoem = async () => {
-  // console.log(111);
-
-  const { data } = await fetchPoem();
-  if (data) {
-    const content: string = data.content;
-    setLocal("from", data.origin);
-    setLocal("content", poemSlice(content));
-  }
-};
-
 const formInline = reactive<Form>({
   user: "",
   pwd: "",
@@ -106,8 +94,8 @@ const formInline = reactive<Form>({
 });
 // const Logo = localStorage.getItem("Logo") || '';
 const poem = ref<PoemData>({
-  from: (getLocal("from") as string) || "tolie",
-  content: (getLocal("content") as string) || "慢一些，稳一些",
+  from: (getLocal("from_who") as string) || "tolie",
+  content: (getLocal("hitokoto") as string) || "慢一些，稳一些",
 }); // 右侧每日一言
 
 // 读到form组件信息
@@ -145,7 +133,7 @@ const rules = reactive<Rules>({
 // })
 
 onBeforeMount(() => {
-  requestPoem();
+  init();
 });
 //   let { from, content } = JSON.parse(localStorage.getItem('slogan') || '');
 //   [
@@ -157,13 +145,31 @@ onBeforeMount(() => {
 //   // }
 //   // mainStore.saveImg();
 
+const init = function () {
+  requestPoem();
+};
+
+const requestPoem = async () => {
+  const { data } = await fetchPoem({
+    max_length: 12,
+    min_length: 8,
+    c: "d",
+    encode: "json",
+  });
+  // console.log(data);
+  if (data) {
+    setLocal("from_who", data.from_who ? data.from_who : "匿名");
+    setLocal("hitokoto", data.hitokoto);
+  }
+};
+
 const onSubmit = () => {
   // console.log('submit!',form.value)
   form.value?.validate((validate: Boolean) => {
     // console.log(validate); // Boolean true / false
     if (validate) {
       router.push("/");
-      localStorage.setItem("token", "1");
+      setLocal("token", "1");
     } else {
       // ElMessage.error("请输入正确的密码");
       alert("请输入正确的密码");
@@ -201,14 +207,14 @@ const onSubmit = () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 444px;
-      height: 550px;
+      width: 180px;
+      height: 260px;
 
       // .el-card__body{
       //   width: 100%;
       // }
       &-content-title {
-        font-size: 26px;
+        font-size: 10px;
         font-weight: bold;
         margin-bottom: 20px;
       }
@@ -225,41 +231,42 @@ const onSubmit = () => {
         }
       }
 
-      .empty {
-        width: inherit;
-        height: 80px;
-      }
+      // .empty {
+      //   width: inherit;
+      //   height: 60px;
+      // }
     }
   }
 
   .web-login-right {
-    width: 519px;
+    width: 260px;
     height: inherit;
     justify-content: center;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 10px;
     background-color: #409eff;
 
     &-title {
-      width: 350px;
+      width: 200px;
+      margin-bottom: 10px;
       color: var(--el-color-white);
 
       .poem {
-        font-size: 24px;
+        font-size: 12px;
       }
 
       .writer {
         margin-top: 16px;
         text-align: right;
         font-style: italic;
-        font-size: 16px;
+        font-size: 8px;
       }
     }
 
     &-img {
-      width: 350px;
-      height: 350px;
-      background-image: url(http://pic.tolie.biz/right_layout.svg);
+      width: 160px;
+      height: 160px;
+      background-image: url('@/assets/images/loginPage-2.svg');
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;

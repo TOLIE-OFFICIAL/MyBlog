@@ -43,8 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash";
-import { fetchArticles } from "@/service";
+import debounce  from "lodash/debounce";
+// import * as _ from "lodash"
+// import { fetchArticles } from "@/service";
 import { useMainStore } from "@/store";
 
 const mainStore = useMainStore();
@@ -58,29 +59,25 @@ const debounced_update = debounce(
   { maxWait: 1000 }
 );
 
-const requestLogin = async () => {
-  // console.log(111);
-  
-  const { data } = await fetchArticles();
-  if (data) {
-    console.log("data", data); // { token: "这是token" }
-  }
-}
+// const init = async () => {
+//   const { data } = await fetchArticles();
+//   if (data) {
+//     console.log("data", data); // 获取首页展示的文章信息
+//   }
+// }
 
-onBeforeMount(()=>{
-  requestLogin()
-})
+// onBeforeMount(()=>{
+//   init()
+// })
+
 onMounted(() => {
   mainStore.windowHeight = document.body.clientHeight;
   mainStore.windowWidth = document.body.clientWidth;
   window.addEventListener("resize", debounced_update);
 });
 
+// 取消监听
 onUnmounted(() => window.removeEventListener("resize", debounced_update));
-
-// console.log(document.body.clientHeight);
-
-// const text = ref();
 </script>
 <style scoped lang="less">
 @keyframes move_wave {
@@ -211,7 +208,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
   justify-content: center;
   align-items: center;
 
-  width: 100%;
+  width: 10rem;
   height: 100vh;
   padding: 100px;
   background-image: url(@/assets/bg.jpg);
@@ -274,7 +271,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     }
 
     .waveTop {
-      background-size: 50% 100px;
+      background-size: 50% 60px;
       animation: move-wave 3s;
       -webkit-animation: move-wave 3s;
       -webkit-animation-delay: 1s;
@@ -283,13 +280,13 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     }
 
     .waveMiddle {
-      background-size: 50% 120px;
+      background-size: 50% 80px;
       animation: move_wave 10s linear infinite;
       background-image: url(@/assets/images/wave-mid.png);
     }
 
     .waveBottom {
-      background-size: 50% 100px;
+      background-size: 50% 60px;
       background-image: url(@/assets/images/wave-bot.png);
       animation: move_wave 15s linear infinite;
     }
@@ -300,11 +297,10 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     position: relative;
     justify-content: center;
     margin: auto;
-    // font-size: 3.5vw;
-    font-size: 80px;
+    font-size: 36px;
     font-weight: bold;
-    font-family: "Ubuntu", sans-serif;
-    color:var(--el-color-white);
+    // font-family: "Ubuntu", sans-serif;
+    color: var(--el-color-white);
     mix-blend-mode: lighten;
     text-transform: uppercase;
     user-select: none;
@@ -343,24 +339,11 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
       animation: glitch-loop-2 0.8s infinite ease-in-out alternate-reverse;
     }
   }
-
-  & #btn {
-    text-decoration: none;
-    display: inline-block;
-    padding: 8px 30px;
-    border-radius: 40px;
-    //background: #fff;
-    border: 1px solid #666;
-    color: #2b1055;
-    font-size: 1.5em;
-    z-index: 9;
-    transform: translateY(100px);
-  }
 }
 
 .sec {
   position: relative;
-  width: 1000px;
+  width: 520px;
   // height: 1000px;
   margin: 0 auto;
 
