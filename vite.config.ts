@@ -10,8 +10,8 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 
-import autoprefixer from 'autoprefixer'
-import postCssPxToRem from 'postcss-pxtorem';
+// import autoprefixer from 'autoprefixer'
+// import postCssPxToRem from 'postcss-pxtorem';
 
 const pathSrc = path.resolve(__dirname, 'src')
 

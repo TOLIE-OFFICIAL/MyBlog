@@ -23,6 +23,7 @@
         multiple
         clearable
         :reserve-keyword="false"
+        :multiple-limit="5"
       />
     </el-form-item>
     <el-form-item label="文章概要" prop="summary">
@@ -87,19 +88,26 @@
     </el-form-item>
 
     <el-form-item class="blog-btns">
-      <el-button type="primary" @click="submitForm(ruleFormRef)">
+      <el-button
+        :disabled="ifCoverUploaded"
+        type="primary"
+        @click="submitForm(ruleFormRef)"
+      >
         Create
       </el-button>
-      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+      <el-button :disabled="ifCoverUploaded" @click="resetForm(ruleFormRef)"
+        >Reset</el-button
+      >
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts" setup>
 import { useMainStore } from "@/store";
-import { createArticle, qnUpload, compressImage } from "@/service";
+import { createArticle, getQnToken, compressImage } from "@/service";
 // import { createArticle, getOssToken, resumeUploader } from "@/service";
-import { genFileId, type UploadRequestOptions } from "element-plus";
+import * as qiniu from "qiniu-js";
+import { genFileId, ElMessage, type UploadRequestOptions } from "element-plus";
 import moment from "moment";
 
 // import { Delete, Download, Plus, ZoomIn } from "@element-plus/icons-vue";
@@ -117,12 +125,13 @@ const mainStore = useMainStore();
 // 图片上传
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
+const ifCoverUploaded = ref(false);
 const disabled = ref(false);
 const upload = ref<UploadInstance>();
 
 // 表单校验
 const ruleFormRef = ref<FormInstance>();
-const formData = reactive({
+const formData = reactive<BlogArticles.formData>({
   title: "Hello",
   author: "tolie-official", // 作者
   tags: [],
@@ -131,7 +140,6 @@ const formData = reactive({
   summary: "",
   updateTime: "",
   createTime: "",
-  coverUrl: "",
 });
 
 const tag_options: any[] = reactive([]);
@@ -173,7 +181,9 @@ const handleExceed: UploadProps["onExceed"] = (files) => {
   upload.value!.handleStart(file);
 };
 const handleSuccess = () => {};
+
 const handleUpload = async (options: UploadRequestOptions) => {
+  ifCoverUploaded.value = true;
   // 压缩图片选项
   const compressOptions = {
     quality: 0.92,
@@ -182,42 +192,65 @@ const handleUpload = async (options: UploadRequestOptions) => {
     // maxHeight: 618
   };
 
-  const data = await compressImage(options.file, compressOptions);
-  const res = await qnUpload(data.dist, options.onProgress, options.file.name);
-  console.log(res,1111);
-  
+  const compressedFile = await compressImage(options.file, compressOptions);
+  const { data: token } = await getQnToken();
+  // console.log(data);
+
+  const putExtra = {
+    fname: options.file.name,
+  };
+
+  // let key = `images/${new Date().getTime()}${imgName}`;
+
+  const Config = {
+    useCdnDomain: true,
+    region: qiniu.region.z2,
+    checkByMD5: true,
+    chunkSize: 1,
+  };
+  if (token) {
+    console.log(token);
+
+    const observable = qiniu.upload(
+      compressedFile.dist as any,
+      null,
+      token,
+      putExtra,
+      Config
+    );
+    // const res = await qnUpload(data.dist, options.onProgress, options.file.name);
+    // 上传开始
+    const subscription = observable.subscribe({
+      next(res) {
+        // console.log("next", res);
+
+        // if (onProgress) {
+        //   file["percent"] = Number(res.total.percent.toFixed(2));
+        //   onProgress(file);
+        // }
+      },
+      error(err) {
+        // reject(err);
+        // console.log(err);
+        window.$message?.error(err.message);
+      },
+      complete(data: BlogImgs.uploadRes) {
+        // console.log(data);
+        window.$message?.success("上传成功！");
+        ifCoverUploaded.value = false;
+        formData['coverUrl'] = data.hash;
+        subscription.unsubscribe(); // 上传取消
+        // console.log(subscription);
+      },
+    });
+  }
 };
 
-// 图片上传 (分片上传)
-// const uploadPic = async () => {
-//   const { uploadToken } = await getOssToken();
-//   console.log(uploadToken);
-
-//   // 文件分片上传
-//   // resumeUploader.putFile(
-//   //   uploadToken,
-//   //   key,
-//   //   localFile,
-//   //   putExtra,
-//   //   function (respErr, respBody, respInfo) {
-//   //     if (respErr) {
-//   //       throw respErr;
-//   //     }
-//   //     if (respInfo.statusCode == 200) {
-//   //       console.log(respBody);
-//   //     } else {
-//   //       console.log(respInfo.statusCode);
-//   //       console.log(respBody);
-//   //     }
-//   //   }
-//   // );
-// };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   formData.content = encodeURI(mainStore.blogContent_md);
   formData.updateTime = moment().format("YYYY-MM-DD HH:mm:ss");
   formData.createTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  formData.coverUrl = "https://baidu.com";
   // console.log(formData);
   if (!formEl) return;
   await formEl.validate((valid, fields) => {

@@ -1,8 +1,7 @@
 import { blogRequest } from "../request";
 import { obj2query } from "@/enum/obj2query"
-import * as qiniu from "qiniu-js";
-import type { UploadRequestOptions } from "element-plus";
 import type { CompressOptions } from "qiniu-js/esm/utils/compress";
+import * as qiniu from "qiniu-js";
 // import type {Subscription} from "qiniu-js/esm/utils/observable"
 // import type {Query} from "@/typings/api"
 
@@ -18,8 +17,8 @@ import type { CompressOptions } from "qiniu-js/esm/utils/compress";
 
 /**
  *  请求首屏要展示的文章
- * @param article - 文章信息
- * @returns ？？？
+ * @param article - 分页1请求的参数
+ * @returns 按时间顺序，返回四篇文章
  */
 export function fetchArticles(data: BlogArticles.Query) {
   // return blogRequest.get<BlogArticles.Article>("/home");
@@ -30,58 +29,16 @@ export function fetchArticles(data: BlogArticles.Query) {
  */
 export async function compressImage(file: File, options: CompressOptions) {
   const data = await qiniu.compressImage(file, options)
+  // console.log('compress')
   return data;
 }
 
 /**
  * 上传图片到七牛云
  */
-export async function qnUpload(file: any, onProgress: Function, imgName: string) {
-  // 获取上传token
-  blogRequest.get("/blogPosts/oss").then(res => {
-    const token: string = res?.data;
-    // let key = `images/${new Date().getTime()}${imgName}`;
-
-    const putExtra = {
-      fname: imgName
-    };
-
-    const Config = {
-      useCdnDomain: true,
-      region: qiniu.region.z2,
-      checkByMD5: true,
-      chunkSize: 1
-    }
-
-    const observable = qiniu.upload(file, null, token, putExtra, Config)
-
-    // 上传开始
-    const subscription = observable.subscribe({
-      next(res) {
-        console.log('next');
-        
-        if (onProgress) {
-          file["percent"] = Number(res.total.percent.toFixed(2));
-          onProgress(file);
-        }
-      },
-      error(err) {
-        // reject(err);
-        console.log(err);
-
-      },
-      complete(data: BlogImgs.uploadRes) {
-        // resolve(domain + date!.key);
-        // let { hash, key } = data;
-        console.log(data);
-        // window.$message?.success("上传成功！");
-        subscription.unsubscribe() // 上传取消
-        // console.log(subscription);
-        return data;
-      },
-    });
-
-  })
+export async function getQnToken() {
+  const token = await blogRequest.get("/blogPosts/oss")
+  return token;
 }
 
 // /**
@@ -99,4 +56,13 @@ export async function qnUpload(file: any, onProgress: Function, imgName: string)
  */
 export function createArticle(data: any) {
   return blogRequest.post("/blogPosts", data);
+}
+
+/**
+ *  获取文章详情
+ *  @param id
+ *  @ruturn 特定文章的详细信息
+ */
+export function getOneArticle(id: string) {
+  return blogRequest.get("/blogPosts/" + id);
 }

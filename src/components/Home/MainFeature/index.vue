@@ -22,6 +22,7 @@
           } in articleInfo.articleInfoList"
           :key="_id"
           class="infinite-list-item"
+          @click="handleClick(_id)"
         >
           <el-card class="infinite-list-item-content" shadow="hover">
             <div class="infinite-list-item-content-left postInfo">
@@ -59,10 +60,7 @@
                 </el-icon>
               </div>
             </div>
-            <router-link
-              class="infinite-list-item-content-right"
-              to="/login"
-            ></router-link>
+            <div class="infinite-list-item-content-right"></div>
           </el-card>
         </li>
         <li v-if="loading" class="infinite-list-otherItem">Loading..</li>
@@ -81,6 +79,7 @@ import { fetchArticles } from "@/service";
 
 defineProps<{ title: string }>();
 
+const router = useRouter();
 // const ArticleCard = defineAsyncComponent(
 //   () => import("@/components/Slots/ArticleCard/index.vue")
 // );
@@ -125,6 +124,10 @@ const init = async () => {
   }
 };
 
+const handleClick = (id: string) => {
+  router.push({ path: "/detail", query: { id: id } });
+};
+
 const noMore = computed(
   () => currentPage.value * pageSize.value > articleInfo.total
 );
@@ -152,7 +155,7 @@ init();
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 120px;
+    height: 126px;
     margin: 10px 0 0 0;
     box-sizing: border-box;
 
@@ -168,6 +171,7 @@ init();
   &-content {
     width: 100%;
     height: 100%;
+    cursor: pointer;
     // background-color: aquamarine;
 
     & :deep(.el-card__body) {
@@ -183,7 +187,6 @@ init();
     }
 
     &-right {
-      display: block;
       width: 210px;
       height: inherit;
       background-image: url(@/assets/itemPic.jpg);
@@ -222,7 +225,7 @@ init();
   &-summary {
     height: 36px;
     overflow: hidden;
-    margin-bottom: 18px;
+    margin-bottom: 1px;
     font-size: 8px;
     color: #000000a8;
   }
