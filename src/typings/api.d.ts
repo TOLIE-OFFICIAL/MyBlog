@@ -13,7 +13,6 @@ declare namespace ApiAuth {
 // 获取登陆页展示poem
 // ？？没理解这个的作用
 declare namespace ApiPeom {
-  /** token */
   interface Poem {
     id: number;
     hitokoto: string;
@@ -54,9 +53,14 @@ declare namespace ApiUserManagement {
 }
 
 declare namespace BlogArticles {
+  // 文章结构
   interface Article {
     // 文章id
-    id: string,
+    _id: string,
+    coverUrl: string,
+    tags: string[]
+    // 文章内容
+    content: string,
     // 作者名称
     author: string,
     // blog标题
@@ -65,23 +69,39 @@ declare namespace BlogArticles {
     // 是否置顶
     top: string,
     // 创建时间
-    create_time: string,
+    createTime: string,
     // 更新/推送时间
-    push_time: string,
+    updateTime: string,
     // 喜欢、评论、阅读数目
-    like_count: number,
-    comment_count: number,
-    read_count: number,
+    like_count?: number,
+    comment_count?: number,
+    read_count?: number,
   }
+  // 表单上传图片信息的formData结构
+  interface formData {
+    title: string,
+    author: string, // 作者
+    tags: string[],
+    priority: boolean,
+    content: string, // markdown 格式
+    summary: string,
+    updateTime: string,
+    createTime: string,
+    coverUrl?: string,
+  }
+  // 首页分页请求博客信息的参数
   interface Query {
     pageSize: number,
     currentPage: number
   }
 }
+
 declare namespace BlogImgs {
+  // 七牛云的token
   interface token {
     token: string
   }
+  // 图片上传七牛云的返回结果
   interface uploadRes {
     hash: string
     key: string
