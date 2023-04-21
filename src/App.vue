@@ -37,5 +37,3 @@ onErrorCaptured((err, instance, info) => {
     </ElementProvider>
   </el-config-provider>
 </template>
-
-<style scoped></style>

@@ -2,7 +2,6 @@
 <!-- date:  -->
 <!-- description:  -->
 <script setup lang='ts'>
-import ArticleCard from '../../Slots/ArticleCard/index.vue'
 defineProps<{ title: string }>()
 
 </script>

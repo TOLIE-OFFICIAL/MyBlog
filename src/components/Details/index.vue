@@ -17,9 +17,11 @@
       :theme="state.theme as Themes"
     />
   </div>
+  <Comment />
 </template>
 
 <script lang="ts" setup>
+import Comment from "./Comment/index.vue";
 import { getOneArticle } from "@/service";
 import MdEditor, { type Themes } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
