@@ -11,13 +11,10 @@
       preview-theme="cyanosis"
       preview-only
     />
-    <md-catalog
-      :editor-id="state.id"
-      :scroll-element="scrollElement"
-      :theme="state.theme as Themes"
-    />
   </div>
+  <Post-Tags :tags="state.tags" />
   <Comment />
+  <Toc :id="state.id" :theme="state.theme" :content="state.content" />
 </template>
 
 <script lang="ts" setup>
@@ -29,13 +26,13 @@ import "md-editor-v3/lib/style.css";
 
 // const editorRef = ref<ExposeParam>();
 
-const MdCatalog = MdEditor.MdCatalog;
 const route = useRoute();
 
 const state = reactive({
   id: "",
   theme: "light",
   content: "",
+  tags: [""],
 });
 const id = route.query.id as string;
 
@@ -44,8 +41,10 @@ const scrollElement = document.documentElement;
 
 onBeforeMount(async () => {
   const { data }: { data: BlogArticles.Article } = await getOneArticle(id);
+  // console.log(data)
   state.content = decodeURI(data.content);
   state.id = decodeURI(data._id);
+  state.tags = data.tags ?? [];
 });
 
 // const scrollElement = document.documentElement;
@@ -70,9 +69,8 @@ onBeforeMount(async () => {
 .md-editor {
   position: relative;
   padding: 0 8px;
-  border-left: 1px solid var(--el-menu-border-color);
-  border-right: 1px solid var(--el-menu-border-color);
-  border-radius: 6px;
+  // border-bottom: 1px dashed var(--el-menu-border-color);
+  // border-radius: 6px;
 }
 #blog-content-preview-wrapper {
   position: absolute;

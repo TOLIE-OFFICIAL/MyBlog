@@ -2,7 +2,6 @@ import { blogRequest } from "../request";
 import { obj2query } from "@/enum/obj2query"
 import type { CompressOptions } from "qiniu-js/esm/utils/compress";
 import * as qiniu from "qiniu-js";
-// import type {Subscription} from "qiniu-js/esm/utils/observable"
 // import type {Query} from "@/typings/api"
 
 // /**

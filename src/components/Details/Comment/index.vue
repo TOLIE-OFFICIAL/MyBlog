@@ -7,25 +7,61 @@
       ref="ruleFormRef"
       :model="FormData"
       :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
+      label-width="56px"
+      class="comment-form"
       :size="formSize"
       status-icon
+      :inline-message="true"
     >
-      <el-form-item label="昵称" prop="name">
-        <el-input v-model="FormData.name" />
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="FormData.email" />
-      </el-form-item>
-      <el-form-item label="网址" prop="link">
-        <el-input v-model="FormData.link" />
-      </el-form-item>
-      <el-form-item label="">
-        <el-input v-model="FormData.comment" />
+      <div class="comment-form-header">
+        <el-form-item label="昵称" prop="name">
+          <el-input v-model="FormData.name" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="FormData.email" />
+        </el-form-item>
+        <el-form-item label="网址" prop="link">
+          <el-input v-model="FormData.link" />
+        </el-form-item>
+      </div>
+
+      <el-form-item class="comment-form-content" prop="content">
+        <el-input
+          v-model="FormData.content"
+          type="textarea"
+          placeholder="评论和回复支持markdown"
+        />
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item class="comment-form-bottom">
+        <el-button>
+          <a
+            href="https://guides.github.com/features/mastering-markdown/"
+            title="Markdown Guide"
+            aria-label="Markdown is supported"
+            class="comment-form-bottom-markdown"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <el-icon>
+              <i-mdi-language-markdown />
+            </el-icon>
+          </a>
+        </el-button>
+
+        <el-button
+          class="emoji-picker-icon"
+          ref="button"
+          type="default"
+          @click="handleClick"
+        >
+          <el-icon>
+            <i-mdi-emoji />
+          </el-icon>
+        </el-button>
+        <EmojiPicker class="emoji" v-show="ifShowEmoji" />
+        <div class="empty"></div>
+
         <el-button type="primary" @click="submitForm(ruleFormRef)">
           Create
         </el-button>
@@ -33,83 +69,54 @@
       </el-form-item>
     </el-form>
   </ArticleCard>
+  <div class="comment-content">
+    <ul class="comment-content-order">
+      <li class="comment-content-order-normal active">按正序</li>
+      <li class="comment-content-order-abnormal">按倒序</li>
+    </ul>
+    <div class="comment-content-empty">这是一片无人区…</div>
+    <!-- 加一个虚拟列表 -->
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
+import EmojiPicker from "vue3-emoji-picker";
+import "vue3-emoji-picker/css";
 
 const formSize = ref("default");
 
 const title = "共有5条评论";
+const ifShowEmoji = ref(false);
 
 const ruleFormRef = ref<FormInstance>();
 const FormData = reactive({
   name: "Hello",
   link: "",
   email: "",
-  comment: "",
-  date2: "",
-  delivery: false,
-  type: [],
-  resource: "",
-  desc: "",
+  content: "",
 });
 
 const rules = reactive<FormRules>({
   name: [
-    { required: true, message: "Please input Activity name", trigger: "blur" },
-    { min: 3, max: 5, message: "Length should be 3 to 5", trigger: "blur" },
+    { required: true, message: "请给自己取个昵称", trigger: "blur" },
+    { min: 6, max: 10, message: "Length should be 6 to 10", trigger: "blur" },
   ],
-  region: [
+  email: [
     {
       required: true,
-      message: "Please select Activity zone",
-      trigger: "change",
+      message: "请选择一个邮箱接收通知",
+      trigger: "blur",
     },
   ],
-  count: [
-    {
-      required: true,
-      message: "Please select Activity count",
-      trigger: "change",
-    },
-  ],
-  date1: [
-    {
-      type: "date",
-      required: true,
-      message: "Please pick a date",
-      trigger: "change",
-    },
-  ],
-  date2: [
-    {
-      type: "date",
-      required: true,
-      message: "Please pick a time",
-      trigger: "change",
-    },
-  ],
-  type: [
-    {
-      type: "array",
-      required: true,
-      message: "Please select at least one activity type",
-      trigger: "change",
-    },
-  ],
-  resource: [
-    {
-      required: true,
-      message: "Please select activity resource",
-      trigger: "change",
-    },
-  ],
-  desc: [
-    { required: true, message: "Please input activity form", trigger: "blur" },
-  ],
+  content: [{ required: true, message: "评论内容不能为空哦", trigger: "blur" }],
 });
+
+const handleClick = () => {
+  // console.log(111);
+  ifShowEmoji.value = true;
+};
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -137,5 +144,121 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
 <style scoped lang="less">
 .comment {
   width: 520px;
+  // height: 400px;
+  &-content {
+    // height: 46px;
+    &-empty {
+      width: 100%;
+      padding: 16px;
+      font-size: 6px;
+      text-align: center;
+    }
+    &-order {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 12px;
+
+      li {
+        font-size: 4px;
+        margin-left: 4px;
+        color: #999;
+        cursor: pointer;
+      }
+    }
+  }
+
+  :deep(.el-card__header) {
+    border: none;
+  }
+  :deep(.el-card__body) {
+    padding: 0 2px 2px 2px;
+    border: 0.1px solid #dedfe6;
+    border-radius: 4px;
+  }
+  &-form {
+    &-header {
+      display: flex;
+      // border-bottom: 0.1px solid #dedfe6;
+      // justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed #dedfe6;
+      // padding: 2px 0;
+      :deep(.el-form-item) {
+        flex: 1;
+        margin-bottom: 0;
+        height: 100%;
+        .el-form-item__label {
+          padding: 2px 0;
+        }
+        .el-form-item__content {
+          padding: 2px 0;
+
+          .el-input__wrapper {
+            box-shadow: 0 0 0 0px
+              var(--el-input-border-color, var(--el-border-color)) inset;
+            .el-input__inner {
+              border: 0 !important;
+
+              &:focus {
+                background: #f8f8f8;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &-content {
+      height: 52px;
+      margin: 2px 0;
+      padding-bottom: 5px;
+      :deep(.el-form-item__content) {
+        height: 100%;
+        margin-left: 0 !important;
+        .el-textarea {
+          height: 100%;
+          .el-textarea__inner {
+            border-radius: 4px;
+            box-shadow: 0 0 0 0px
+              var(--el-input-border-color, var(--el-border-color)) inset; // 去除边框
+            height: 100%;
+            resize: none;
+
+            &:focus {
+              background: #f8f8f8;
+            }
+          }
+        }
+      }
+    }
+    &-bottom {
+      position: relative;
+      margin: 2px 0;
+      :deep(.el-form-item__content) {
+        height: 100%;
+        margin-left: 0 !important;
+        justify-content: end;
+        .empty {
+          flex: 1;
+        }
+        // .emoji-picker-icon {
+
+        // }
+        .emoji {
+          position: absolute;
+          bottom: -6px;
+          left: 16px;
+          z-index: 8;
+          .v3-search {
+            display: none;
+          }
+        }
+        a {
+          color: #606266;
+        }
+      }
+    }
+  }
 }
 </style>

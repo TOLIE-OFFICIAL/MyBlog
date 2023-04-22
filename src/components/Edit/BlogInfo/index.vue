@@ -107,10 +107,9 @@ import { useMainStore } from "@/store";
 import { createArticle, getQnToken, compressImage } from "@/service";
 // import { createArticle, getOssToken, resumeUploader } from "@/service";
 import * as qiniu from "qiniu-js";
-import { genFileId, ElMessage, type UploadRequestOptions } from "element-plus";
+import { genFileId, type UploadRequestOptions } from "element-plus";
 import moment from "moment";
 
-// import { Delete, Download, Plus, ZoomIn } from "@element-plus/icons-vue";
 import type {
   UploadFile,
   FormInstance,

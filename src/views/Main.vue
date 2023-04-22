@@ -11,6 +11,7 @@
 // const scroll = (scroll: scrollPosition) => {
 //   mainStore.scrollY = scroll.scrollTop;
 // };
+
 </script>
 
 <template>
@@ -27,7 +28,7 @@
       <el-footer>
         <Footer />
       </el-footer>
-      <el-backtop target=".scrollBar > div" :right="80" :bottom="100">
+      <el-backtop target=".scrollBar > div" :right="80" :bottom="100" :visibility-height="400">
         <el-icon><i-ep-ArrowUpBold /></el-icon>
       </el-backtop>
     </el-container>
@@ -53,7 +54,7 @@ header {
   padding: 0;
   /* background: #1c0522; */
 }
-footer{
+footer {
   height: 26px;
 }
 </style>
