@@ -11,9 +11,6 @@
       index="0"
       :route="{
         name: 'home',
-        query: {
-          activePage: 'home',
-        },
       }"
       class="logo"
     >
@@ -23,9 +20,6 @@
       index="home"
       :route="{
         name: 'home',
-        query: {
-          activePage: 'home',
-        },
       }"
     >
       <el-icon>
@@ -54,9 +48,6 @@
       index="achieves"
       :route="{
         name: 'achieves',
-        query: {
-          activePage: 'achieves',
-        },
       }"
     >
       <el-icon>
@@ -68,9 +59,6 @@
       index="links"
       :route="{
         name: 'links',
-        query: {
-          activePage: 'links',
-        },
       }"
     >
       <el-icon>
@@ -82,9 +70,6 @@
       index="tags"
       :route="{
         name: 'tags',
-        query: {
-          activePage: 'tags',
-        },
       }"
     >
       <el-icon>
@@ -92,13 +77,11 @@
       </el-icon>
       标签墙
     </el-menu-item>
+
     <el-menu-item
-      index="edit"
+      index="new"
       :route="{
-        name: 'edit',
-        query: {
-          activePage: 'edit',
-        },
+        name: 'new',
       }"
     >
       <el-icon>
@@ -106,14 +89,26 @@
       </el-icon>
       写博客
     </el-menu-item>
-    <el-menu-item index="search" style="">
+
+    <el-menu-item
+      index="info"
+      :route="{
+        name: 'info',
+      }"
+    >
+      <el-icon>
+        <i-ep-User />
+      </el-icon>
+      个人主页
+    </el-menu-item>
+    <!-- 搜索 -->
+    <el-menu-item class="item-extra" style="">
       <el-icon>
         <i-ep-Search />
       </el-icon>
-      search
     </el-menu-item>
-
-    <el-menu-item class="user_info" index="">
+    <!-- 作者github主页 -->
+    <el-menu-item class="item-extra" index="">
       <a
         href="https://github.com/TOLIE-OFFICIAL"
         class="github"
@@ -123,7 +118,31 @@
           <i-mdi-github />
         </el-icon>
       </a>
-      github
+    </el-menu-item>
+    <!-- 消息中心 -->
+    <el-menu-item class="item-extra" index="">
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          <!-- Click Me -->
+          <el-badge class="mark" :value="12">
+            <template #default>
+              <el-icon class="el-icon--right"><i-mdi-bell-outline /></el-icon>
+            </template>
+          </el-badge>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item class="clearfix">
+              评论
+              <el-badge class="mark" :value="12" />
+            </el-dropdown-item>
+            <el-dropdown-item class="clearfix">
+              回复
+              <el-badge class="mark" :value="3" />
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </el-menu-item>
   </el-menu>
 </template>
@@ -132,7 +151,7 @@
 const route = useRoute();
 let activePage = computed(() => {
   // console.log(route.query.activePage as string);
-  let page = route.query.activePage;
+  let page = route.meta.activePage;
   page = page ? page + "" : "home";
   // return route.query.activePage as string;
   // console.log(page);
@@ -156,27 +175,17 @@ let activePage = computed(() => {
     no-repeat center;
   background-size: contain;
   background-color: var(--el-menu-bg-color) !important;
-  
+
   &:hover {
     cursor: pointer;
   }
 }
 
-.user_info {
+.item-extra {
   background-color: var(--el-menu-bg-color) !important;
   border-bottom: none !important;
 
-  // position: relative;
-  // align-items: center;
-  // .github {
-  // display: block;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  // width: 100%;
-  // height: 100%;
-  // z-index: 999;
-  // }
+  padding: 0;
 }
 
 .flex-grow {

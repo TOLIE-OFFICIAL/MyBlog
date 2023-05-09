@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <el-divider border-style="dashed" v-show="$route.name !== 'edit'" />
+    <el-divider border-style="dashed" v-show="ifShow" />
     <div class="siteInfo">
       <div class="siteInfo-text">
         <p class="siteInfo-text-Copyright">
@@ -21,6 +21,16 @@
   </div>
   <!-- <div class="empty"></div> -->
 </template>
+
+<script lang="ts" setup>
+const route = useRoute();
+
+// const ifShow = ref(true);
+const FooterArray = ["/create", "/home", "/"];
+console.log(route.path);
+
+const ifShow = computed(() => !FooterArray.includes(route.path));
+</script>
 
 <style scoped lang="less">
 // :deep(.el-divider--horizontal) {

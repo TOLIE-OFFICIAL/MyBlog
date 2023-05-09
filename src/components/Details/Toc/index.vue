@@ -68,7 +68,7 @@ const state = defineProps<{
   theme: string;
 }>();
 
-// console.log(state);
+console.log(state);
 </script>
 
 <style scoped lang="less">

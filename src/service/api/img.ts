@@ -13,11 +13,11 @@ export function getToken(username: string, pwd: string) {
  * @param ？
  * @returns 上传历史
  */
-export function getHistory() {
-  console.log('发送');
+// export function getHistory() {
+//   console.log('发送');
   
-  return imgRequest.get("/history")
-}
+//   return imgRequest.get("/history")
+// }
 
 // /**
 //  *  上传图片

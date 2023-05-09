@@ -1,4 +1,4 @@
-import { obj2query } from "@/enum/obj2query";
+import { obj2query } from "@/utils/common/obj2query";
 import { poemRequest } from "../request";
 
 /**

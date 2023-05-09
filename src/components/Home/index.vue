@@ -22,28 +22,17 @@
   </div>
 
   <div class="sec" id="sec">
-    <!-- 异步组件 -->
-    <Suspense>
-      <template #default>
-        <TopFeature
-          class="TopFeature"
-          title="START:DASH!!"
-          style="marginbottom: 3px"
-        ></TopFeature>
-      </template>
-      <template #fallback>111</template>
-    </Suspense>
-    <Suspense>
-      <template #default>
-        <MainFeature class="MainFeature" title="Discovery"></MainFeature>
-      </template>
-      <template #fallback>2222</template>
-    </Suspense>
+    <TopFeature
+      class="TopFeature"
+      title="START:DASH!!"
+      style="marginbottom: 3px"
+    ></TopFeature>
+    <MainFeature class="MainFeature" title="Discovery"></MainFeature>
   </div>
 </template>
 
 <script setup lang="ts">
-import debounce  from "lodash/debounce";
+import debounce from "lodash/debounce";
 // import * as _ from "lodash"
 // import { fetchArticles } from "@/service";
 import { useMainStore } from "@/store";
@@ -210,8 +199,8 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
 
   width: 10rem;
   height: 100vh;
-  padding: 100px;
-  background-image: url(@/assets/bg.jpg);
+  // padding: 88px;
+  background-image: url(@/assets/bg.jpg); // hash:FqweQuKwFSYAX484RNvNQSSlZzfy
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -244,7 +233,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     width: 100%;
     overflow: hidden;
     height: 100%;
-    bottom: -1px;
+    bottom: 0px;
 
     &.bgTop {
       z-index: 15;
@@ -271,8 +260,8 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     }
 
     .waveTop {
-      background-size: 50% 60px;
-      animation: move-wave 3s;
+      background-size: 50% 70px;
+      animation: move-wave 3s linear infinite;
       -webkit-animation: move-wave 3s;
       -webkit-animation-delay: 1s;
       animation-delay: 1s;
@@ -280,13 +269,13 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
     }
 
     .waveMiddle {
-      background-size: 50% 80px;
+      background-size: 50% 90px;
       animation: move_wave 10s linear infinite;
       background-image: url(@/assets/images/wave-mid.png);
     }
 
     .waveBottom {
-      background-size: 50% 60px;
+      background-size: 50% 70px;
       background-image: url(@/assets/images/wave-bot.png);
       animation: move_wave 15s linear infinite;
     }

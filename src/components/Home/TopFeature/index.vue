@@ -1,35 +1,62 @@
 <!-- author: TOLIE -->
 <!-- date:  -->
 <!-- description:  -->
-<script setup lang='ts'>
-defineProps<{ title: string }>()
+<script setup lang="ts">
+import { fetchTopArticles } from "@/service";
 
+const router = useRouter();
+defineProps<{ title: string }>();
+
+interface PinnedTopItem {
+  _id: string;
+  title: string;
+  summary: string;
+  coverUrl: string;
+}
+const pinnedTopData = reactive<{ list: PinnedTopItem[] }>({
+  list: [],
+});
+
+const handleClick = (id: string) => {
+  router.push({ path: "/detail", query: { id: id } });
+};
+onBeforeMount(async () => {
+  const { data }: { data: PinnedTopItem[] } = await fetchTopArticles();
+  if (data) {
+    pinnedTopData.list = data;
+  }
+});
 </script>
 
 <template>
   <ArticleCard :title="title">
-    <el-row :gutter="20" justify="space-between" align="middle" class="top-feature-list">
-      <el-col :span="6">
+    <el-row
+      :gutter="20"
+      justify="space-between"
+      align="middle"
+      class="top-feature-list"
+    >
+      <el-col
+        :span="6"
+        v-for="{ _id, title, summary,coverUrl } in pinnedTopData.list"
+        :key="_id"
+        @click="handleClick(_id)"
+      >
         <div class="grid-content ep-bg-purple">
-          <!-- <img src="@/assets/兔耳.jpg" alt="background"> -->
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content ep-bg-purple">
-          <!-- <img src="@/assets/兔耳.jpg" alt="background"> -->
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content ep-bg-purple">
-          <!-- <img src="@/assets/兔耳.jpg" alt="background"> -->
+          <BlogCover
+            :ifTop="true"
+            :imageUrl="'http://image.tolie.site/'+coverUrl"
+            :zoomFactor="1.2"
+            :summary="summary"
+            :title="title"
+          ></BlogCover>
         </div>
       </el-col>
     </el-row>
   </ArticleCard>
 </template>
 
-
-<style scoped lang='less'>
+<style scoped lang="less">
 .top-feature-list {
   width: 520px;
   height: 100px;
@@ -44,7 +71,5 @@ defineProps<{ title: string }>()
 .grid-content {
   height: 100%;
   width: 100%;
-  background: url(@/assets/兔耳.jpg) no-repeat center;
-  background-size: cover;
 }
 </style>

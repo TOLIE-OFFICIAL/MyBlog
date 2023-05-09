@@ -48,18 +48,27 @@
             </el-icon>
           </a>
         </el-button>
+        <div class="emoji-picker">
+          <el-button
+            class="emoji-picker-icon"
+            ref="button"
+            type="default"
+            @click="handleClick"
+          >
+            <el-icon>
+              <i-mdi-emoji />
+            </el-icon>
+          </el-button>
 
-        <el-button
-          class="emoji-picker-icon"
-          ref="button"
-          type="default"
-          @click="handleClick"
-        >
-          <el-icon>
-            <i-mdi-emoji />
-          </el-icon>
-        </el-button>
-        <EmojiPicker class="emoji" v-show="ifShowEmoji" />
+          <EmojiPicker
+            class="emoji"
+            :native="true"
+            :hide-search="true"
+            :disable-skin-tones="true"
+            @select="onSelectEmoji"
+            v-show="ifShowEmoji"
+          />
+        </div>
         <div class="empty"></div>
 
         <el-button type="primary" @click="submitForm(ruleFormRef)">
@@ -75,6 +84,7 @@
       <li class="comment-content-order-abnormal">按倒序</li>
     </ul>
     <div class="comment-content-empty">这是一片无人区…</div>
+    <ul class="comment-content-item"></ul>
     <!-- 加一个虚拟列表 -->
   </div>
 </template>
@@ -115,7 +125,12 @@ const rules = reactive<FormRules>({
 
 const handleClick = () => {
   // console.log(111);
-  ifShowEmoji.value = true;
+  ifShowEmoji.value = !ifShowEmoji.value;
+};
+const onSelectEmoji = (emoji: MyEmojiPicker.Emoji) => {
+  // console.log(emoji);
+  FormData.content += emoji.i;
+  ifShowEmoji.value = !ifShowEmoji.value;
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -145,11 +160,13 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
 .comment {
   width: 520px;
   // height: 400px;
+  overflow: visible !important;
+
   &-content {
     // height: 46px;
     &-empty {
       width: 100%;
-      padding: 16px;
+      padding: 52px;
       font-size: 6px;
       text-align: center;
     }
@@ -179,11 +196,8 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
   &-form {
     &-header {
       display: flex;
-      // border-bottom: 0.1px solid #dedfe6;
-      // justify-content: space-between;
       align-items: center;
       border-bottom: 1px dashed #dedfe6;
-      // padding: 2px 0;
       :deep(.el-form-item) {
         flex: 1;
         margin-bottom: 0;
@@ -219,6 +233,7 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
         .el-textarea {
           height: 100%;
           .el-textarea__inner {
+            font-size: 7px;
             border-radius: 4px;
             box-shadow: 0 0 0 0px
               var(--el-input-border-color, var(--el-border-color)) inset; // 去除边框
@@ -233,7 +248,6 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
       }
     }
     &-bottom {
-      position: relative;
       margin: 2px 0;
       :deep(.el-form-item__content) {
         height: 100%;
@@ -242,18 +256,17 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
         .empty {
           flex: 1;
         }
-        // .emoji-picker-icon {
-
-        // }
-        .emoji {
-          position: absolute;
-          bottom: -6px;
-          left: 16px;
-          z-index: 8;
-          .v3-search {
-            display: none;
+        .emoji-picker {
+          position: relative;
+          margin-left: 2px;
+          .emoji {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            z-index: 999;
           }
         }
+
         a {
           color: #606266;
         }

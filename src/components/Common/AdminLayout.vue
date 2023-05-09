@@ -35,7 +35,6 @@
 // import { useBasicLayout } from "@/composables";
 // import { useAppStore } from "@/stores";
 
-// defineOptions({ name: "AdminLayout" });
 
 // const { sidebarCollapse, toggleSidebarCollapse } = $(useAppStore());
 // const { isMobile } = $(useBasicLayout());

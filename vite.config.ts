@@ -9,11 +9,17 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
+import { FileSystemIconLoader } from "unplugin-icons/loaders";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // import autoprefixer from 'autoprefixer'
 // import postCssPxToRem from 'postcss-pxtorem';
 
+/** 本地svg图标集合名称 */
+const localIconPath = path.resolve(process.cwd()) + `/src/assets/svg-icon`;
+const collectionName = "local";
 const pathSrc = path.resolve(__dirname, 'src')
+
 
 export default defineConfig({
   resolve: {
@@ -72,7 +78,10 @@ export default defineConfig({
         // 自动注册图标组件
         IconsResolver({
           // 自动注册图标组件 how to use: <i-ep-location />
-          enabledCollections: ["ep", "mdi"], // 'ep'是element图标集在https://iconify.design/ 里的集合名, 如果你引入或`使用了其他图标集, 需要在此把其集合名写上
+          enabledCollections: ["ep", "mdi", "simple-icons"], // 'ep'是element图标集在https://iconify.design/ 里的集合名, 如果你引入或`使用了其他图标集, 需要在此把其集合名写上
+          // 本地svg图标集合
+          customCollections: [collectionName],
+          // componentPrefix: "icon", // 与element-plus的prefix配置冲突(本地图标使用: <i-local-iconName />)U+
         }),
 
         // 自动导入 Element Plus 组件
@@ -82,9 +91,24 @@ export default defineConfig({
       ],
 
     }),
-
+    // see: https://github.com/antfu/unplugin-icons
     Icons({
+      // 自动导入图标组件 图标来源: https://iconify.design/
       autoInstall: true,
+      // 本地图标
+      compiler: "vue3",
+      customCollections: {
+        [collectionName]: FileSystemIconLoader(localIconPath),
+      },
+      scale: 1,
+      defaultClass: "inline-block",
+    }),
+    // 封装本地svg图标
+    createSvgIconsPlugin({
+      iconDirs: [localIconPath],
+      symbolId: `icon-local-[dir]-[name]`,
+      inject: "body-last",
+      customDomId: "__SVG_ICON_LOCAL__",
     }),
 
     // Inspect(),

@@ -3,13 +3,14 @@
 <!-- description:  -->
 <template>
   <!-- <PagesModule title="标签墙"></PagesModule> -->
-  <div>标签墙</div>
+  <div class="tags-content">标签墙</div>
 </template>
 
-<script lang='ts' setup>
+<script lang="ts" setup></script>
 
-</script>
-
-<style scoped lang='less'>
-
+<style scoped lang="less">
+.tags-content {
+  width: 520px;
+  margin: 5px auto 0 auto;
+}
 </style>

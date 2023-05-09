@@ -1,5 +1,5 @@
 import { blogRequest } from "../request";
-import { obj2query } from "@/enum/obj2query"
+import { obj2query } from "@/utils/common/obj2query"
 import type { CompressOptions } from "qiniu-js/esm/utils/compress";
 import * as qiniu from "qiniu-js";
 // import type {Query} from "@/typings/api"
@@ -16,13 +16,42 @@ import * as qiniu from "qiniu-js";
 
 /**
  *  请求首屏要展示的文章
- * @param article - 分页1请求的参数
+ * @param data - 分页请求的参数
  * @returns 按时间顺序，返回四篇文章
  */
 export function fetchArticles(data: BlogArticles.Query) {
   // return blogRequest.get<BlogArticles.Article>("/home");
   return blogRequest.get("/blogPosts" + obj2query(data));
 }
+/**
+ *  请求首屏要展示的置顶文章
+ * @param null
+ * @returns 按更新时间顺序倒序，返回3篇置顶文章
+ */
+export function fetchTopArticles() {
+  // return blogRequest.get<BlogArticles.Article>("/home");
+  return blogRequest.get("/blogPosts/tops");
+}
+/**
+ *  请求归档页展示的所有文章数据
+ * @param data - 分页请求的参数
+ * @returns 文章部分信息
+ */
+export function fetchAchieves(data: BlogArticles.Query) {
+  // return blogRequest.get<BlogArticles.Article>("/home");
+  return blogRequest.get("/blogPosts/achieves" + obj2query(data));
+}
+
+/**
+ *  根据不同状态 请求文章
+ * @param status - 
+ * @returns 按时间顺序，文章
+ */
+export function fetchArticlesByStatus(status: string) {
+  // return blogRequest.get<BlogArticles.Article>("/home");
+  return blogRequest.get("/blogPosts/status/" + status);
+}
+
 /**
  * 上传前压缩图片
  */
@@ -51,10 +80,19 @@ export async function getQnToken() {
 /**
  *  上传博客内容
  * @param article - 文章信息
+ * @returns 新建文章的id
+ */
+export function createArticle(data: BlogArticles.formData) {
+  return blogRequest.post("/blogPosts", data);
+}
+
+/**
+ *  更新博客内容
+ * @param article - 文章信息
  * @returns ？？？
  */
-export function createArticle(data: any) {
-  return blogRequest.post("/blogPosts", data);
+export function updateArticle(id: string, data: BlogArticles.formData) {
+  return blogRequest.patch("/blogPosts/" + id, data);
 }
 
 /**
@@ -64,4 +102,12 @@ export function createArticle(data: any) {
  */
 export function getOneArticle(id: string) {
   return blogRequest.get("/blogPosts/" + id);
+}
+/**
+ *  新建置顶文章
+ *  @param updatetime
+ *  @ruturn 新建置顶文章的id
+ */
+export function createPinnedTopArticle(data: BlogArticles.formData) {
+  return blogRequest.post("/blogPosts/pinnedTop", data);
 }

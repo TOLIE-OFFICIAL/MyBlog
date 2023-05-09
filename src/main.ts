@@ -2,20 +2,41 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { setupAssets } from "./plugins";
 import App from "./App.vue";
+// import VueSocketIO from 'vue-socket.io'
+// import SocketIO from 'socket.io-client'
 import router from "./router";
 import 'amfe-flexible'
+import { getLocal } from "@/utils";
 
 const blackList = ["/edit"];
+const DefaultTitle = 'TOLIE'
+// const SocketOptions = {
+//   query: {
+//     // token: getLocal('token'),
+//   },
+// }
+
+const store = createPinia();
+// const socket = new VueSocketIO({
+//   debug: true,
+//   connection: SocketIO('http://localhost:3000', SocketOptions), // replace with your server URL
+//   vuex: {
+//     store,
+//     actionPrefix: 'socket/',
+//     mutationPrefix: 'socket/',
+//   },
+// });
+const app = createApp(App);
 
 async function setupApp() {
   // import assets: js, css, images, fonts, etc.
   setupAssets();
 
-  const app = createApp(App);
+
 
   // setup vue store plugin: pinia.
   // setupStore(app);
-  app.use(createPinia());
+  app.use(store);
 
   // vue custom directives
   // setupDirectives(app);
@@ -27,14 +48,25 @@ async function setupApp() {
   // await setupRouter(app);
   app.use(router);
 
+  // vue-socket.io
+  // app.use(socket);
+
   // 路由守卫
   router.beforeEach((to, from, next) => {
+    // 开始loading
+    window.$loadingBar?.start();
+
     if (!blackList.includes(to.path) || localStorage.getItem('token')) {
       next()
     } else {
       next('/login')
     }
   })
+  router.afterEach((to, from) => {
+    // 结束loading
+    window.$loadingBar?.done();
+    document.title = to.meta.title || DefaultTitle;
+  });
 
   // mount app
   app.mount("#app");
@@ -44,6 +76,3 @@ setupApp();
 
 // const app = createApp(App);
 // const whiteList = ["/login"];
-
-
-setupAssets();

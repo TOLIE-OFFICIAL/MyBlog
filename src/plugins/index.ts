@@ -1,3 +1,3 @@
-import setupAssets from "./assets";
+import setupAssets from "./setupAssets";
 
 export { setupAssets };

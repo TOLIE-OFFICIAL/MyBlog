@@ -2,99 +2,91 @@
 <!-- date: 2022-10-31 11:12:34 -->
 <!-- description: 归档页面 -->
 <script lang="ts" setup>
-import { getHistory } from "@/service";
-// import { MoreFilled } from "@element-plus/icons-vue";
-// import PagesModule from "../Slots/PagesModule/index.vue";
+import { fetchAchieves } from "@/service";
+import { formatDate } from "@/utils/common";
 
-const activities = [
-  {
-    content: "Event start",
-    timestamp: "2018-04-15",
-    size: "large",
-  },
-  {
-    content: "Approved",
-    timestamp: "2018-04-13",
-    color: "#0bbd87",
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-12",
-    type: "primary",
-    icon: 'MoreFilled',
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-11",
-    hollow: true,
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-11",
-    hollow: true,
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-11",
-    hollow: true,
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-11",
-    hollow: true,
-  },
-  {
-    content: "Success",
-    timestamp: "2018-04-11",
-    hollow: true,
-  },
-];
+interface blogItem {
+  _id: string;
+  title: string;
+  updateTime: string;
+  author: string;
+}
+interface Res {
+  list: blogItem[];
+  total: number;
+}
+const pageSize = ref(6);
+const currentPage = ref(1);
+const loading = ref(false);
 
-const handleClick = async () => {
-  // const token = await getToken("TOLIE", "NJA!v6KBV7ck3w@");
-  const token = await getHistory();
-  console.log(token);
+const articleInfo = reactive<Res>({
+  list: [],
+  total: 0,
+});
+
+const noMore = computed(() => {
+  return currentPage.value * pageSize.value > articleInfo.total;
+});
+const disabled = computed(() => {
+  return loading.value || noMore.value;
+});
+const init = async () => {
+  const { data }: { data: Res } = await fetchAchieves({
+    pageSize: pageSize.value,
+    currentPage: currentPage.value,
+  });
+  if (data && data.list.length > 0) {
+    articleInfo.list = articleInfo.list.concat(data.list);
+    articleInfo.total = data.total;
+    loading.value = true;
+    currentPage.value += 1;
+  }
 };
+const load = () => {
+  loading.value = false;
+  init();
+};
+onBeforeMount(() => init());
 </script>
 
 <template>
-  <el-timeline>
-    <el-timeline-item timestamp="2018/4/12" placement="top">
-      <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/12 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/12" placement="top">
-      <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/12 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/12" placement="top">
-      <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/12 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <!-- <el-timeline-item
-      v-for="(activity, index) in activities"
-      :key="index"
-      :icon="activity.icon"
-      :type="activity.type"
-      :color="activity.color"
-      :size="activity.size"
-      :hollow="activity.hollow"
-      :timestamp="activity.timestamp"
+  <el-timeline
+    v-infinite-scroll="load"
+    :infinite-scroll-delay="400"
+    class="achieve"
+  >
+    <el-timeline-item
+      v-for="{ _id, title, author, updateTime } in articleInfo.list"
+      :timestamp="formatDate(updateTime)"
+      :key="_id"
+      placement="top"
     >
-      {{ activity.content }}
-    </el-timeline-item> -->
+      <el-card>
+        <h4>{{ title }}</h4>
+        <p>{{ author }} updated {{ formatDate(updateTime) }}</p>
+      </el-card>
+    </el-timeline-item>
+    <li class="info-loading" v-loading="!disabled" v-show="!disabled"></li>
+    <!-- <li v-if="loading" class="infinite-list-otherItem">Loading..</li>  -->
+    <li class="info-noMore" v-show="noMore">这里是世界的尽头～</li>
   </el-timeline>
-  <button @click="handleClick">getToken</button>
 </template>
 
 <style scoped lang="less">
 :deep(.el-timeline-item) {
   width: 50%;
+}
+.achieve {
+  width: 520px;
+  margin: 5px auto 0 auto;
+}
+.info {
+  min-height: 32px;
+  &-noMore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8px;
+  }
 }
 </style>

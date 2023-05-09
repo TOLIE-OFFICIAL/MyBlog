@@ -89,13 +89,13 @@
 
     <el-form-item class="blog-btns">
       <el-button
-        :disabled="ifCoverUploaded"
+        :disabled="ifUploaded"
         type="primary"
         @click="submitForm(ruleFormRef)"
       >
         Create
       </el-button>
-      <el-button :disabled="ifCoverUploaded" @click="resetForm(ruleFormRef)"
+      <el-button :disabled="ifUploaded" @click="resetForm(ruleFormRef)"
         >Reset</el-button
       >
     </el-form-item>
@@ -104,8 +104,13 @@
 
 <script lang="ts" setup>
 import { useMainStore } from "@/store";
-import { createArticle, getQnToken, compressImage } from "@/service";
-// import { createArticle, getOssToken, resumeUploader } from "@/service";
+import {
+  createArticle,
+  getQnToken,
+  compressImage,
+  getOneArticle,
+  updateArticle,
+} from "@/service";
 import * as qiniu from "qiniu-js";
 import { genFileId, type UploadRequestOptions } from "element-plus";
 import moment from "moment";
@@ -118,13 +123,15 @@ import type {
   UploadProps,
   UploadRawFile,
 } from "element-plus";
+import router from "@/router";
 
 const mainStore = useMainStore();
-
+const route = useRoute();
+const id = route.query?.id as string;
 // 图片上传
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
-const ifCoverUploaded = ref(false);
+const ifUploaded = ref(false);
 const disabled = ref(false);
 const upload = ref<UploadInstance>();
 
@@ -159,6 +166,20 @@ const rules = reactive<FormRules>({
   summary: [{ required: true, message: "请输入文章摘要", trigger: "blur" }],
 });
 
+onBeforeMount(async () => {
+  if (id) {
+    const { data }: { data: BlogArticles.Article } = await getOneArticle(id);
+    console.log(data);
+    mainStore.blogContent_md = decodeURI(data.content);
+    formData.title = data.title;
+    formData.author = data.author;
+    formData.coverUrl = data.coverUrl;
+    formData.summary = data.summary;
+    formData.tags = data.tags;
+    formData.id = data._id;
+    formData.createTime = data.createTime;
+  }
+});
 // 封面上传相关方法
 const handleRemove = (file: UploadFile) => {
   console.log(file);
@@ -182,7 +203,7 @@ const handleExceed: UploadProps["onExceed"] = (files) => {
 const handleSuccess = () => {};
 
 const handleUpload = async (options: UploadRequestOptions) => {
-  ifCoverUploaded.value = true;
+  ifUploaded.value = true;
   // 压缩图片选项
   const compressOptions = {
     quality: 0.92,
@@ -208,7 +229,7 @@ const handleUpload = async (options: UploadRequestOptions) => {
     chunkSize: 1,
   };
   if (token) {
-    console.log(token);
+    // console.log(token);
 
     const observable = qiniu.upload(
       compressedFile.dist as any,
@@ -222,7 +243,6 @@ const handleUpload = async (options: UploadRequestOptions) => {
     const subscription = observable.subscribe({
       next(res) {
         // console.log("next", res);
-
         // if (onProgress) {
         //   file["percent"] = Number(res.total.percent.toFixed(2));
         //   onProgress(file);
@@ -232,12 +252,13 @@ const handleUpload = async (options: UploadRequestOptions) => {
         // reject(err);
         // console.log(err);
         window.$message?.error(err.message);
+        ifUploaded.value = false;
       },
       complete(data: BlogImgs.uploadRes) {
         // console.log(data);
         window.$message?.success("上传成功！");
-        ifCoverUploaded.value = false;
-        formData['coverUrl'] = data.hash;
+        ifUploaded.value = false;
+        formData["coverUrl"] = data.hash;
         subscription.unsubscribe(); // 上传取消
         // console.log(subscription);
       },
@@ -245,22 +266,52 @@ const handleUpload = async (options: UploadRequestOptions) => {
   }
 };
 
-
 const submitForm = async (formEl: FormInstance | undefined) => {
+  ifUploaded.value = true;
   formData.content = encodeURI(mainStore.blogContent_md);
+  formData.createTime = formData.id
+    ? formData.createTime
+    : moment().format("YYYY-MM-DD HH:mm:ss");
   formData.updateTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  formData.createTime = moment().format("YYYY-MM-DD HH:mm:ss");
   // console.log(formData);
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      // console.log(formData);
-      createArticle(formData);
-      console.log("submit!");
-      // 执行提交
+      // 更新
+      if (formData.id) {
+        const { data } = await updateArticle(formData.id, formData);
+        console.log(data);
+        if (data) {
+          window.$message.success("更新成功");
+          ifUploaded.value = false;
+          router.push({
+            path: "/published",
+            state: {
+              title: formData.title,
+              id: data,
+            },
+          });
+        }
+      }
+      // 新建
+      else {
+        const { data } = await createArticle(formData);
+        if (data) {
+          window.$message.success("发布成功");
+          ifUploaded.value = false;
+          router.push({
+            path: "/published",
+            state: {
+              title: formData.title,
+              id: data,
+            },
+          });
+        }
+      }
     } else {
-      console.log("error submit!", fields);
       // 验证未通过
+      window.$message.error("error submit!", fields);
+      ifUploaded.value = false;
     }
   });
 };

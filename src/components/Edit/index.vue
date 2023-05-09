@@ -67,8 +67,7 @@ const sanitize = (html: string) => {
 <style lang="less" scoped>
 .cover {
   position: relative;
-  height: calc(100vh - 52px);
-  margin-top: 26px;
+  height: calc(100vh - 26px);
 
   .md-editor {
     height: 100%;
@@ -82,7 +81,7 @@ const sanitize = (html: string) => {
     justify-content: center;
     align-items: flex-start;
     padding: 14px 24px 0 24px;
-    height: 200px;
+    // height: 200px;
     margin-top: -100px;
     border: 1px solid var(--el-border-color);
     border-radius: 6px;

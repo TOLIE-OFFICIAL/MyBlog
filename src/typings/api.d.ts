@@ -67,7 +67,7 @@ declare namespace BlogArticles {
     title: string,
     summary: string,
     // 是否置顶
-    top: string,
+    priority: boolean,
     // 创建时间
     createTime: string,
     // 更新/推送时间
@@ -77,8 +77,21 @@ declare namespace BlogArticles {
     comment_count?: number,
     read_count?: number,
   }
+  // 后台创作者空间 展示的article结构
+  interface partArticle {
+    _id: string,
+    title: string,
+    updateTime: string,
+    content?: string,
+    tags?: string[]
+    // 喜欢、评论、阅读数目
+    like_count?: number,
+    comment_count?: number,
+    read_count?: number,
+  }
   // 表单上传图片信息的formData结构
   interface formData {
+    id?: string
     title: string,
     author: string, // 作者
     tags: string[],

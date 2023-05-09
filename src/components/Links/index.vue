@@ -4,8 +4,8 @@ const cb = () => {};
 
 const open2 = () => {
   console.log(111);
-  
-  window.$message.success('!!!')
+
+  window.$message.success("!!!");
   // ElMessage({
   //   message: "Congrats, this is a success message.",
   //   type: "success",
@@ -17,9 +17,16 @@ const open2 = () => {
 </script>
 
 <template>
-  <div @click="open2">友人账</div>
-  <button @click="open2">11</button>
-  <slot></slot>
+  <div class="links-contnt">
+    <div @click="open2">友人账</div>
+    <button @click="open2">11</button>
+    <slot></slot>
+  </div>
 </template>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.links-contnt {
+  width: 520px;
+  margin: 5px auto 0 auto;
+}
+</style>
