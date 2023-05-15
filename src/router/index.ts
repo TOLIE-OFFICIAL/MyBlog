@@ -17,7 +17,16 @@ const router = createRouter({
           },
           component: () => import("@/components/Home/index.vue"),
         },
-
+        // 在线聊天
+        {
+          path: "/chat",
+          name: "chat",
+          meta: {
+            title: "私信",
+            activePage: "chat"
+          },
+          component: () => import("@/components/ChatBox/index.vue"),
+        },
         // 发布/更新完成
         {
           path: "/published",
@@ -56,16 +65,7 @@ const router = createRouter({
       name: "noCarousel",
       component: () => import("@/views/CommonView/NoCarousel.vue"),
       children: [
-        // 在线聊天
-        {
-          path: "/chat",
-          name: "chat",
-          meta: {
-            title: "友链",
-            activePage: "chat"
-          },
-          component: () => import("@/components/ChatBox/index.vue"),
-        },
+
         // 个人主页
         {
           path: "/info",

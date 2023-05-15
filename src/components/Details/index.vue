@@ -2,7 +2,7 @@
 <!-- date: 2022-12-14 16:45:06 -->
 <!-- description: blog详细内容页面 -->
 <template>
-  <div class="content" v-if="state.id">
+  <div class="content" v-if="ifError">
     <md-editor
       v-loading="loading"
       v-model="state.content"
@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import Comment from "./Comment/index.vue";
-import NotFound from "@/views/SystemView/NotFound/index.vue"
+import NotFound from "@/views/SystemView/NotFound/index.vue";
 import { getOneArticle } from "@/service";
 import MdEditor, { type Themes } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
@@ -29,7 +29,6 @@ import "md-editor-v3/lib/style.css";
 
 // const editorRef = ref<ExposeParam>();
 // const data = ref<BlogArticles.partArticle>
-const router = useRouter();
 const route = useRoute();
 const loading = ref(true);
 const state = reactive({
@@ -40,20 +39,20 @@ const state = reactive({
 });
 const id = route.query.id as string;
 
+const ifError = ref(true);
 // 仅预览模式中，整页滚动时，设置为document.documentElement。
 const scrollElement = document.documentElement;
 
 onBeforeMount(async () => {
   const { data }: { data: BlogArticles.partArticle } = await getOneArticle(id);
-  // data = await getOneArticle(id);
   if (data) {
-    console.log(data);
+    // console.log(data);
     state.content = decodeURI(data.content as string);
     state.id = decodeURI(data._id);
     state.tags = data.tags ?? [];
     loading.value = false;
   } else {
-    router.push("not-found-page");
+    ifError.value = false;
   }
 });
 

@@ -167,9 +167,9 @@ const rules = reactive<FormRules>({
 });
 
 onBeforeMount(async () => {
-  if (id) {
+  if (route.name == "edit" && id) {
     const { data }: { data: BlogArticles.Article } = await getOneArticle(id);
-    console.log(data);
+    // console.log(data);
     mainStore.blogContent_md = decodeURI(data.content);
     formData.title = data.title;
     formData.author = data.author;
@@ -178,6 +178,8 @@ onBeforeMount(async () => {
     formData.tags = data.tags;
     formData.id = data._id;
     formData.createTime = data.createTime;
+  } else {
+    mainStore.blogContent_md = "# Hello Editor";
   }
 });
 // 封面上传相关方法
