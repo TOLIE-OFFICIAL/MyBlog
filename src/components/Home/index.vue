@@ -200,7 +200,7 @@ onUnmounted(() => window.removeEventListener("resize", debounced_update));
   width: 10rem;
   height: 100vh;
   // padding: 88px;
-  background-image: url(@/assets/bg.jpg); // hash:FqweQuKwFSYAX484RNvNQSSlZzfy
+  background-image: url(@/assets/bg.webp); // hash:FqweQuKwFSYAX484RNvNQSSlZzfy
   background-size: cover;
   background-repeat: no-repeat;
 

@@ -171,7 +171,9 @@ let activePage = computed(() => {
   margin-left: 10px;
   color: var(--el-menu-text-color);
   border-bottom: none !important;
-  background: url("https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png")
+  // background: url("https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png")
+  //   no-repeat center;
+  background: url("@/assets/Logo.webp")
     no-repeat center;
   background-size: contain;
   background-color: var(--el-menu-bg-color) !important;
