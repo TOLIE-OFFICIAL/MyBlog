@@ -35,7 +35,7 @@
     </el-form-item>
     <el-form-item label="文章封面">
       <el-upload
-        accept="image/jpeg,image/jpg,image/gif,image/png,image/bmp"
+        accept="image/jpeg,image/jpg,image/gif,image/png,image/bmp,image/webp"
         action="#"
         :limit="1"
         :on-exceed="handleExceed"

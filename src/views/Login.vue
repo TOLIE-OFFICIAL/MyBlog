@@ -1,53 +1,82 @@
 <template>
   <div class="layout-box">
     <div class="web-login-left">
-      <div class="logo">
-        <!-- <img v-once class="logo-image" :src="https://s2.loli.net/2022/10/19/f5vjiHKwVDTpX7U.png" alt="Logo" /> -->
-      </div>
-      <el-card class="box-card login-box" :body-style="cardStyle">
-        <div class="login-box-content flex-column">
-          <h3 class="login-box-content-title">欢迎使用我的博客</h3>
+      <!-- <div> -->
+      <el-card class="box-card login-box">
+        <transition
+          v-show="ifSignUp && ifAnimate"
+          @after-leave="handleChangeFinish"
+          enter-active-class="animate__animated animate__fadeInRight animate__faster"
+          leave-active-class="animate__animated animate__fadeOutLeft animate__faster"
+        >
+          <div class="login-box-content">
+            <h3 class="login-box-content-title">欢迎使用我的博客</h3>
+            <el-form
+              ref="form"
+              :model="loginForm"
+              class="login-box-content-form"
+              label-position="top"
+              :rules="rules"
+            >
+              <el-form-item label="账号：" prop="email">
+                <el-input v-model="loginForm.email" placeholder="请输入账号" />
+              </el-form-item>
+              <el-form-item label="密码：" prop="password">
+                <el-input
+                  v-model="loginForm.password"
+                  type="password"
+                  placeholder="请输入密码"
+                />
+              </el-form-item>
+              <el-form-item class="submit" size="large">
+                <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-checkbox v-model="loginForm.check">
+                  <div class="passport-policy-content">
+                    <span>我已阅读并同意 </span>
+                    <el-link type="primary">服务协议</el-link>
+                    <span> 和 </span>
+                    <el-link type="primary">隐私政策</el-link>
+                  </div>
+                </el-checkbox>
+              </el-form-item>
+            </el-form>
+
+            <el-divider>其他方式</el-divider>
+            <el-button round>
+              <el-icon class="el-icon--left" color="#2EA121">
+                <!-- 自动导入必须遵循名称格式
+                 {prefix：默认为i}-{collection：图标集合的名称}-{icon：图标名称} 
+              -->
+                <i-ep-Cloudy />
+              </el-icon>
+              OSS登陆
+            </el-button>
+          </div>
+        </transition>
+        <transition
+          v-show="!ifSignUp && ifAnimate"
+          @after-leave="handleChangeFinish"
+          enter-active-class="animate__animated animate__fadeInLeft animate__faster"
+          leave-active-class="animate__animated animate__fadeOutRight animate__faster"
+        >
           <el-form
             ref="form"
-            :model="formInline"
+            :model="signForm"
             class="login-box-content-form"
             label-position="top"
             :rules="rules"
           >
-            <el-form-item label="账号：" prop="user">
-              <el-input v-model="formInline.user" placeholder="请输入账号" />
-            </el-form-item>
-            <el-form-item label="密码：" prop="pwd">
-              <el-input
-                v-model="formInline.pwd"
-                type="password"
-                placeholder="请输入密码"
-              />
-            </el-form-item>
-            <el-form-item class="submit" size="large">
-              <el-button type="primary" @click="onSubmit"> 登陆 </el-button>
-            </el-form-item>
+            111
           </el-form>
-          <el-checkbox v-model="formInline.check">
-            <div class="passport-policy-content">
-              <span>我已阅读并同意 </span>
-              <el-link type="primary">服务协议</el-link>
-              <span> 和 </span>
-              <el-link type="primary">隐私政策</el-link>
-            </div>
-          </el-checkbox>
-          <el-divider>其他方式</el-divider>
-          <el-button round>
-            <el-icon class="el-icon--left" color="#2EA121">
-              <!-- 自动导入必须遵循名称格式
-                 {prefix：默认为i}-{collection：图标集合的名称}-{icon：图标名称} 
-              -->
-              <i-ep-Cloudy />
-            </el-icon>
-            OSS登陆
-          </el-button>
-        </div>
+        </transition>
       </el-card>
+      <div class="signUp" :style="{ fontSize: '14px' }">
+        还没有账号？
+        <span @click="handleSignUp">立即注册</span>
+      </div>
+      <!-- </div> -->
     </div>
     <div class="web-login-right flex-column">
       <div class="web-login-right-title" :poem="poem">
@@ -65,13 +94,17 @@ import type { FormItemRule, FormInstance } from "element-plus";
 // import { ElMessage } from "element-plus";
 import { fetchPoem } from "@/service";
 import { poemSlice, setLocal, getLocal } from "@/utils";
-
 const router = useRouter();
 
 type Form = {
-  user: string;
-  pwd: string;
+  email: string;
+  password: string;
   check: boolean;
+};
+type SignForm = {
+  email: string;
+  password: string;
+  check?: boolean;
 };
 type PoemData = {
   from: string;
@@ -82,16 +115,19 @@ type Rules = {
   [K in keyof Form]: Array<FormItemRule>;
 };
 
-const cardStyle = {
-  padding: "40px 40px 0 40px",
-  width: "100%",
-};
+const ifSignUp = ref(true);
+const ifAnimate = ref(true); // 可以动画吗
 
-const formInline = reactive<Form>({
-  user: "",
-  pwd: "",
+const loginForm = reactive<Form>({
+  email: "",
+  password: "",
   check: false,
 });
+const signForm = reactive<SignForm>({
+  email: "",
+  password: "",
+});
+
 // const Logo = localStorage.getItem("Logo") || '';
 const poem = ref<PoemData>({
   from: (getLocal("from_who") as string) || "tolie",
@@ -101,7 +137,7 @@ const poem = ref<PoemData>({
 // 读到form组件信息
 const form = ref<FormInstance>();
 const rules = reactive<Rules>({
-  user: [
+  email: [
     {
       required: true,
       message: "请输入用户名",
@@ -109,7 +145,7 @@ const rules = reactive<Rules>({
       type: "string",
     },
   ],
-  pwd: [
+  password: [
     {
       required: true,
       message: "请输入密码",
@@ -124,31 +160,22 @@ const rules = reactive<Rules>({
   ],
 });
 
-// getPoem({
-//   max_length: 10,
-//   c: "d",
-//   encode: "json",
-// }).then((data) => {
-//   localStorage.setItem('slogan', JSON.stringify(data))
-// })
-
 onBeforeMount(() => {
   init();
 });
-//   let { from, content } = JSON.parse(localStorage.getItem('slogan') || '');
-//   [
-//
-//   ] = [from, content];
-// })
-//   // if (!localStorage.getItem("Logo")) {
-//   //   saveImg("Logo");
-//   // }
-//   // mainStore.saveImg();
 
 const init = function () {
   requestPoem();
 };
+const handleChangeFinish = () => {
+  console.log("finish");
 
+  ifAnimate.value = true;
+};
+const handleSignUp = () => {
+  ifAnimate.value = false;
+  ifSignUp.value = !ifSignUp.value;
+};
 const requestPoem = async () => {
   const { data } = await fetchPoem({
     max_length: 12,
@@ -187,29 +214,27 @@ const onSubmit = () => {
   align-items: center;
 
   .web-login-left {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     flex: 1;
     height: inherit;
 
-    .logo {
-      width: 130px;
-      margin-left: 20px;
-      margin-top: 20px;
-
-      img {
-        width: inherit;
-      }
+    .box-card {
+      padding: 10px 10px 0 10px;
+      width: 100%;
     }
 
     .login-box {
-      position: absolute;
       align-items: center;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       width: 180px;
-      height: 260px;
-
+      height: 220px;
+      &-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
       // .el-card__body{
       //   width: 100%;
       // }
@@ -236,8 +261,21 @@ const onSubmit = () => {
       //   height: 60px;
       // }
     }
+    .signUp-box {
+      align-items: center;
+      width: 180px;
+      height: 220px;
+    }
   }
-
+  .signUp {
+    margin-top: 6px;
+    color: #606266;
+    text-align: center;
+    span {
+      cursor: pointer;
+      color: #409eff;
+    }
+  }
   .web-login-right {
     width: 260px;
     height: inherit;
@@ -266,7 +304,7 @@ const onSubmit = () => {
     &-img {
       width: 160px;
       height: 160px;
-      background-image: url('@/assets/images/loginPage-2.svg');
+      background-image: url("@/assets/images/loginPage-2.svg");
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;

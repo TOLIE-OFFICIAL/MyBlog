@@ -78,44 +78,54 @@
           </div>
         </div>
       </el-scrollbar>
-      <div class="chatbox-content-input">
-        <el-input
-          v-model="state.inputMessage"
-          placeholder="发个消息聊聊呗～"
-          @keyup.enter="sendMessage"
-        >
-          <template #suffix>
-            <div class="emoji-picker">
-              <el-button
-                class="emoji-picker-icon"
-                ref="button"
-                type="default"
-                @click="handleEmoji"
-              >
-                <el-icon>
-                  <i-mdi-emoji />
-                </el-icon>
-              </el-button>
-              <EmojiPicker
-                class="emoji"
-                :native="true"
-                :hide-search="true"
-                :disable-skin-tones="true"
-                @select="onSelectEmoji"
-                v-show="ifShowEmoji"
-              />
-            </div>
-          </template>
-        </el-input>
+      <el-form
+        ref="FormRef"
+        :model="FormData"
+        :rules="rules"
+        class="chatbox-content-input"
+      >
+        <el-form-item prop="message">
+          <el-input
+            class="chatbox-content-input-message"
+            v-model="FormData.message"
+            placeholder="发个消息聊聊呗～"
+            @keyup.enter="onSubmit"
+          >
+            <template #suffix>
+              <div class="emoji-picker">
+                <el-button
+                  class="emoji-picker-icon"
+                  ref="button"
+                  type="default"
+                  @click="handleEmoji"
+                >
+                  <el-icon>
+                    <i-mdi-emoji />
+                  </el-icon>
+                </el-button>
+                <EmojiPicker
+                  class="emoji"
+                  :native="true"
+                  :hide-search="true"
+                  :disable-skin-tones="true"
+                  @select="onSelectEmoji"
+                  v-show="ifShowEmoji"
+                />
+              </div>
+            </template>
+          </el-input>
+        </el-form-item>
 
-        <el-button
-          class="chatbox-content-input-submit"
-          type="primary"
-          @click="sendMessage"
-        >
-          发送
-        </el-button>
-      </div>
+        <el-form-item>
+          <el-button
+            class="chatbox-content-input-submit"
+            type="primary"
+            @click="onSubmit(FormRef)"
+          >
+            发送
+          </el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -125,14 +135,24 @@
 // const socket = inject('$socket');
 // import VueSocketIO from "vue-socket.io";
 // import SocketIO from "socket.io-client";
+import type { FormInstance, FormRules } from "element-plus";
 import chatBubble from "@/components/ChatBox/ChatBubble/index.vue";
 import EmojiPicker from "vue3-emoji-picker";
 import { io } from "socket.io-client";
 import "vue3-emoji-picker/css";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:3002");
 
 const ifShowEmoji = ref(false);
+const FormRef = ref<FormInstance>();
+const FormData = reactive<Chat.Msg>({
+  senderId: "",
+  receiverId: "",
+  message: "",
+});
+const rules = reactive<FormRules>({
+  message: [{ required: true, message: "消息不可以为空", trigger: "blur" }],
+});
 const activeFriend = "";
 const searchInput = "";
 const friendList = {
@@ -148,49 +168,50 @@ const activeFriendMessages = {
   index: 111,
 };
 
-const sendMessage = () => {
+const handleClick = () => {
   console.log(111);
 };
 const onSelectEmoji = (emoji: MyEmojiPicker.Emoji) => {
   // console.log(emoji);
-  state.inputMessage += emoji.i;
+  FormData.message += emoji.i;
   ifShowEmoji.value = !ifShowEmoji.value;
 };
 const handleEmoji = () => {
   console.log("emo");
   ifShowEmoji.value = !ifShowEmoji.value;
 };
-const handleClick = () => {
-  console.log("click");
+const onSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log("submit");
+      socket.emit("chat", FormData, (res: any) => {
+        console.log(res);
+      });
+    } else {
+      console.log(1111);
+
+      window.$message.error("发送失败");
+      // console.log("error submit!", fields);
+    }
+  });
 };
+
+// };
 
 onMounted(() => {
   // Send a socket message
-  socket.emit("createChat", (res: any) => {
-    console.log(res);
-  });
+  // socket.emit("createChat", (res: any) => {
+  //   console.log(res);
+  // });
 
   // Receive a socket message
   socket.on("message", (data) => {
     console.log(data);
   });
-});
-// props: {
-//   title: {
-//     type: String,
-//     required: true,
-//   },
-//   messages: {
-//     type: Array,
-//     required: true,
-//   },
-//   sendMessage: {
-//     type: Function,
-//     required: true,
-//   },
-// },
-const state = reactive({
-  inputMessage: "",
+  socket.on("chat", (data) => {
+    console.log(data);
+  });
 });
 </script>
 
@@ -199,7 +220,7 @@ const state = reactive({
   display: flex;
   width: 520px;
   margin: 5px auto 0 auto;
-  height: calc(100vh - 57px);
+  height: calc(100vh - 52px);
   font-size: 8px;
   color: #606266;
   &-divider {
@@ -261,12 +282,17 @@ const state = reactive({
       height: 18px;
       width: 100%;
       margin-bottom: 10px;
-      :deep(.el-input) {
+      // &-message{
+      //   width: 90%;
+      // }
+      :deep(.emoji-picker-icon) {
+        border: none;
+      }
+      :deep(.el-form-item) {
+        margin-bottom: 0;
+      }
+      :deep(.is-required) {
         width: 90%;
-        .el-input__inner {
-          // height: 100%;
-          // font-size: 8px;
-        }
       }
       &-submit {
         height: 100%;

@@ -9,5 +9,5 @@ import { poemRequest } from "../request";
 export function fetchPoem(data: ApiPeom.PoemRestriction) {
   // console.log(data);
 
-  return poemRequest.post<ApiPeom.Poem>("/poem-every-day", data)
+  return poemRequest.post<ApiPeom.Poem>("/poemEveryDay", data)
 }

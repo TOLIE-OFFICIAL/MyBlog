@@ -9,8 +9,8 @@
       v-show="blogFormShow"
       @after-enter="handleIconChange"
       @after-leave="handleIconChange"
-      enter-active-class="animate__animated animate__slideInRight"
-      leave-active-class="animate__animated animate__slideOutRight"
+      enter-active-class="animate__animated animate__slideInRight animate__faster"
+      leave-active-class="animate__animated animate__slideOutRight animate__faster"
     >
       <BlogInfo class="info" />
     </transition>

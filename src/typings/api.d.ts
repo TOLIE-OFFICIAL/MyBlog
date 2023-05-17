@@ -28,12 +28,15 @@ declare namespace ApiPeom {
 
 declare namespace ApiUserManagement {
   interface User {
-    /** 用户id */
-    id: string;
-    /** 用户名 */
-    username: string | null;
-    /** 用户年龄 */
-    age: number | null;
+    id?: string;
+    name: string;
+    email: string;
+    password: string;
+    avatar?: string;
+    isDel?: boolean;
+    IsBan?: boolean;
+    createTimez?: Date;
+    lastLogin?: Date;
     /**
      * 用户性别
      *  - MALE: 男
@@ -41,7 +44,7 @@ declare namespace ApiUserManagement {
      */
     gender: "MALE" | "FEMALE" | null;
     /** 用户手机号 */
-    phone: string;
+    // phone: string;
     /**
      * 用户状态
      *  - ENABLE: 启用
@@ -120,4 +123,12 @@ declare namespace BlogImgs {
     key: string
   }
 
+}
+
+declare namespace Chat {
+  interface Msg {
+    senderId: string
+    receiverId: string
+    message: string
+  }
 }
