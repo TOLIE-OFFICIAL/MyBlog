@@ -6,7 +6,8 @@ import App from "./App.vue";
 // import SocketIO from 'socket.io-client'
 import router from "./router";
 import 'amfe-flexible'
-import { GetNowDate } from '@/utils'
+import { getLocal, GetNowDate } from '@/utils'
+import { EnumStorageKey } from "./enum";
 
 const blackList = ["/edit",'/detail'];
 const DefaultTitle = 'TOLIE'
@@ -57,7 +58,7 @@ async function setupApp() {
     // 开始loading
     window.$loadingBar?.start();
 
-    if (!blackList.includes(to.path) || localStorage.getItem('token')) {
+    if (!blackList.includes(to.path) || getLocal(EnumStorageKey.token)) {
       next()
     } else {
       next('/login')

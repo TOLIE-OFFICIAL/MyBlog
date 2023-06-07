@@ -179,7 +179,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 
       if (data.data) {
         // console.log(res);
-        setLocal("token", data.data);
+        setLocal("__TOKEN__", data.data);
         router.push("/");
       } else {
         window.$message.error(data.message);

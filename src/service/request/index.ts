@@ -7,9 +7,9 @@ export const mockRequest = createRequest({ baseURL: "/mock" });
 // 博客本身相关的请求
 export const blogRequest = createRequest({
   baseURL: "/api",
-  headers: {
-    'Authorization': getLocal("token") || ""
-  }
+  // headers: {
+  //   'Authorization': getLocal("token") || ""
+  // }
 });
 
 // 登陆页面的每日一言
