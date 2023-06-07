@@ -13,7 +13,7 @@
       preview-only
     />
     <Post-Tags :tags="state.tags" />
-    <Comment />
+    <Comment :id="state.id"/>
     <Toc :id="state.id" :theme="state.theme" :content="state.content" />
   </div>
   <not-found v-else></not-found>
@@ -48,7 +48,7 @@ onBeforeMount(async () => {
   if (data) {
     // console.log(data);
     state.content = decodeURI(data.content as string);
-    state.id = decodeURI(data._id);
+    state.id = data._id;
     state.tags = data.tags ?? [];
     loading.value = false;
   } else {

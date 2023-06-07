@@ -13,7 +13,7 @@
       status-icon
       :inline-message="true"
     >
-      <div class="comment-form-header">
+      <!-- <div class="comment-form-header">
         <el-form-item label="昵称" prop="name">
           <el-input v-model="FormData.name" />
         </el-form-item>
@@ -23,13 +23,15 @@
         <el-form-item label="网址" prop="link">
           <el-input v-model="FormData.link" />
         </el-form-item>
-      </div>
+      </div> -->
 
       <el-form-item class="comment-form-content" prop="content">
-        <el-input
+        <md-editor
           v-model="FormData.content"
-          type="textarea"
-          placeholder="评论和回复支持markdown"
+          :sanitize="sanitize"
+          :preview="false"
+          :footers="[]"
+          :toolbars="[]"
         />
       </el-form-item>
 
@@ -92,34 +94,36 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
+import MdEditor from "md-editor-v3";
+import sanitizeHtml from "sanitize-html";
 import EmojiPicker from "vue3-emoji-picker";
 import "vue3-emoji-picker/css";
+import "md-editor-v3/lib/style.css";
+import { GetNowDate } from "@/utils";
 
 const formSize = ref("default");
+
+const BlogID = defineProps<{
+  id: string;
+}>();
 
 const title = "共有5条评论";
 const ifShowEmoji = ref(false);
 
 const ruleFormRef = ref<FormInstance>();
 const FormData = reactive({
-  name: "Hello",
-  link: "",
-  email: "",
+  author: "Hello", // 填用户的_id
   content: "",
+  postId: "",
+  createdAt: "",
+  parentComment: "",
 });
 
 const rules = reactive<FormRules>({
-  name: [
-    { required: true, message: "请给自己取个昵称", trigger: "blur" },
-    { min: 6, max: 10, message: "Length should be 6 to 10", trigger: "blur" },
-  ],
-  email: [
-    {
-      required: true,
-      message: "请选择一个邮箱接收通知",
-      trigger: "blur",
-    },
-  ],
+  // name: [
+  //   { required: true, message: "请给自己取个昵称", trigger: "blur" },
+  //   { min: 6, max: 10, message: "Length should be 6 to 10", trigger: "blur" },
+  // ],
   content: [{ required: true, message: "评论内容不能为空哦", trigger: "blur" }],
 });
 
@@ -134,10 +138,13 @@ const onSelectEmoji = (emoji: MyEmojiPicker.Emoji) => {
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
+  FormData.createdAt = GetNowDate();
+  FormData.postId = BlogID.id;
+
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log("submit!");
+      console.log("submit!",FormData);
     } else {
       console.log("error submit!", fields);
     }
@@ -147,6 +154,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
+};
+
+// 安全性处理
+const sanitize = (html: string) => {
+  return sanitizeHtml(html);
 };
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
@@ -224,25 +236,18 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
     }
 
     &-content {
-      height: 52px;
-      margin: 2px 0;
+      height: 56px;
+      margin: 4px 0;
       padding-bottom: 5px;
       :deep(.el-form-item__content) {
         height: 100%;
         margin-left: 0 !important;
-        .el-textarea {
+        .md-editor {
           height: 100%;
-          .el-textarea__inner {
-            font-size: 7px;
-            border-radius: 4px;
-            box-shadow: 0 0 0 0px
-              var(--el-input-border-color, var(--el-border-color)) inset; // 去除边框
-            height: 100%;
-            resize: none;
-
-            &:focus {
-              background: #f8f8f8;
-            }
+          border: none;
+          #md-editor-v3-textarea {
+            padding: 1px 2px;
+            font-size: 6px;
           }
         }
       }

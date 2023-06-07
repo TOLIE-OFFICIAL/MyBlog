@@ -8,6 +8,16 @@ declare namespace ApiAuth {
   }
   /** 用户信息 */
   type UserInfo = Auth.UserInfo;
+
+  interface SignUpForm {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    check: boolean;
+    code: string;
+
+  }
 }
 
 // 获取登陆页展示poem
@@ -56,6 +66,14 @@ declare namespace ApiUserManagement {
 }
 
 declare namespace BlogArticles {
+  // // 文章状态 是个枚举
+  // enum Types {
+  //   全部 = '',
+  //   草稿 = 'draft',
+  //   已发布 = 'published',
+  //   审核中 = 'checking',
+  //   未通过 = 'rejected'
+  // }
   // 文章结构
   interface Article {
     // 文章id
@@ -125,10 +143,36 @@ declare namespace BlogImgs {
 
 }
 
+declare namespace BlogComment {
+  // 评论结构
+  interface Comment {
+    _id: string,
+    postId: string,
+    content: string,
+    createdAt: string,
+    like_count?: number,
+    reply_count?: number,
+    // 评论者信息
+    author: {
+      _id: string,
+      name: string,
+      avatar: string,
+    }
+  }
+}
 declare namespace Chat {
   interface Msg {
     senderId: string
     receiverId: string
     message: string
+  }
+}
+
+declare namespace Res {
+  interface response {
+    code: number,
+    message: string,
+    data: any,
+    success: boolean
   }
 }

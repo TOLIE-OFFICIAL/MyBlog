@@ -113,7 +113,7 @@ import {
 } from "@/service";
 import * as qiniu from "qiniu-js";
 import { genFileId, type UploadRequestOptions } from "element-plus";
-import moment from "moment";
+import { GetNowDate } from "@/utils";
 
 import type {
   UploadFile,
@@ -270,11 +270,10 @@ const handleUpload = async (options: UploadRequestOptions) => {
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   ifUploaded.value = true;
+  const Now = GetNowDate();
   formData.content = encodeURI(mainStore.blogContent_md);
-  formData.createTime = formData.id
-    ? formData.createTime
-    : moment().format("YYYY-MM-DD HH:mm:ss");
-  formData.updateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  formData.createTime = formData.id ? formData.createTime : Now;
+  formData.updateTime = Now;
   // console.log(formData);
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {

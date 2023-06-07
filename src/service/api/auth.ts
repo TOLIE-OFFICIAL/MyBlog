@@ -6,9 +6,17 @@ import { blogRequest } from "../request";
  * @param password - 密码
  * @returns Token
  */
-export function fetchLogin(username: string, password: string) {
-  return blogRequest.post<ApiAuth.Token>("/login", { username, password });
+export function fetchLogin(formData: { email: string, password: string, code: string }): Promise<Res.response> {
+  return blogRequest.post("/users/login", formData);
 }
+export function sendMail(email: string) {
+  return blogRequest.post("/users/sendMail", { email });
+}
+export function fetchSignUp(data: ApiAuth.SignUpForm) {
+  return blogRequest.post("/users", data);
+}
+
+
 
 /**
  *  请求首屏要展示的文章

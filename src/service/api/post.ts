@@ -47,9 +47,9 @@ export function fetchAchieves(data: BlogArticles.Query) {
  * @param status - 
  * @returns 按时间顺序，文章
  */
-export function fetchArticlesByStatus(status: string) {
+export function fetchArticlesByStatus(data: { status: string, keyWord: string, pageSize: number, currentPage: number }) {
   // return blogRequest.get<BlogArticles.Article>("/home");
-  return blogRequest.get("/blogPosts/status/" + status);
+  return blogRequest.post("/blogPosts/status", data);
 }
 
 /**

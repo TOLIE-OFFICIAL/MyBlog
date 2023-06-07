@@ -1,13 +1,13 @@
-import { imgRequest } from "../request";
+// import { imgRequest } from "../request";
 
 /**
  *  获取token
  * @param 用户名 or email - 密码
  * @returns token
  */
-export function getToken(username: string, pwd: string) {
-  return imgRequest.post<BlogImgs.token>("/token", { username: username, password: pwd })
-}
+// export function getToken(username: string, pwd: string) {
+//   return imgRequest.post<BlogImgs.token>("/token", { username: username, password: pwd })
+// }
 /**
  *  获取历史图片
  * @param ？

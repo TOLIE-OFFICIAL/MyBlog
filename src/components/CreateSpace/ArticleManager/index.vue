@@ -16,36 +16,48 @@
         <li
           v-for="(item, index) in filterOptions"
           :class="{
-            'filter-item-active': activeIndex == index,
+            'filter-item-active': currentState == item.statue,
             'filter-item': true,
           }"
-          @click="handleActive(index)"
-          :key="item"
+          @click="handleActive(item.statue)"
+          :key="item.statue"
         >
-          {{ item }}
+          {{ item.title }}
         </li>
         <li class="empty"></li>
         <li class="filter-item-input">
-          <el-input v-model="input" placeholder="请输入标题关键字">
+          <el-input
+            v-model="keyWord"
+            @keyup.enter="handleSearchKey"
+            placeholder="请输入标题关键字"
+          >
             <template #suffix>
-              <el-icon><i-ep-Search /> </el-icon>
+              <!-- <el-button @click="handleSearchKey">
+                <template #icon>
+                </template>
+              </el-button> -->
+              <el-icon class="filter-item-input-icon" @click="handleSearchKey"
+                ><i-ep-Search />
+              </el-icon>
             </template>
           </el-input>
         </li>
       </ul>
       <div class="article-manager-tabs-content">
         <div class="article-manager-tabs-content-list">
-          <ArticleItem v-for="item in list" :item="item" :key="item._id">{{
-            item
-          }}</ArticleItem>
+          <ArticleItem v-for="item in list" :item="item" :key="item._id">
+            {{ item }}
+          </ArticleItem>
         </div>
-        <!-- <div class="article-manager-tabs-content-pagination">
-          <div class="example-demonstration">
-            When you have more than 7 pages
-          </div>
-          <el-pagination layout="prev, pager, next" :total="1000" />
-        </div> -->
       </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :style="{ justifyContent: 'center' }"
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+      />
     </el-tab-pane>
 
     <el-tab-pane
@@ -63,14 +75,24 @@ import type { TabsPaneContext } from "element-plus";
 import { fetchArticlesByStatus } from "@/service";
 
 const activeName = ref("finished");
-const activeIndex = ref(0);
-const input = ref("");
+const currentState = ref("");
+const keyWord = ref("");
+const pageSize = ref(9);
+const currentPage = ref(1);
+const total = ref(9);
 
-const filterOptions = ["全部", "已发布", "审核中", "未通过"];
+const list = ref<BlogArticles.partArticle[]>();
 
-const handleActive = (index: number) => {
-  console.log(index);
-  activeIndex.value = index;
+const filterOptions = [
+  { title: "全部", statue: "" },
+  { title: "已发布", statue: "published" },
+  { title: "审核中", statue: "checking" },
+  { title: "未通过", statue: "rejected" },
+];
+
+const handleActive = (state: string) => {
+  // console.log(state);
+  currentState.value = state;
 };
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
@@ -80,20 +102,34 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
-const list = ref<BlogArticles.partArticle[]>();
+const handleSearchKey = async () => {
+  // console.log(keyWord);
+  fetchArticles();
+};
 
-// onBeforeMount();
-const init = async () => {
+const fetchArticles = async () => {
   const {
     data,
   }: { data: { list: BlogArticles.partArticle[]; total: number } } =
-    await fetchArticlesByStatus("");
+    await fetchArticlesByStatus({
+      status: currentState.value,
+      pageSize: pageSize.value,
+      currentPage: currentPage.value,
+      keyWord: keyWord.value,
+    });
   if (data) {
     list.value = data.list;
+    total.value = data.total;
   }
+};
+// 监听
+watch(currentPage, () => {
+  fetchArticles();
+});
 
-  // console.log(data);
-  // console.log('list',list);
+// 初次请求数据，渲染页面
+const init = () => {
+  fetchArticles();
 };
 
 init();
@@ -110,15 +146,16 @@ init();
 
     &-content {
       // position: relative;
-      // display: flex;
-      height: calc(100% - 22px);
+      display: flex;
+      min-height: calc(100% - 46px);
+      // overflow-y: scroll;
       // flex-direction: column;
       padding-left: 8px;
       // background-color: #86909c;
 
       &-list {
-        height: 100%;
-        // flex: 1;
+        // height: 100%;
+        flex: 1;
         // position: absolute;
         // bottom: 2px;
       }
@@ -126,21 +163,22 @@ init();
   }
 }
 :deep(.el-tabs__header) {
-  height: 22px;
+  height: 18px;
   margin: 0;
   .el-tabs__nav-scroll {
     padding-left: 8px;
-    height: 22px;
+    height: 18px;
   }
   .el-tabs__nav {
-    height: 22px;
-    line-height: 22px;
+    height: 18px;
+    line-height: 18px;
   }
 }
 :deep(.el-tabs__content) {
   flex: 1;
 }
 :deep(.el-tabs__item) {
+  height: 100%;
   font-size: 6px;
   color: #86909c;
 }
@@ -164,6 +202,9 @@ init();
   }
   &-item-input {
     width: 100px;
+    &-icon {
+      cursor: pointer;
+    }
   }
   .empty {
     flex: 1;

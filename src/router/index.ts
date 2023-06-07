@@ -148,14 +148,31 @@ const router = createRouter({
     },
     // 登录页
     {
-      path: "/login",
-      name: "login",
-      meta: {
-        title: "登录",
-        activePage: "login"
-      },
-      component: () => import("@/views/Login.vue")
+      path: "/empty",
+      name: "empty",
+      component: () => import("@/views/CommonView/Empty.vue"),
+      children:[
+        {
+          path: "/login",
+          name: "login",
+          meta: {
+            title: "登录",
+            activePage: "login"
+          },
+          component: () => import("@/components/Login/index.vue")
+        },
+        {
+          path: "/sign",
+          name: "sign",
+          meta: {
+            title: "注册",
+            activePage: "sign"
+          },
+          component: () => import("@/components/SignUp/index.vue")
+        },
+      ]
     },
+    
     // 匹配无效路径的路由
     {
       name: "not-found-page",

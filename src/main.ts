@@ -6,9 +6,9 @@ import App from "./App.vue";
 // import SocketIO from 'socket.io-client'
 import router from "./router";
 import 'amfe-flexible'
-import { getLocal } from "@/utils";
+import { GetNowDate } from '@/utils'
 
-const blackList = ["/edit"];
+const blackList = ["/edit",'/detail'];
 const DefaultTitle = 'TOLIE'
 // const SocketOptions = {
 //   query: {
@@ -32,8 +32,6 @@ async function setupApp() {
   // import assets: js, css, images, fonts, etc.
   setupAssets();
 
-
-
   // setup vue store plugin: pinia.
   // setupStore(app);
   app.use(store);
@@ -50,6 +48,9 @@ async function setupApp() {
 
   // vue-socket.io
   // app.use(socket);
+
+  // 全局引入moment.js的formate方法
+  // app.config.globalProperties.$moment = GetNowDate;
 
   // 路由守卫
   router.beforeEach((to, from, next) => {

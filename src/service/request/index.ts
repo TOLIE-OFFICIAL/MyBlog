@@ -1,27 +1,37 @@
+import { getLocal } from "@/utils";
 import { createRequest } from "./request";
 
 // 创建请求
 export const mockRequest = createRequest({ baseURL: "/mock" });
 
-export const blogRequest = createRequest({ baseURL: "/api" });
+// 博客本身相关的请求
+export const blogRequest = createRequest({
+  baseURL: "/api",
+  headers: {
+    'Authorization': getLocal("token") || ""
+  }
+});
 
 // 登陆页面的每日一言
 export const poemRequest = createRequest({ baseURL: "/api" });
 
+// 评论相关
+export const commentRequest = createRequest({ baseURL: "/api" });
+
 // 有关smms图床
-export const imgRequest = createRequest({
-  baseURL: "/img",
-  // // 请求头
-  // headers: {
-  //   'Authorization': ""
-  // }
-}, {
-  codeField: "code", // ??
-  dataField: "data",
-  msgField: "message",
-  successCode: "success", // ??
-},
-);
+// export const imgRequest = createRequest({
+//   baseURL: "/img",
+//   // // 请求头
+//   // headers: {
+//   //   'Authorization': ""
+//   // }
+// }, {
+//   codeField: "code", // ??
+//   dataField: "data",
+//   msgField: "message",
+//   successCode: "success", // ??
+// },
+// );
 
 
 // {

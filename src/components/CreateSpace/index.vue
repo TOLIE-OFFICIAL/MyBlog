@@ -16,39 +16,64 @@
         >
           <el-sub-menu index="1">
             <template #title>
-              <el-icon><i-ep-location /></el-icon>
+              <el-icon><i-ep-document /></el-icon>
               <span>内容管理</span>
             </template>
-            <el-menu-item-group title="Group One">
+            <el-menu-item-group>
               <el-menu-item
                 index="article"
                 :route="{
                   name: 'article',
                 }"
-                >文章管理</el-menu-item
               >
+                文章管理
+              </el-menu-item>
               <el-menu-item index="1-2">专栏管理</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="Group Two">
+            <!-- <el-menu-item-group title="Group Two">
               <el-menu-item index="1-3">item three</el-menu-item>
             </el-menu-item-group>
             <el-sub-menu index="1-4">
               <template #title>item four</template>
               <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu>
+            </el-sub-menu> -->
           </el-sub-menu>
-          <el-menu-item index="2">
+          <el-sub-menu index="2">
+            <template #title>
+              <el-icon><i-ep-document /></el-icon>
+              <span>数据中心</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item
+                index="article"
+                :route="{
+                  name: 'article',
+                }"
+              >
+                内容数据
+              </el-menu-item>
+              <el-menu-item index="2-2">粉丝数据</el-menu-item>
+            </el-menu-item-group>
+            <!-- <el-menu-item-group title="Group Two">
+              <el-menu-item index="1-3">item three</el-menu-item>
+            </el-menu-item-group>
+            <el-sub-menu index="1-4">
+              <template #title>item four</template>
+              <el-menu-item index="1-4-1">item one</el-menu-item>
+            </el-sub-menu> -->
+          </el-sub-menu>
+          <!-- <el-menu-item index="2">
             <el-icon><i-ep-menu /></el-icon>
-            <span>Navigator Two</span>
+            <span>数据中心</span>
+          </el-menu-item> -->
+          <el-menu-item index="3">
+            <el-icon><i-ep-setting /></el-icon>
+            <span>帮助中心</span>
           </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <el-icon><i-ep-document /></el-icon>
-            <span>Navigator Three</span>
-          </el-menu-item>
-          <el-menu-item index="4">
+          <!-- <el-menu-item index="4">
             <el-icon><i-ep-setting /></el-icon>
             <span>Navigator Four</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-menu>
       </el-col>
     </el-row>

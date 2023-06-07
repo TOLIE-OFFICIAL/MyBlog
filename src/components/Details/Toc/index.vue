@@ -91,7 +91,7 @@ console.log(state);
   &-catalog {
     position: absolute;
     width: 140px;
-    height: 100px;
+    /* height: 100px; */
     padding: 8px;
     bottom: 0;
     right: 0;
