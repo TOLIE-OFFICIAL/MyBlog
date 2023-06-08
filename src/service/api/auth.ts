@@ -15,6 +15,9 @@ export function sendMail(email: string) {
 export function fetchSignUp(data: ApiAuth.SignUpForm) {
   return blogRequest.post("/users", data);
 }
+export function refreshToken() {
+  return blogRequest.post("/users/refresh");
+}
 
 
 

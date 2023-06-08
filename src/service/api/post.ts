@@ -111,3 +111,7 @@ export function getOneArticle(id: string) {
 export function createPinnedTopArticle(data: BlogArticles.formData) {
   return blogRequest.post("/blogPosts/pinnedTop", data);
 }
+export function testIfAuth() {
+  return blogRequest.get("/");
+}
+

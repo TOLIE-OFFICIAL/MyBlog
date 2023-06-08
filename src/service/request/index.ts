@@ -1,16 +1,11 @@
-import { getLocal } from "@/utils";
+import { getLocal, getRefreshToken } from "@/utils";
 import { createRequest } from "./request";
 
 // 创建请求
 export const mockRequest = createRequest({ baseURL: "/mock" });
 
 // 博客本身相关的请求
-export const blogRequest = createRequest({
-  baseURL: "/api",
-  // headers: {
-  //   'Authorization': getLocal("token") || ""
-  // }
-});
+export const blogRequest = createRequest({ baseURL: "/api" })
 
 // 登陆页面的每日一言
 export const poemRequest = createRequest({ baseURL: "/api" });

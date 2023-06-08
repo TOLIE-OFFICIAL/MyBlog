@@ -8,8 +8,9 @@ import router from "./router";
 import 'amfe-flexible'
 import { getLocal, GetNowDate } from '@/utils'
 import { EnumStorageKey } from "./enum";
+import { testIfAuth } from "./service";
 
-const blackList = ["/edit",'/detail'];
+const blackList = ["/edit", '/detail'];
 const DefaultTitle = 'TOLIE'
 // const SocketOptions = {
 //   query: {
@@ -54,14 +55,23 @@ async function setupApp() {
   // app.config.globalProperties.$moment = GetNowDate;
 
   // 路由守卫
-  router.beforeEach((to, from, next) => {
+  router.beforeEach(async (to, from, next) => {
     // 开始loading
     window.$loadingBar?.start();
 
-    if (!blackList.includes(to.path) || getLocal(EnumStorageKey.token)) {
-      next()
-    } else {
-      next('/login')
+    // if (!blackList.includes(to.path) || getLocal(EnumStorageKey.token)) {
+    //   next()
+    // } else {
+    //   next('/login')
+    // }
+
+    // 检查是否存在HttpOnly Cookie
+    try {
+      await testIfAuth(); // 发送一个验证请求到服务器，该请求需要包含HttpOnly Cookie
+      next();
+    } catch (error) {
+      // 如果验证请求失败，重定向到登录页
+      next('/login');
     }
   })
   router.afterEach((to, from) => {

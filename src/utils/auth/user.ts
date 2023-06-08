@@ -5,10 +5,18 @@ import { getLocal, removeLocal, setLocal } from "../storage";
 export function setToken(token: string) {
   setLocal(EnumStorageKey.token, token);
 }
+/** 设置refreshtoken */
+export function setRefreshToken(refreshtoken: string) {
+  setLocal(EnumStorageKey["refresh-token"], refreshtoken);
+}
 
 /** 获取token */
 export function getToken() {
   return getLocal<string>(EnumStorageKey.token) || "";
+}
+/** 获取refreshtoken */
+export function getRefreshToken() {
+  return getLocal<string>(EnumStorageKey["refresh-token"]) || "";
 }
 
 /** 去除token */

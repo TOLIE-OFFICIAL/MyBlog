@@ -175,4 +175,13 @@ declare namespace Res {
     data: any,
     success: boolean
   }
+  interface loginRes {
+    code: number,
+    message: string,
+    data: {
+      token: string,
+      refresh_token: string
+    },
+    success: boolean
+  }
 }

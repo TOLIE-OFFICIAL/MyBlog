@@ -74,7 +74,13 @@
 import type { FormItemRule, FormInstance } from "element-plus";
 // import { useMainStore } from "@/store";
 // import { ElMessage } from "element-plus";
-import { poemSlice, setLocal, getLocal } from "@/utils";
+import {
+  poemSlice,
+  setLocal,
+  getLocal,
+  setToken,
+  setRefreshToken,
+} from "@/utils";
 import { fetchLogin } from "@/service";
 const router = useRouter();
 
@@ -178,8 +184,9 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
       const data = await fetchLogin(loginForm);
 
       if (data.data) {
-        // console.log(res);
-        setLocal("__TOKEN__", data.data);
+        console.log(data.data);
+        setToken(data.data);
+        // setRefreshToken(data.data?.refresh_token);
         router.push("/");
       } else {
         window.$message.error(data.message);

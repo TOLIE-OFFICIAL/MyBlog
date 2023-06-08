@@ -7,7 +7,7 @@ import {
   handleServiceResult,
   transformRequestData,
 } from "@/utils";
-import { getToken } from "@/utils/auth";
+import { getRefreshToken, getToken } from "@/utils/auth";
 
 export default class CustomAxiosInstance {
   private instance: AxiosInstance;
@@ -38,8 +38,10 @@ export default class CustomAxiosInstance {
           const contentType = (config.headers as AxiosHeaders).get("Content-Type") as string;
           config.data = await transformRequestData(config.data, contentType);
           // 设置token
-          console.log(222, getToken(), 111);
-          (config.headers as AxiosHeaders).set("Authorization", "Bearer " + getToken());
+          // console.log(222, getToken(), 111);
+          // (config.headers as AxiosHeaders).set("Authorization", "Bearer " + getToken());
+          // console.log(222, getRefreshToken(), 111);
+          // (config.headers as AxiosHeaders).set("x-refresh-token", getRefreshToken());
         }
         return config;
       },

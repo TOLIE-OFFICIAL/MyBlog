@@ -10,6 +10,8 @@ import {
 } from "@/config";
 import { exeStrategyActions } from "../common";
 import { showErrorMsg } from "./msg";
+import { refreshToken } from "@/service";
+import { setRefreshToken, setToken } from "../auth";
 
 type ErrorStatus = keyof typeof ERROR_STATUS;
 
@@ -43,10 +45,27 @@ export function handleAxiosError(axiosError: AxiosError) {
     [
       // 请求失败
       Boolean(axiosError.response),
-      () => {
+      async () => {
         const errorCode: ErrorStatus = (axiosError.response?.status as ErrorStatus) || "DEFAULT";
         const msg = ERROR_STATUS[errorCode];
         Object.assign(error, { code: errorCode, msg });
+        // 身份认证失败，刷新token
+        // if (errorCode === 401) {
+        //   // 令牌过期，尝试刷新令牌
+        //   try {
+        //     const { data } = await refreshToken(); // 调用刷新令牌的函数
+        //     // 更新本地存储的令牌，比如更新 localStorage 或 Vuex 状态等
+        //     // setRefreshToken(data?.refreshedToken);
+        //     console.log('newtoken',data);
+            
+        //     setToken(data);
+        //     // 重新发起之前的请求
+        //     // ...
+        //   } catch (error) {
+        //     // 刷新令牌失败，处理错误
+        //     console.log('refresh failed!');
+        //   }
+        // }
       },
     ],
   ];
