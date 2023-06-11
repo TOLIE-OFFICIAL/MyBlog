@@ -28,7 +28,20 @@
               >
                 文章管理
               </el-menu-item>
-              <el-menu-item index="1-2">专栏管理</el-menu-item>
+              <el-menu-item
+                index="follower"
+                :route="{
+                  name: 'follower',
+                }"
+                >用户管理</el-menu-item
+              >
+              <el-menu-item
+                index="profile"
+                :route="{
+                  name: 'profile',
+                }"
+                >个人资料管理</el-menu-item
+              >
             </el-menu-item-group>
             <!-- <el-menu-item-group title="Group Two">
               <el-menu-item index="1-3">item three</el-menu-item>
@@ -50,7 +63,7 @@
                   name: 'article',
                 }"
               >
-                内容数据
+                文章数据
               </el-menu-item>
               <el-menu-item index="2-2">粉丝数据</el-menu-item>
             </el-menu-item-group>

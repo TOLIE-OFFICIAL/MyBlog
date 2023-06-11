@@ -54,7 +54,26 @@ const router = createRouter({
               activePage: "article"
             },
             component: () => import("@/components/CreateSpace/ArticleManager/index.vue"),
-          }]
+          },
+          {
+            path: "/create/follower",
+            name: "follower",
+            meta: {
+              title: "用户管理",
+              activePage: "follower"
+            },
+            component: () => import("@/components/CreateSpace/FollowerManager/index.vue"),
+          },
+          {
+            path: "/create/profile",
+            name: "profile",
+            meta: {
+              title: "个人资料管理",
+              activePage: "profile"
+            },
+            component: () => import("@/components/CreateSpace/FollowerManager/index.vue"),
+          },
+        ]
         },
 
       ]

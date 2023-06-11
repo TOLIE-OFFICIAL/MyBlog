@@ -68,6 +68,7 @@ declare module '@vue/runtime-core' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ExceptionBase: typeof import('./../components/Common/ExceptionBase.vue')['default']
+    FollowerManager: typeof import('./../components/CreateSpace/FollowerManager/index.vue')['default']
     Footer: typeof import('./../components/Footer.vue')['default']
     Header: typeof import('./../components/Header.vue')['default']
     Home: typeof import('./../components/Home/index.vue')['default']
