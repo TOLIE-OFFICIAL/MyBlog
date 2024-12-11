@@ -13,8 +13,7 @@
         <p class="siteInfo-text-govern" style="color: #898989">
           © 2020 打工仔要上岸
           <a href="http://beian.miit.gov.cn/" target="_blank"
-            >皖ICP备2022003113号</a
-          >
+            >皖ICP备2023007821号-1</a>
         </p>
       </div>
     </div>
